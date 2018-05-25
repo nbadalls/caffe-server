@@ -25,11 +25,6 @@ def train_model(device_id, resume_training = None, model_date = None, iterate_nu
     py_file_name = os.path.abspath(__file__).split('/')[-1]
     dataset = os.path.splitext(py_file_name)[0].split('_')[-2]
 
-#stepvalue: 80000
-#stepvalue: 120000
-#stepvalue: 140000
-#max_iter:  160000
-
     run_soon = True
     #solver params
     solver_param = {
@@ -40,9 +35,10 @@ def train_model(device_id, resume_training = None, model_date = None, iterate_nu
         #'stepsize': 150000,
         'gamma': 0.1,
        
-        'stepvalue': [ 80000, 120000, 140000],
+        # 'stepvalue': [ 150000, 300000],
+        'stepvalue': [ 160000, 240000, 280000],
         #'stepvalue': [ 300000],
-        'max_iter': 160000,
+        'max_iter': 320000,
 
         'snapshot': 5000, 
     	# 'device_id' : 4,
@@ -108,8 +104,8 @@ def train_model(device_id, resume_training = None, model_date = None, iterate_nu
     print('b{}s{}'.format(bias, scale_value))
 
     #find date model in history best result 
-    model_pretraind_path = None
-    best_result_model_path = '../best_select_models/{}/XCH-Ad/{}/{}'.format(best_model_date, train_subject.split('-')[0], file_basename)
+    model_pretraind_path = "/home/zkx/Project/O2N/best_select_models/2018-04-17/XCH/AdditMarginCdata/AdditMarginCdata-b0.35s30_fc_0.4_196x196_b+mul+asia+capb_faceNet-20-light2s4avep-bn/models/2018-04-17_AdditMarginCdata-b0.35s30_fc_0.4_196x196_b+mul+asia+capb_faceNet-20-light2s4avep-bn_zkx_iter_185000.caffemodel"
+    best_result_model_path = '../best_select_models/{}/XCH/{}/{}'.format(best_model_date, train_subject.split('-')[0], file_basename)
     print (best_result_model_path)
     for best_root_path, best_folder,best_filename in os.walk(best_result_model_path):
              for each_filename in best_filename:
