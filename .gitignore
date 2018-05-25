@@ -18,7 +18,7 @@
 # Compiled protocol buffers
 *.pb.h
 *.pb.cc
-*_pb2.py
+#*_pb2.py
 
 # Compiled python
 *.pyc
@@ -56,7 +56,7 @@
 ## Caffe
 
 # User's build configuration
-Makefile.config
+#Makefile.config
 
 # Data and models are either
 # 1. reference, and not casually committed
@@ -81,7 +81,7 @@ distribute/*
 python/caffe/proto/
 cmake_build
 .cmake_build
-
+jobs/*
 # Generated documentation
 docs/_site
 docs/_includes
