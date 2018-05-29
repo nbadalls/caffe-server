@@ -2015,7 +2015,9 @@ layer {
     num_output: 512
     bias_term: false
     pad: 0
-    kernel_size: 7
+    #kernel_size: 7
+    kernel_h: 7
+    kernel_w:6
     group: 512
     stride: 1
     weight_filler {
