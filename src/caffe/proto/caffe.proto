@@ -425,6 +425,7 @@ message LayerParameter {
 
   optional LabelSpecificAddParameter label_specific_add_param = 3004;
   optional NormalizeParameter normalize_param = 3005;
+  optional L2NormParameter l2norm_param = 3006;
 }
 
 // Message that stores parameters used to apply transformation
@@ -1454,5 +1455,31 @@ message NormalizeParameter {
   optional string normalize_type = 1 [default = "L2"];
   optional bool fix_gradient = 2 [default = false];
   optional bool bp_norm = 3 [default = false];
+}
+
+message ExtractFeatureParameter {
+
+  enum RunMode {
+    CPU = 0;
+    GPU = 1;
+  }
+  optional RunMode run_mode = 17 [default = GPU];
+// the device_id will that be used in GPU mode. Use device_id = 0 in default.
+  optional int32 device_id = 18 [default = 0];
+  optional string image_list = 2;
+  optional string image_pair_list = 3;
+  repeated ModelInitParameter model_config = 4;
+}
+
+message ModelInitParameter{
+    optional string image_root_path = 1;
+    optional string deploy_path = 2;
+    optional string model_path = 3;
+    optional string output_path = 4;
+    optional TransformationParameter data_transform = 5;
+}
+
+message L2NormParameter {
+  optional float eps = 1 [ default = 1e-8];
 }
 
