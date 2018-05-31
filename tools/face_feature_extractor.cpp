@@ -22,6 +22,7 @@ int main(int argc ,char* argv[])
 
    string config_path = argv[1];
     // string config_path = "/home/minivision/SoftWare/caffe-server/scripts/face_feature_extractor/param.prototxt";
+
     Extract_Feature feature_extractor(config_path);
     feature_extractor.ImagePairExtractFeature();
     return 0;
