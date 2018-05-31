@@ -172,6 +172,7 @@ void Extract_Feature::SaveDist()
 
     int model_num = param_.model_config_size();
     vector<shared_ptr<std::ofstream> > fouts(model_num);
+
     //init out put stream
     for(int i = 0; i < model_num; i++)
     {
@@ -180,9 +181,9 @@ void Extract_Feature::SaveDist()
         string model_name = model_path.substr(model_path.find_last_of('/')+1);
         string model_prefix = model_name.substr(0, model_name.find(".caffemodel"));
 //        string dist_result_path = out_root_path + "/result_v2_" + model_prefix + ".txt";
-        char dist_result_path[200];
+        char dist_result_path[1000];
         sprintf(dist_result_path, "%s/result_v2_%s.txt", out_root_path.c_str(), model_prefix.c_str());
-        std::cout << dist_result_path << std::endl;
+        // std::cout << dist_result_path << std::endl;
 
 //        fouts[i].open(dist_result_path, std::ios::out);
         fouts[i].reset(new std::ofstream(dist_result_path, std::ios::out));
