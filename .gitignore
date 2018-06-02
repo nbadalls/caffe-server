@@ -54,6 +54,7 @@
 .DS_Store
 
 ## Caffe
+Makefile.config
 
 # User's build configuration
 #Makefile.config

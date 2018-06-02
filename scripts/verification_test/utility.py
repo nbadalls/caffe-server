@@ -44,11 +44,21 @@ def sort_model_name(model_name_list):
         sort_list.append(dict_model_name[elem])
     return sort_list
     
-    
 def make_dirs(path):
     if not os.path.exists(path):
         os.makedirs(path)
 
+#divide patch info from model name
+#exp 2018-05-31_AMImageCdata-b0.3s30_fc_0.35_112x96_b+FaceAdd_MobileFaceNet_zkx_iter_125000.caffemodel
+def crop_patch_info_model_name(model_name):
+    loss_type = model_name.split('_')[1]
+    part1 = model_name.split(loss_type + '_' )[-1] #fc_0.35_112x96_b+FaceAdd_MobileFaceNet_zkx_iter_125000.caffemodel
+    sign = part1.find('x')
+    part2 = part1.split('x')[1] #96_b+FaceAdd_MobileFaceNet_zkx_iter_125000.caffemodel
+    width = part2.split('_')[0] #96
+    patch_info = '{}{}'.format(part1[0:sign+1], width)
+    return patch_info
+   
 
 #if __name__ == '__main__':
     #src_deploy_file = "./scripts/verification_script/deploy.prototxt"
