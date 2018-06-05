@@ -54,6 +54,7 @@
 .DS_Store
 
 ## Caffe
+Makefile.config
 
 # User's build configuration
 #Makefile.config
@@ -61,7 +62,6 @@
 # Data and models are either
 # 1. reference, and not casually committed
 # 2. custom, and live on their own unless they're deliberated contributed
-train_examples/*
 data/*
 models/*
 *.caffemodel
@@ -99,3 +99,5 @@ LOCK
 LOG*
 CURRENT
 MANIFEST-*
+
+./train_examples/*

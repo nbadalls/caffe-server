@@ -33,10 +33,10 @@ def train_model(device_id, resume_training = None, model_date = None, iterate_nu
         #'lr_policy': "fixed",
         'lr_policy': "multistep",
         #'stepsize': 150000,
-        'gamma': 0.1,
+        'gamma': 0.01,
        
         # 'stepvalue': [ 150000, 300000],
-        'stepvalue': [ 160000, 240000, 280000],
+        'stepvalue': [ 160000, 280000],
         #'stepvalue': [ 300000],
         'max_iter': 320000,
 
