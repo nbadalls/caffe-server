@@ -63,21 +63,34 @@ if __name__ == '__main__':
     model_infos_ = [
         {
         'image_root_path':"/media/minivision/OliverSSD/FaceRecognition/TestSet/XCH_PAD_01_23/patches/XCH-Ad/fc_0.35_112x96",
-        'deploy_path':"/media/minivision/OliverSSD/FaceRecognition/verification_select_best_models/2018-05-29/AMImageCdata-b0.3s30_fc_0.35_112x96_b+FaceAdd_MobileFaceNet/mobileNet-bn_deploy.prototxt",
-        'model_path':"/media/minivision/OliverSSD/FaceRecognition/verification_select_best_models/2018-05-29/AMImageCdata-b0.3s30_fc_0.35_112x96_b+FaceAdd_MobileFaceNet/2018-05-24_AMImageCdata-b0.3s30_fc_0.35_112x96_b+FaceAdd_MobileFaceNet-bn_zkx_iter_65000.caffemodel",
+        'deploy_path':"/media/minivision/OliverSSD/FaceRecognition/verification_select_best_models/2018-05-29/AMImageCdata-b0.3s30_fc_0.35_112x96_b+FaceAdd_MobileFaceNet/MobileFaceNet-bn_deploy.prototxt",
+        'model_path':"/media/minivision/OliverSSD/FaceRecognition/verification_select_best_models/2018-05-29/AMImageCdata-b0.3s30_fc_0.35_112x96_b+FaceAdd_MobileFaceNet/2018-05-29_AMImageCdata-b0.3s30_fc_0.35_112x96_b+FaceAdd_MobileFaceNet-bn_zkx_iter_160000.caffemodel",
         'output_path':"/home/minivision/SoftWare/caffe-server/scripts/face_feature_extractor_result",
-        # 'mean_value':[127.5, 127.5, 127.5],
-        # 'scale': 0.0078125
         },
 
         # {
         # 'image_root_path':"/media/minivision/OliverSSD/FaceRecognition/TestSet/XCH_PAD_01_23/patches/XCH-Ad/fc_0.35_112x96",
-        # 'deploy_path':"/media/minivision/OliverSSD/FaceRecognition/verification_select_best_models/2018-05-29/AMImageCdata-b0.3s30_fc_0.35_112x96_b+FaceAdd_MobileFaceNet/mobileNet-bn_deploy.prototxt",
+        # 'deploy_path':"/media/minivision/OliverSSD/FaceRecognition/verification_select_best_models/2018-05-29/AMImageCdata-b0.3s30_fc_0.35_112x96_b+FaceAdd_MobileFaceNet/MobileFaceNet-bn_deploy.prototxt",
         # 'model_path':"/media/minivision/OliverSSD/FaceRecognition/verification_select_best_models/2018-05-29/AMImageCdata-b0.3s30_fc_0.35_112x96_b+FaceAdd_MobileFaceNet/2018-05-24_AMImageCdata-b0.3s30_fc_0.35_112x96_b+FaceAdd_MobileFaceNet-bn_zkx_iter_60000.caffemodel",
         # 'output_path':"/home/minivision/SoftWare/caffe-server/scripts/face_feature_extractor_result",
-        # # 'mean_value':[127.5, 127.5, 127.5],
-        # # 'scale': 0.0078125
-        # }
+        # },
+        # {
+        # 'image_root_path':"/media/minivision/OliverSSD/FaceRecognition/TestSet/XCH_PAD_01_23/patches/XCH-Ad/fc_0.35_144x122",
+        # 'deploy_path':"/media/minivision/OliverSSD/FaceRecognition/verification_select_best_models/2018-05-28-2/3dparty_fc_0.35_144x122_FaceAdd_MobileNet-2/train_file/deploy.prototxt",
+        # 'model_path':"/media/minivision/OliverSSD/FaceRecognition/verification_select_best_models/2018-05-28-2/3dparty_fc_0.35_144x122_FaceAdd_MobileNet-2/models/2018-05-29_3dparty_fc_0.35_144x122_FaceAdd_MobileNet-2_zkx_iter_780000.caffemodel",
+        # 'output_path':"/home/minivision/SoftWare/caffe-server/scripts/face_feature_extractor_result",
+        # 'mean_value':[127.5, 127.5, 127.5],
+        # 'scale': 0.0078125
+        # },
+
+        # {
+        # 'image_root_path':"/media/minivision/OliverSSD/FaceRecognition/TestSet/XCH_PAD_01_23/patches/XCH-Ad/fc_0.35_112x96",
+        # 'deploy_path':"/media/minivision/OliverSSD/FaceRecognition/verification_select_best_models/2018-05-29/AMImageCdata-b0.3s30_fc_0.35_112x96_b+FaceAdd_MobileFaceNet/mobileNet-bn_deploy.prototxt",
+        # 'model_path':"/media/minivision/OliverSSD/FaceRecognition/verification_select_best_models/2018-05-29/AMImageCdata-b0.3s30_fc_0.35_112x96_b+FaceAdd_MobileFaceNet/2018-05-24_AMImageCdata-b0.3s30_fc_0.35_112x96_b+FaceAdd_MobileFaceNet-bn_zkx_iter_65000.caffemodel",
+        # 'output_path':"/home/minivision/SoftWare/caffe-server/scripts/face_feature_extractor_result",
+        # 'mean_value':[127.5, 127.5, 127.5],
+        # 'scale': 0.0078125
+        # },
     ]
     feature_config = create_param(device_id_, image_list_, image_pair_list_, model_infos_)
     dst_path = '/home/minivision/SoftWare/caffe-server/scripts/face_feature_extractor/param.prototxt'

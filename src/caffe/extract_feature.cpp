@@ -72,9 +72,6 @@ Extract_Feature::Extract_Feature(const std::string &param_proto_path)
         image_features_.insert(std::make_pair(load_line, features));
     }
     fin.close();
-
-
-
 }
 
 void Extract_Feature::ImagePairExtractFeature()
