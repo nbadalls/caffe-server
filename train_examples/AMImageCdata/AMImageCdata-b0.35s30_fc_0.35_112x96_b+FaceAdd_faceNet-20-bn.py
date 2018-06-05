@@ -28,17 +28,17 @@ def train_model(device_id, resume_training = None, model_date = None, iterate_nu
     run_soon = True
     #solver params
     solver_param = {
-        'base_lr': 0.1,
+        'base_lr': 0.0001,
         #'lr_policy': "step",
-        #'lr_policy': "fixed",
-        'lr_policy': "multistep",
+        'lr_policy': "fixed",
+       # 'lr_policy': "multistep",
         #'stepsize': 150000,
         'gamma': 0.1,
        
         # 'stepvalue': [ 150000, 300000],
-        'stepvalue': [ 80000,120000, 140000],
+       # 'stepvalue': [ 80000,120000, 140000],
         #'stepvalue': [ 300000],
-        'max_iter': 160000,
+        'max_iter': 300000,
 
         'snapshot': 5000, 
     	# 'device_id' : 4,

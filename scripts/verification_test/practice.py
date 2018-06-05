@@ -61,7 +61,7 @@ if __name__ == '__main__':
             select_date = sys.argv[2]
             test_set_type = sys.argv[3]
             gpu_id = int(sys.argv[4])
-            test_batch_num = sys.argv[5]
+            test_batch_num = int(sys.argv[5])
             modelTest(select_date, test_set_type, gpu_id, test_batch_num)
         else:
               print ("Please input: \n test \n --select_date\n --test_set_type\n --gpu_id\n --test_batch_num[-1]\n")

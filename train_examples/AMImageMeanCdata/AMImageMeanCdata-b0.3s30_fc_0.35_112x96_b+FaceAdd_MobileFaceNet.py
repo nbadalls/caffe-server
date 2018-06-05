@@ -108,7 +108,7 @@ def train_model(device_id, resume_training = None, model_date = None, iterate_nu
     print('b{}s{}'.format(bias, scale_value))
 
     #find date model in history best result 
-    model_pretraind_path = "/home/zkx/Project/O2N/DepthwiseConvolution-master/MobileFaceNet-master/face_snapshot/MobileFaceNet.caffemodel"
+    model_pretraind_path = None
     best_result_model_path = '../best_select_models/{}/XCH-Ad/{}/{}'.format(best_model_date, train_subject.split('-')[0], file_basename)
     print (best_result_model_path)
     for best_root_path, best_folder,best_filename in os.walk(best_result_model_path):
