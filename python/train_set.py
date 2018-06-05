@@ -7,6 +7,7 @@
 image_root_folder = "/home/zkx/Data_sdb/TrainData/Data_sdc/Patches/MultiPatches"
 label_root_path = "/home/zkx/Data_sdb/TrainData/Data_sdc/Patches/MultiPatches/image_list/train_list"
 train_img_data = {
+	'b+FaceAdd+Mobile': ['{}/Combine_base_Cmul-Asia-beid-cap10-ZheD-CHAMob_list.txt_label.txt'.format(label_root_path), 55918],
 	'b+FaceAdd': [ "{}/Combine_base_Cmul-Asia-beid-cap10-ZheD_list.txt_label.txt".format(label_root_path), 54547], 
 	'base' :['{}/shot_Oriental_Age_Lan_DHUA_PAKJ_Indon_Migrant_celeb_label.txt'.format(label_root_path), 21331],
 }
