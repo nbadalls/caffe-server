@@ -17,3 +17,11 @@ lmdb_root_path =  "/home/zkx/Data_sdb/TrainData/Data_sdc/Patches/lmdb"
 train_lmdb_data = {
 	'b+FaceAdd+encode': [ "{}/fc_0.35_112x96_base_ZheD_Cmul-beid_cap10_Asia-train-encode-shufflelmdb".format(lmdb_root_path), 54547],
 }
+
+
+image_mtcnn_root_folder = "/home/hjg/Data/SDB_Disk/Data/Train_Data/O2N/Data_sdd/Patches_mtcnn/MultiPatches"
+label_mtcnn_root_path = "/home/hjg/Data/SDB_Disk/Data/Train_Data/O2N/Data_sdd/Patches_mtcnn/MultiPatches_list/combine_folder_list"
+train_img_data_mtcnn = {
+
+        'b+add1+2': ["{}/combine_mtcnn_base+add1-2_GE8_list_label.txt".format(label_mtcnn_root_path),67355],
+}

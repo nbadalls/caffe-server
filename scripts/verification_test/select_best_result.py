@@ -108,7 +108,7 @@ class ModelSelect():
         #select best two models
         #return dict_item[-3:-1]  #{model name -- accuracy}
 	return dict_item[-1*model_num:]
-            
+           
     def selectBestModel(self, best_model_acc_pair, out_model_path, threshold = 0.0):
         
         #sort according to model name
