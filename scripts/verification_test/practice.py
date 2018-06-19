@@ -37,7 +37,12 @@ def modelTest(select_date, test_set_type, gpu_id, test_batch_num = -1):
                 
     #after finished all model test then select model
     select.findBestModel()
-    
+
+def modelTestSelect(test_set_type, model_num):
+	current_date = time.strftime('%Y-%m-%d', time.localtime())
+	select = select_best_result.ModelSelect(current_date, test_set_type)
+	select.findBestModel(model_num)
+
 def selectThreshold(test_set_type, threshold):
     current_date = time.strftime('%Y-%m-%d', time.localtime())
     select = select_best_result.ModelSelect(current_date, test_set_type)
@@ -45,17 +50,21 @@ def selectThreshold(test_set_type, threshold):
     
 
 if __name__ == '__main__':
-    if len(sys.argv) < 2:
-        print ("Please input: \n test \n --select_date\n --test_set_type\n --gpu_id\n --test_batch_num[-1]\n")
-        print ("select \n --test_set_type\n --threshold\n")
-    elif len(sys.argv) == 4:
+
+    if len(sys.argv) == 4:
         if sys.argv[1] == "select":
               test_set_type = sys.argv[2]
               threshold = float(sys.argv[3])
               selectThreshold(test_set_type, threshold)
+	elif sys.argv[1] == "test-m":    #use to select best model num 
+	      test_set_type = sys.argv[2]
+	      model_num = int(sys.argv[3])
+	      modelTestSelect(test_set_type, model_num)
         else:
               print ("Please input: \n test \n --select_date\n --test_set_type\n --gpu_id\n --test_batch_num[-1]\n")
               print ("select \n --test_set_type\n --threshold\n")
+	      print ("test-m \n  --test_set_type\n --model_num\n")
+	      
     elif len(sys.argv) == 6:
         if sys.argv[1] == "test":
             select_date = sys.argv[2]
@@ -66,6 +75,7 @@ if __name__ == '__main__':
         else:
               print ("Please input: \n test \n --select_date\n --test_set_type\n --gpu_id\n --test_batch_num[-1]\n")
               print ("select \n --test_set_type\n --threshold\n")
+	      print ("test-m \n  --test_set_type\n --model_num\n")
               
     elif len(sys.argv) == 5:
         if sys.argv[1] == "test":
@@ -75,9 +85,11 @@ if __name__ == '__main__':
             modelTest(select_date, test_set_type, gpu_id)
         else:
               print ("Please input: \n test \n --select_date\n --test_set_type\n --gpu_id\n --test_batch_num[-1]\n")
-              print ("select \n --test_set_type\n --threshold\n")  
+              print ("select \n --test_set_type\n --threshold\n") 
+	      print ("test-m \n  --test_set_type\n --model_num\n") 
     else:
               print ("Please input: \n test \n --select_date\n --test_set_type\n --gpu_id\n --test_batch_num[-1]\n")
-              print ("select \n --test_set_type\n --threshold\n")          
+              print ("select \n --test_set_type\n --threshold\n")   
+	      print ("test-m \n --test_set_type\n --model_num\n")       
               
 

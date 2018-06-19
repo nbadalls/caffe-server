@@ -28,7 +28,7 @@ class ModelSelect():
         self.test_result_root_path = '{}/{}/{}'.format(ConfigPath.out_root_path, current_date, test_set_type)
         
         
-    def findBestModel(self):
+    def findBestModel(self, model_num = 1):
             out_model_path = '{}/{}/{}'.format(ConfigPath.best_model_path, self.current_date, self.test_set_type)
             best_model_acc_pair = []
             test_result_path = '{}/{}/{}'.format(ConfigPath.out_root_path, self.current_date, self.test_set_type)
@@ -37,7 +37,7 @@ class ModelSelect():
                 for filename in filename_path:
                     if filename.find('roc_statistic_result') >=0 and filename.endswith('log'):
                         log_path = '{}/{}'.format(root_path, filename)
-                        best_pair = self.parseLogFile(log_path)
+                        best_pair = self.parseLogFile(log_path, model_num)
                         best_model_acc_pair += best_pair
                         
             #rank accord to model name
@@ -81,7 +81,7 @@ class ModelSelect():
             
             
     #parse result log file to find best accuracy model each Net        
-    def parseLogFile(self, log_file):
+    def parseLogFile(self, log_file, model_num = 1):
         f = open(log_file, 'r')
         data = f.read().splitlines()
         f.close()
@@ -92,6 +92,7 @@ class ModelSelect():
         static_dict = {}
         model_name = ""
         accuracy = "fpr	0.00012	acc"
+	# accuracy = "fpr	1e-06	acc"
         for line in data:
               if line.find('result_v2') >=0 :
                   model_name = line.split('result_v2_')[-1].strip('.txt')
@@ -105,7 +106,8 @@ class ModelSelect():
         dict_item.sort(key = lambda k:k[1])
         
         #select best two models
-        return dict_item[-3:-1]  #{model name -- accuracy}
+        #return dict_item[-3:-1]  #{model name -- accuracy}
+	return dict_item[-1*model_num:]
             
     def selectBestModel(self, best_model_acc_pair, out_model_path, threshold = 0.0):
         
