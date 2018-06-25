@@ -73,6 +73,8 @@ models/*
 *lmdb
 
 # build, distribute, and bins (+ python proto bindings)
+Makefile.config
+scripts/verification_test/config_path.py
 scripts/face_feature_extractor_result
 build
 .build_debug/*
