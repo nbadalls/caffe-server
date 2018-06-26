@@ -99,10 +99,10 @@ LOG*
 CURRENT
 MANIFEST-*
 
-./train_examples/*
+train_examples/*
 Makefile.config
 scripts/verification_test/config_path.py
 scripts/livebody_scripts/*
 scripts/face_feature_extractor_result/*
-python/train_set.py
 scripts/livebody_test/config_path.py
+python/train_set.py
