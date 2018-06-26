@@ -103,3 +103,5 @@ MANIFEST-*
 Makefile.config
 scripts/verification_test/config_path.py
 scripts/face_feature_extractor_result/*
+python/train_set.py
+scripts/livebody_test/config_path.py
