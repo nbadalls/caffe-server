@@ -19,8 +19,8 @@ train_lmdb_data = {
 }
 
 
-image_mtcnn_root_folder = "/home/hjg/Data/SDB_Disk/Data/Train_Data/O2N/Data_sdd/Patches_mtcnn/MultiPatches"
-label_mtcnn_root_path = "/home/hjg/Data/SDB_Disk/Data/Train_Data/O2N/Data_sdd/Patches_mtcnn/MultiPatches_list/combine_folder_list"
+image_mtcnn_root_folder = "/mnt/glusterfs/o2n/s1/Data/Train_Data/O2N/Data_sdd/Patches_mtcnn/MultiPatches"
+label_mtcnn_root_path = "/mnt/glusterfs/o2n/s1/Data/Train_Data/O2N/Data_sdd/Patches_mtcnn/MultiPatches_list/combine_folder_list"
 train_img_data_mtcnn = {
 
         'b+add1+2': ["{}/combine_mtcnn_base+add1-2_GE8_list_label.txt".format(label_mtcnn_root_path),67355],
