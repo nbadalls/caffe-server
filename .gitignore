@@ -73,7 +73,6 @@ models/*
 *lmdb
 
 # build, distribute, and bins (+ python proto bindings)
-scripts/face_feature_extractor_result
 build
 .build_debug/*
 .build_release/*
@@ -100,4 +99,9 @@ LOG*
 CURRENT
 MANIFEST-*
 
-./train_examples/*
+train_examples/*
+Makefile.config
+scripts/verification_test/config_path.py
+scripts/face_feature_extractor_result/*
+scripts/livebody_test/config_path.py
+python/train_set.py

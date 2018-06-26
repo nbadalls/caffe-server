@@ -25,3 +25,4 @@ train_img_data_mtcnn = {
 
         'b+add1+2': ["{}/combine_mtcnn_base+add1-2_GE8_list_label.txt".format(label_mtcnn_root_path),67355],
 }
+

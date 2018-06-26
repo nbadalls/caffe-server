@@ -94,3 +94,31 @@ def read_deploy_into_proto_delete_slience(deploy_file, net_proto_layer):
      for j in range(len(net_proto.layer)):
          net_proto_layer.layer.extend([net_proto.layer[j]])
      return net_proto_layer
+
+def read_deploy_into_proto_delete_slience_norm(deploy_file, net_proto_layer, bn_use_global_stats):
+
+     net_proto = caffe_pb2.NetParameter()
+    #  net_proto_layer = caffe_pb2.NetParameter()
+
+     f = open(deploy_file, 'r')
+     text_format.Merge(f.read(), net_proto)
+     f.close()
+
+     #reset all batchnorm use_global_stats to false:
+     for elem in net_proto.layer:
+          if elem.type == "BatchNorm":
+             elem.batch_norm_param.use_global_stats = bn_use_global_stats
+
+    #  #delete data layer
+    #  del net_proto.layer[0]
+     #delete slience layer
+     del net_proto.layer[-1]
+     del net_proto.layer[-1]
+     #if last layer is batchnorm layer then set use_global_stats to false
+     #if net_proto.layer[-1].name.find('_bn') >=0 :
+            #net_proto.layer[-1].batch_norm_param.use_global_stats = False
+
+     for j in range(len(net_proto.layer)):
+         net_proto_layer.layer.extend([net_proto.layer[j]])
+     return net_proto_layer
+
