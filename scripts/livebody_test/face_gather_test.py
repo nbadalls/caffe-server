@@ -28,19 +28,19 @@ class gethorModelTest():
         self.select_date = select_date
         self.model_path = "{}/{}".format(ConfigPath.model_root_path , self.select_date)
         self.test_batch_num = test_batch_num
-        
+
     def testRun(self):
             model_info_pair  = self.selectModelDeployList()
             if len(model_info_pair) == 0:
                 print("no caffemodel to test..")
-                return 
+                return
             else:
                 #set path
                 out_path = '{}/Result_{}'.format(self.model_path,self.test_set)
-                script_path = '{}/scripts/face_feature_scripts'.format(ConfigPath.local_caffe_path)
+                script_path = '{}/scripts/livebody_scripts'.format(ConfigPath.local_caffe_path)
                 utility.make_dirs(out_path)
                 utility.make_dirs(script_path)
-                
+
                 #create param file
                 for index, batch_model_info in enumerate(model_info_pair):
                     param = self.createParamFile(batch_model_info, out_path)
@@ -48,26 +48,26 @@ class gethorModelTest():
                     param_path = '{}/test_config_file_E{}.prototxt'.format(script_path, index)
                     f = open(param_path, 'w')
                     print(param, file = f)
-                    f.close()    
-                    
+                    f.close()
+
                     #create execute file .sh  --where test engine is
                     execute_path = '{}/verification_test_E{}.sh'.format(script_path, index)
                     f = open(execute_path, 'w')
                     f.write('cd {}\n'.format(ConfigPath.local_caffe_path))
-                    f.write('./build/tools/face_feature_extractor.bin {}'.format(param_path))
+                    f.write('./build/tools/livebody_predict_result.bin {}'.format(param_path))
                     f.close()
 
                     #execute file
                     os.chmod(execute_path, stat.S_IRWXU)
-                    subprocess.call(execute_path, shell=True) 
-                
+                    subprocess.call(execute_path, shell=True)
+
                 #copy scripts back to out path
-            copy_path = '{}/face_feature_scripts'.format(self.model_path)
+            copy_path = '{}/livebody_scripts'.format(self.model_path)
             if not os.path.exists(copy_path):
-                shutil.copytree(script_path,'{}/face_feature_scripts'.format(self.model_path) )   
-                 
+                shutil.copytree(script_path,'{}/livebody_scripts'.format(self.model_path) )
+
             self.curvePrecious(out_path)
-            
+
     def selectModelDeployList(self):
         folder_list = [elem for elem in os.listdir(self.model_path) if not elem.endswith('.txt') and not elem.endswith('.log') and not elem.endswith('.png') ]
         model_info_pair = {} #model name -- deploy file
@@ -81,16 +81,16 @@ class gethorModelTest():
                             model_list.append('{}/{}'.format(root_path, filename))
                         if filename == 'deploy.prototxt' >=0:
                             deploy_path = '{}/{}'.format(root_path, filename)
-                            
-                if deploy_path not in model_info_pair.keys() and len(deploy_path) != 0 and len(model_list) != 0 :   
+
+                if deploy_path not in model_info_pair.keys() and len(deploy_path) != 0 and len(model_list) != 0 :
                     model_info_pair[deploy_path] = model_list
-        
+
         #divide model list info into batches..
         epoch_model_list = []
         model_info_item = model_info_pair.items()
         each_batch = []
         sum_num = len(model_info_item)
-        
+
         if self.test_batch_num == -1:
              return [model_info_item]
         else:
@@ -100,10 +100,10 @@ class gethorModelTest():
                 if i % self.test_batch_num == 0:
                     epoch_model_list.append(each_batch)
                     each_batch =  []
-            epoch_model_list.append(each_batch) 
-            
+            epoch_model_list.append(each_batch)
+
         return epoch_model_list
-        
+
     def createParamFile(self, batch_model_info, output_result_path, mean_value = None, scale = 1.0):
             model_param_config = []
             for elem in batch_model_info:
@@ -112,7 +112,7 @@ class gethorModelTest():
                 for model_name_path in model_lists:
                     model_name = model_name_path.split('/')[-1]
                     patch_info = utility.crop_patch_info_model_name(model_name)
-                        
+
                     if mean_value != None:
                         each_param = caffe_pb_feature.ModelInitParameter(
                                     image_root_path = '{}/{}'.format(ConfigPath.test_data_set[self.test_set]['imgs_folder'], patch_info),
@@ -132,20 +132,20 @@ class gethorModelTest():
                                     output_path = output_result_path,
                                     )
                     model_param_config.append(each_param)
-            
+
             feature = caffe_pb_feature.ExtractFeatureParameter(
             run_mode = caffe_pb_feature.ExtractFeatureParameter.RunMode.Value('GPU'),
                             device_id = 0,
                             image_list = ConfigPath.test_data_set[self.test_set]['image_list'],
-                            image_pair_list = ConfigPath.test_data_set[self.test_set]['pairs_file'],
+                            # image_pair_list = ConfigPath.test_data_set[self.test_set]['pairs_file'],
                             model_config = model_param_config
-                        )           
+                        )
             return feature
-            
+
     #draw roc curve and statistic result
     def curvePrecious(self, output_result_path):
         statistic_info = []
-        model_list = [elem for elem in os.listdir(output_result_path) if elem.find('result_v2') >=0 and elem.endswith('.txt')] #find selected date's model
+        model_list = [elem for elem in os.listdir(output_result_path) if elem.find('result_livebody') >=0 and elem.endswith('.txt')] #find selected date's model
         for filename in model_list:
            roc_image_name = filename.replace('.txt', '_ROC.png')
            #print(roc_image_name)
@@ -162,5 +162,3 @@ class gethorModelTest():
         for line in statistic_info:
             f.write('{}\n'.format(line))
         f.close()
-                    
-        
