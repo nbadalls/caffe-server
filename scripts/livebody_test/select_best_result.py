@@ -88,14 +88,15 @@ class ModelSelect():
  
         if len(data) == 0:
             return []
-       
+
         static_dict = {}
         model_name = ""
-        accuracy = "fpr	0.00012	acc"
+        accuracy = "fpr	0.01	acc"
 	# accuracy = "fpr	1e-06	acc"
         for line in data:
-              if line.find('result_v2') >=0 :
-                  model_name = line.split('result_v2_')[-1].strip('.txt')
+              if line.find('result_livebody_') >=0 :
+                  model_name = line.split('result_livebody_')[-1].strip('.txt')
+                 
               if line.find(accuracy) >= 0:               #fpr	0.00012 acc	0.69776	threshlod	1.00739
                   #print(line.split('\t'))
                   acc_value = float(line.split('\t')[3])

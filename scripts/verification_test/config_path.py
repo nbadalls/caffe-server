@@ -18,18 +18,19 @@ ConfigPath.best_model_path = "/home/zkx/Project/O2N/best_select_models_caffe-mas
 ConfigPath.best_verification_model_path = "/home/zkx/Project/O2N/verification_select_best_models_caffe-master"
 
 
+
 ConfigPath.test_data_set = {
 
          'XCH':{
-           'pairs_file' : "{}/TestSet/O2N/XCH-small/image_pair_list.txt".format(ConfigPath.local_data_path),
-           'imgs_folder' : "{}/TestSet/O2N/XCH-small/patches/XCH/".format(ConfigPath.local_data_path),
-           'image_list'  : "{}/TestSet/O2N/XCH-small/image_list.txt".format(ConfigPath.local_data_path)
+           'pairs_file' : "{}/TestSet/XCH_PAD_01_23/image_pair_list.txt".format(ConfigPath.local_data_path),
+           'imgs_folder' : "{}/TestSet/XCH_PAD_01_23/patches/XCH/".format(ConfigPath.local_data_path),
+           'image_list'  : "{}/TestSet/XCH_PAD_01_23/image_list.txt".format(ConfigPath.local_data_path)
            },
-           
-         'XCH-Ad':{
-           'pairs_file' : "{}/TestSet/O2N/XCH-small/image_pair_list.txt".format(ConfigPath.local_data_path),
-           'imgs_folder' : "{}/TestSet/O2N/XCH-small/patches/XCH-Ad/".format(ConfigPath.local_data_path),
-           'image_list'  : "{}/TestSet/O2N/XCH-small/image_list.txt".format(ConfigPath.local_data_path)
+
+	   'XCH-mtcnn':{
+           'pairs_file' : "{}/TestSet/O2N/XCH-small/image_list-mtcnnpair.txt".format(ConfigPath.local_data_path),
+           'imgs_folder' : "{}/TestSet/O2N/XCH-small/patches_mtcnn/".format(ConfigPath.local_data_path),
+           'image_list'  : "{}/TestSet/O2N/XCH-small/image_list-mtcnn.txt".format(ConfigPath.local_data_path)
            },
 
 	   'XCH-mtcnn':{

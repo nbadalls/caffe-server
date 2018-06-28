@@ -264,3 +264,30 @@ def AM_softmaxLoss(net, from_layer, layer_name, num_out, bias_, scale_value):
     }
     net[name3] = L.Scale(net[name2], **kwargs2)
     net['softmax_loss'] = L.SoftmaxWithLoss(net[name3], net['label'])
+
+
+def softmaxLoss(net, from_layer, layer_name, num_out):
+    kwargs1 = {
+        'param':[dict(lr_mult = 1.0, decay_mult=1.0),dict(lr_mult = 2.0, decay_mult=0.0)],
+        'inner_product_param':dict(
+                num_output = num_out,
+                weight_filler =  dict(type = "gaussian", std = 0.01),
+                bias_filler = dict(type = "constant", value = 0.0),
+        )
+    }
+    net[layer_name] = L.InnerProduct(net[from_layer], **kwargs1)
+
+    net['softmax_loss'] = L.SoftmaxWithLoss(net[layer_name], net['label'])
+
+def softmax(net, from_layer, layer_name, num_out):
+    kwargs1 = {
+        'param':[dict(lr_mult = 1.0, decay_mult=1.0),dict(lr_mult = 2.0, decay_mult=0.0)],
+        'inner_product_param':dict(
+                num_output = num_out,
+                weight_filler =  dict(type = "gaussian", std = 0.01),
+                bias_filler = dict(type = "constant", value = 0.0),
+        )
+    }
+    net[layer_name] = L.InnerProduct(net[from_layer], **kwargs1)
+
+    net['softmax'] = L.Softmax(net[layer_name])

@@ -9,7 +9,7 @@ sys.path.append('./python')
 sys.path.append('./python/caffe')
 import caffe
 from google.protobuf import text_format
-from net_libs import *
+# from net_libs import *
 from net_function_libs import *
 
 import time
@@ -40,9 +40,9 @@ def train_model(device_id, resume_training = None, model_date = None, iterate_nu
         #'stepsize': 150000,
         'gamma': 0.1,
        
-        'stepvalue': [ 80000, 120000, 140000],
+        'stepvalue': [ 50000, 80000, 110000],
         #'stepvalue': [ 300000],
-        'max_iter': 160000,
+        'max_iter': 150000,
 
         'snapshot': 5000, 
     	# 'device_id' : 4,
@@ -55,7 +55,7 @@ def train_model(device_id, resume_training = None, model_date = None, iterate_nu
         'display': 10,
         'snapshot_after_train':True, #save model after training finished!!
         }
-    batch_size_ = 64
+    batch_size_ = 30
     #current time as defult
     best_model_date = time.strftime('%Y-%m-%d', time.localtime(time.time()))
     #best_model_date = '2018-03-29'
@@ -82,9 +82,9 @@ def train_model(device_id, resume_training = None, model_date = None, iterate_nu
     #patch params
     patch_center = patchIDMatching(center_ind_)  #le_lm
     crop_patch = '{}_{}_{}x{}'.format(patch_center, norm_ratio_, height_, width_)
-    source_ = train_set.train_img_data[dataset][0] 
-    num_out = train_set.train_img_data[dataset][1] 
-    root_folder_ = "{}/{}/".format(train_set.image_root_folder,  crop_patch)
+    source_ = train_set.train_img_data_mtcnn[dataset][0]
+    num_out = 4
+    root_folder_ = "{}/{}/".format(train_set.image_mtcnn_root_folder,  crop_patch)
     # lmdb_source_path = "/home/zkx/Data_sdb/TrainData/Data_sdc/Patches/shot_Oriental_Age_Lan_DHUA_PAKJ_Indon_Migrant_celeb/fc_0.35_112x96-train_cvdecode-shuffle_lmdb"
     #train_image_folder_ = "/home/zkx/Data_sdb/TrainData"
     #train_landmark_file_ = "/home/zkx/Data_sdb/TrainData_landmarks/combine_folder_landmark/Combine_shot_Orien_Age_LanDH_PAKJ_Ind_Mig_Msceleb_AsLife_O2O-6000_landmarks_deplicate.txt"
@@ -98,18 +98,18 @@ def train_model(device_id, resume_training = None, model_date = None, iterate_nu
 
     #set AM face loss param  bias, scale_value
     
-    sphere_param_part = train_subject.split('-')[-1]
-    b_index = sphere_param_part.find('b')
-    s_index = sphere_param_part.find('s')
-    bias = -float(sphere_param_part[b_index+1:s_index])
-    scale_value = float(sphere_param_part[s_index+1:])
+    # sphere_param_part = train_subject.split('-')[-1]
+    # b_index = sphere_param_part.find('b')
+    # s_index = sphere_param_part.find('s')
+    # bias = -float(sphere_param_part[b_index+1:s_index])
+    # scale_value = float(sphere_param_part[s_index+1:])
     
     
-    print('b{}s{}'.format(bias, scale_value))
+    # print('b{}s{}'.format(bias, scale_value))
 
     #find date model in history best result 
     model_pretraind_path = None
-    best_result_model_path = '../best_select_models/{}/XCH-Ad/{}/{}'.format(best_model_date, train_subject.split('-')[0], file_basename)
+    best_result_model_path = '../train_models/best_select_models/{}/XCH-Ad/{}/{}'.format(best_model_date, train_subject.split('-')[0], file_basename)
     print (best_result_model_path)
     for best_root_path, best_folder,best_filename in os.walk(best_result_model_path):
              for each_filename in best_filename:
@@ -135,7 +135,7 @@ def train_model(device_id, resume_training = None, model_date = None, iterate_nu
     # Directory which stores the model .prototxt file.
     save_dir = "models/{}/{}".format(loss_type, job_name) #asset/ImageQulityEvaluation/ImageQulityEvaluation_fc_0.8_64x64_DeepID
     # Directory which stores the snapshot of models.
-    snapshot_dir = "../asset/snapshot/{}/{}".format(loss_type,job_name)
+    snapshot_dir = "../train_models/asset/snapshot/{}/{}".format(loss_type,job_name)
     # Directory which stores the job script and log file.
     job_dir = "jobs/{}/{}".format(loss_type, job_name)
 
@@ -161,35 +161,31 @@ def train_model(device_id, resume_training = None, model_date = None, iterate_nu
 
 
     #=================================Create Date layer======================
-
-    means_ = [127.5, 127.5, 127.5]
-    scale_ = 0.0078125
     data_layer = caffe.NetSpec()
-    data_layer['data'], data_layer['label']  = ImageDataLayer_Means(source_, batch_size_, root_folder_, means_, scale_)
+    print(source_, batch_size_, root_folder_)
+    data_layer['data'], data_layer['label']  = ImageDataLayer(source_, batch_size_, root_folder_)
     # data_layer['data'], data_layer['label'] = LmdbDataLayer(lmdb_source_path, batch_size)
 
 
     #create net body
     net_proto_layer = caffe_pb2.NetParameter()
     #delete the normlize layer and slience layer
-    net_body_proto = read_deploy_into_proto(deploy_lib_file, net_proto_layer)
-    last_layer_name = net_body_proto.layer[-1].name
+    net_body_proto = read_deploy_into_proto_delete_slience_norm(deploy_lib_file, net_proto_layer, False)
+    last_layer_name = net_body_proto.layer[-1].top[0]
     #when appearance bn layer in the end
     if last_layer_name.find("_bn") >=0 :
         last_layer_name = last_layer_name.split("_")[0]
     
     layer_num = int(last_layer_name[-1])
-    layer_name = 'fc-{}'.format(layer_num + 1 )
+    layer_name = 'fc{}'.format(layer_num + 1 )
     
    
     
     #Create loss layer
-    means_ = [127.5, 127.5, 127.5]
-    scale_ = 0.0078125
     loss_layer = caffe.NetSpec()
-    loss_layer[last_layer_name], loss_layer['label'] = ImageDataLayer_Means(source_, batch_size_, root_folder_, means_, scale_)
+    loss_layer[last_layer_name], loss_layer['label'] = L.ImageData(ntop =2)
 
-    AM_softmaxLoss(loss_layer, last_layer_name, layer_name, num_out, bias, scale_value)
+    softmaxLoss(loss_layer, last_layer_name, layer_name,num_out)
     loss_layer_proto = loss_layer.to_proto()
     #remove the ImageDataParameter layer
     del loss_layer_proto.layer[0]
@@ -205,21 +201,28 @@ def train_model(device_id, resume_training = None, model_date = None, iterate_nu
 #=================================Create Date layer================================================
 
     # Create deploy net.
-    shutil.copy(deploy_lib_file, deploy_net_file)
-    #modifiy input of deploy
-    net_proto = caffe_pb2.NetParameter()
-    f = open(deploy_net_file, 'r')
-    text_format.Merge(f.read(), net_proto)
-    f.close()
-    net_proto .input_dim[0]  = 1
-    net_proto .input_dim[1]  = 3
-    net_proto .input_dim[2]  = height_
-    net_proto .input_dim[3]  = width_
+    #change train val into deploy file
+    softmax_layer = caffe.NetSpec()
+    softmax_layer[last_layer_name]= L.ImageDataParameter()
+    #add softmax layer
+    softmax(softmax_layer, last_layer_name, layer_name,4)
+    
+    softmax_layer_proto = softmax_layer.to_proto()
+    del softmax_layer_proto.layer[0]
 
-    f  = open(deploy_net_file, 'w')
-    print(net_proto, file = f)
-    f.close()
-    #copy to job dir
+    #change batchnorm using global stats back to true
+    for elem in net_body_proto.layer:
+        if elem.type == 'BatchNorm':
+            elem.batch_norm_param.use_global_stats = True
+    #add data shape
+    net_body_proto.name = model_name
+    net_body_proto.input.extend(['data'])
+    net_body_proto.input_dim.extend([1,3, height_, width_])
+    #write into file
+    with open(deploy_net_file, 'w') as f:
+        print(net_body_proto, file=f)
+        print(softmax_layer_proto, file=f)
+
     shutil.copy(deploy_net_file, job_dir)
 
     # Create solver.

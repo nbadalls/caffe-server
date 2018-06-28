@@ -8,7 +8,8 @@ import sys
 sys.path.append('./python')
 sys.path.append('./python/caffe')
 import caffe
-from net_libs import *
+from google.protobuf import text_format
+# from net_libs import *
 from net_function_libs import *
 
 import time
@@ -17,22 +18,31 @@ import subprocess
 import stat
 from getPatchInfoFunc import *
 from utility import *
-
+import train_set
 def train_model(device_id, resume_training = None, model_date = None, iterate_num = None):
+
+
+    py_file_name = os.path.abspath(__file__).split('/')[-1]
+    dataset = os.path.splitext(py_file_name)[0].split('_')[-2]
+
+#stepvalue: 80000
+#stepvalue: 120000
+#stepvalue: 140000
+#max_iter:  160000
 
     run_soon = True
     #solver params
     solver_param = {
-        'base_lr': 0.01,
+        'base_lr': 0.0001,
         #'lr_policy': "step",
-        #'lr_policy': "fixed",
-        'lr_policy': "multistep",
+        'lr_policy': "fixed",
+       # 'lr_policy': "multistep",
         #'stepsize': 150000,
         'gamma': 0.1,
        
-        'stepvalue': [ 150000, 300000],
+       # 'stepvalue': [ 50000, 80000, 110000],
         #'stepvalue': [ 300000],
-        'max_iter': 500000,
+        'max_iter': 150000,
 
         'snapshot': 5000, 
     	# 'device_id' : 4,
@@ -45,21 +55,12 @@ def train_model(device_id, resume_training = None, model_date = None, iterate_nu
         'display': 10,
         'snapshot_after_train':True, #save model after training finished!!
         }
-
-    #patch params
-    lmdb_source_path = "/home/zkx/Data_sdb/TrainData/Data_sdc/Patches/lmdb/fc_0.35_112x96-base_cvdecode-shuffle_lmdb"
-    #train_image_folder_ = "/home/zkx/Data_sdb/TrainData"
-    #train_landmark_file_ = "/home/zkx/Data_sdb/TrainData_landmarks/combine_folder_landmark/Combine_shot_Orien_Age_LanDH_PAKJ_Ind_Mig_Msceleb_AsLife_O2O-6000_landmarks_deplicate.txt"
-    #train_label_file_ = "/home/zkx/Data_sdb/TrainData_landmarks/combine_folder_landmark/Combine_shot_Orien_Age_LanDH_PAKJ_Ind_Mig_Msceleb_AsLife_O2O-6000_landmarks_deplicate_label.txt"
-    num_out = 21331
-
-    batch_size = 64
-    
+    batch_size_ = 30
     #current time as defult
     best_model_date = time.strftime('%Y-%m-%d', time.localtime(time.time()))
     #best_model_date = '2018-03-29'
     #split patch param according file name
-    py_file_name = os.path.abspath(__file__).split('/')[-1]
+    # py_file_name = os.path.abspath(__file__).split('/')[-1]
     file_basename = os.path.splitext(py_file_name)[0] #FakeFace_fc_0.3_75x60_DeepID
     prepart_split = file_basename.split('x')[0]
 
@@ -78,6 +79,18 @@ def train_model(device_id, resume_training = None, model_date = None, iterate_nu
     print(height_)
     print(width_)
     
+    #patch params
+    patch_center = patchIDMatching(center_ind_)  #le_lm
+    crop_patch = '{}_{}_{}x{}'.format(patch_center, norm_ratio_, height_, width_)
+    source_ = train_set.train_img_data_mtcnn[dataset][0]
+    num_out = 4
+    root_folder_ = "{}/{}/".format(train_set.image_mtcnn_root_folder,  crop_patch)
+    # lmdb_source_path = "/home/zkx/Data_sdb/TrainData/Data_sdc/Patches/shot_Oriental_Age_Lan_DHUA_PAKJ_Indon_Migrant_celeb/fc_0.35_112x96-train_cvdecode-shuffle_lmdb"
+    #train_image_folder_ = "/home/zkx/Data_sdb/TrainData"
+    #train_landmark_file_ = "/home/zkx/Data_sdb/TrainData_landmarks/combine_folder_landmark/Combine_shot_Orien_Age_LanDH_PAKJ_Ind_Mig_Msceleb_AsLife_O2O-6000_landmarks_deplicate.txt"
+    #train_label_file_ = "/home/zkx/Data_sdb/TrainData_landmarks/combine_folder_landmark/Combine_shot_Orien_Age_LanDH_PAKJ_Ind_Mig_Msceleb_AsLife_O2O-6000_landmarks_deplicate_label.txt"
+    
+
     train_subject = file_basename.split('_')[0] #FakeFace
     loss_type = train_subject.split('-')[0]
     train_net = file_basename.split('_')[-1] #DeepID
@@ -85,18 +98,18 @@ def train_model(device_id, resume_training = None, model_date = None, iterate_nu
 
     #set AM face loss param  bias, scale_value
     
-    sphere_param_part = train_subject.split('-')[-1]
-    b_index = sphere_param_part.find('b')
-    s_index = sphere_param_part.find('s')
-    bias = -float(sphere_param_part[b_index+1:s_index])
-    scale_value = float(sphere_param_part[s_index+1:])
+    # sphere_param_part = train_subject.split('-')[-1]
+    # b_index = sphere_param_part.find('b')
+    # s_index = sphere_param_part.find('s')
+    # bias = -float(sphere_param_part[b_index+1:s_index])
+    # scale_value = float(sphere_param_part[s_index+1:])
     
     
-    print('b{}s{}'.format(bias, scale_value))
+    # print('b{}s{}'.format(bias, scale_value))
 
     #find date model in history best result 
     model_pretraind_path = None
-    best_result_model_path = '../best_select_models/{}/XCH/{}/{}'.format(best_model_date, train_subject.split('-')[0], file_basename)
+    best_result_model_path = '../train_models/best_select_models/{}/XCH-Ad/{}/{}'.format(best_model_date, train_subject.split('-')[0], file_basename)
     print (best_result_model_path)
     for best_root_path, best_folder,best_filename in os.walk(best_result_model_path):
              for each_filename in best_filename:
@@ -112,9 +125,7 @@ def train_model(device_id, resume_training = None, model_date = None, iterate_nu
             return 
     #=========================================================================================
 
-    patch_center = patchIDMatching(center_ind_)  #le_lm
-
-    patch_info = "{}_{}_{}_{}x{}_{}".format(train_subject, patch_center, norm_ratio_,height_, width_, train_net) #ImageQulityEvaluation_fc_0.4_100x100_DeepID
+    patch_info = "{}_{}_{}_{}".format(train_subject, crop_patch, dataset, train_net) #ImageQulityEvaluation_fc_0.4_100x100_DeepID
     # Modify the job name if you want.
     job_name = patch_info
     # The name of the model. Modify it if you want.
@@ -124,7 +135,7 @@ def train_model(device_id, resume_training = None, model_date = None, iterate_nu
     # Directory which stores the model .prototxt file.
     save_dir = "models/{}/{}".format(loss_type, job_name) #asset/ImageQulityEvaluation/ImageQulityEvaluation_fc_0.8_64x64_DeepID
     # Directory which stores the snapshot of models.
-    snapshot_dir = "../asset/snapshot/{}/{}".format(loss_type,job_name)
+    snapshot_dir = "../train_models/asset/snapshot/{}/{}".format(loss_type,job_name)
     # Directory which stores the job script and log file.
     job_dir = "jobs/{}/{}".format(loss_type, job_name)
 
@@ -151,28 +162,30 @@ def train_model(device_id, resume_training = None, model_date = None, iterate_nu
 
     #=================================Create Date layer======================
     data_layer = caffe.NetSpec()
-    data_layer['data'], data_layer['label'] = LmdbDataLayer(lmdb_source_path, batch_size)
+    print(source_, batch_size_, root_folder_)
+    data_layer['data'], data_layer['label']  = ImageDataLayer(source_, batch_size_, root_folder_)
+    # data_layer['data'], data_layer['label'] = LmdbDataLayer(lmdb_source_path, batch_size)
 
 
     #create net body
     net_proto_layer = caffe_pb2.NetParameter()
     #delete the normlize layer and slience layer
-    net_body_proto = read_deploy_into_proto(deploy_lib_file, net_proto_layer)
-    last_layer_name = net_body_proto.layer[-1].name
+    net_body_proto = read_deploy_into_proto_delete_slience_norm(deploy_lib_file, net_proto_layer, False)
+    last_layer_name = net_body_proto.layer[-1].top[0]
     #when appearance bn layer in the end
     if last_layer_name.find("_bn") >=0 :
         last_layer_name = last_layer_name.split("_")[0]
     
     layer_num = int(last_layer_name[-1])
-    layer_name = 'fc-{}'.format(layer_num + 1 )
+    layer_name = 'fc{}'.format(layer_num + 1 )
     
    
     
     #Create loss layer
     loss_layer = caffe.NetSpec()
-    loss_layer[last_layer_name], loss_layer['label'] = L.ImageDataParameter(ntop =2)
+    loss_layer[last_layer_name], loss_layer['label'] = L.ImageData(ntop =2)
 
-    AM_softmaxLoss(loss_layer, last_layer_name, layer_name, num_out, bias, scale_value)
+    softmaxLoss(loss_layer, last_layer_name, layer_name,num_out)
     loss_layer_proto = loss_layer.to_proto()
     #remove the ImageDataParameter layer
     del loss_layer_proto.layer[0]
@@ -188,7 +201,28 @@ def train_model(device_id, resume_training = None, model_date = None, iterate_nu
 #=================================Create Date layer================================================
 
     # Create deploy net.
-    shutil.copy(deploy_lib_file, deploy_net_file)
+    #change train val into deploy file
+    softmax_layer = caffe.NetSpec()
+    softmax_layer[last_layer_name]= L.ImageDataParameter()
+    #add softmax layer
+    softmax(softmax_layer, last_layer_name, layer_name,4)
+    
+    softmax_layer_proto = softmax_layer.to_proto()
+    del softmax_layer_proto.layer[0]
+
+    #change batchnorm using global stats back to true
+    for elem in net_body_proto.layer:
+        if elem.type == 'BatchNorm':
+            elem.batch_norm_param.use_global_stats = True
+    #add data shape
+    net_body_proto.name = model_name
+    net_body_proto.input.extend(['data'])
+    net_body_proto.input_dim.extend([1,3, height_, width_])
+    #write into file
+    with open(deploy_net_file, 'w') as f:
+        print(net_body_proto, file=f)
+        print(softmax_layer_proto, file=f)
+
     shutil.copy(deploy_net_file, job_dir)
 
     # Create solver.

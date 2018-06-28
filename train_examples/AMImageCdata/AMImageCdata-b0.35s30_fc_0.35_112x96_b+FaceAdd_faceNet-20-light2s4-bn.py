@@ -9,7 +9,7 @@ sys.path.append('./python')
 sys.path.append('./python/caffe')
 import caffe
 from google.protobuf import text_format
-from net_libs import *
+# from net_libs import *
 from net_function_libs import *
 
 import time
@@ -28,16 +28,16 @@ def train_model(device_id, resume_training = None, model_date = None, iterate_nu
     run_soon = True
     #solver params
     solver_param = {
-        'base_lr': 0.01,
+        'base_lr': 0.1,
         #'lr_policy': "step",
         #'lr_policy': "fixed",
         'lr_policy': "multistep",
         #'stepsize': 150000,
         'gamma': 0.1,
        
-        'stepvalue': [ 150000, 300000],
-        #'stepvalue': [ 300000],
-        'max_iter': 500000,
+        #'stepvalue': [ 150000, 300000],
+        'stepvalue': [80000, 120000, 140000 ],
+        'max_iter': 160000,
 
         'snapshot': 5000, 
     	# 'device_id' : 4,
@@ -50,7 +50,7 @@ def train_model(device_id, resume_training = None, model_date = None, iterate_nu
         'display': 10,
         'snapshot_after_train':True, #save model after training finished!!
         }
-    batch_size_ = 64
+    batch_size_ = 256
     #current time as defult
     best_model_date = time.strftime('%Y-%m-%d', time.localtime(time.time()))
     #best_model_date = '2018-03-29'
@@ -103,7 +103,7 @@ def train_model(device_id, resume_training = None, model_date = None, iterate_nu
     print('b{}s{}'.format(bias, scale_value))
 
     #find date model in history best result 
-    model_pretraind_path = None
+    model_pretraind_path = "/home/zkx/Project/O2N/best_select_models/2018-05-07/XCH-Ad/AdditMarginCdata/AdditMarginCdata-b0.35s30_fc_0.35_112x96_b+asian+cap10+pos+beid-MS_faceNet-20-light2s4-bn/models/2018-05-07_AdditMarginCdata-b0.35s30_fc_0.35_112x96_b+asian+cap10+pos+beid-MS_faceNet-20-light2s4-bn_zkx_iter_190000.caffemodel"
     best_result_model_path = '../best_select_models/{}/XCH/{}/{}'.format(best_model_date, train_subject.split('-')[0], file_basename)
     print (best_result_model_path)
     for best_root_path, best_folder,best_filename in os.walk(best_result_model_path):
