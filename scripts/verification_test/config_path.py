@@ -32,4 +32,10 @@ ConfigPath.test_data_set = {
            'image_list'  : "{}/TestSet/O2N/XCH-small/image_list.txt".format(ConfigPath.local_data_path)
            },
 
+	   'XCH-mtcnn':{
+           'pairs_file' : "{}/TestSet/O2N/XCH-small/image_list-mtcnnpair.txt".format(ConfigPath.local_data_path),
+           'imgs_folder' : "{}/TestSet/O2N/XCH-small/patches_mtcnn/".format(ConfigPath.local_data_path),
+           'image_list'  : "{}/TestSet/O2N/XCH-small/image_list-mtcnn.txt".format(ConfigPath.local_data_path)
+           },
+
 }
