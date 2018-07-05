@@ -27,3 +27,11 @@ train_mtcnn_img_data = {
         'b+add1+2': ["{}/combine_mtcnn_base+add1-2_GE8_list_label.txt".format(label_mtcnn_root_path), 67355],
 }
 
+
+live_list_root_path = "/mnt/glusterfs/o2n1/LiveBody/Train_mtcnn_patches/combine_folder_list"
+image_live_mtcnn_root_folder = "/mnt/glusterfs/o2n1/LiveBody/Train_mtcnn_patches"
+train_live_mtcnn_img_data = {
+
+	'fakeface3':["{}/combine_mtcnn_fakeface3_list_label.txt".format(live_list_root_path)]
+}
+
