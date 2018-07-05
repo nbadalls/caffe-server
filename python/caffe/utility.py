@@ -122,3 +122,26 @@ def read_deploy_into_proto_delete_slience_norm(deploy_file, net_proto_layer, bn_
          net_proto_layer.layer.extend([net_proto.layer[j]])
      return net_proto_layer
 
+
+def read_deploy_into_proto_changedp(deploy_file, net_proto_layer, bn_use_global_stats):
+
+     net_proto = caffe_pb2.NetParameter()
+    #  net_proto_layer = caffe_pb2.NetParameter()
+
+     f = open(deploy_file, 'r')
+     text_format.Merge(f.read(), net_proto)
+     f.close()
+
+     del net_proto.layer[-2]
+
+     #reset all batchnorm use_global_stats to false:
+     for elem in net_proto.layer:
+          if elem.type == "BatchNorm":
+             elem.batch_norm_param.use_global_stats = bn_use_global_stats
+          if elem.name.find("dw") >=0 and elem.type == "Convolution":
+                elem.type = "DepthwiseConvolution"
+
+     for j in range(len(net_proto.layer)):
+         net_proto_layer.layer.extend([net_proto.layer[j]])
+     return net_proto_layer
+
