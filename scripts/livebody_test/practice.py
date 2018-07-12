@@ -22,13 +22,22 @@ from config_path import *
 #gpu_id = 3
 #test_batch_num = 20
 
-
+def modelTestSingle(select_date, test_set_type, gpu_id, folder_path, test_batch_num = -1):
+    test = face_verification_test.ModelTest(select_date, test_set_type, gpu_id, test_batch_num)
+    current_date = test.current_date 
+    select = select_best_result.ModelSelect(current_date, test_set_type)
+    model_path = '{}/FakeFaceMtcnnDistill/{}'.format(ConfigPath.model_root_path, folder_path)
+    test.runTest(model_path)
+    select.findBestModel()
+    
+    
 def modelTest(select_date, test_set_type, gpu_id, test_batch_num = -1):
-
+    
         #init class
     test = face_verification_test.ModelTest(select_date, test_set_type, gpu_id, test_batch_num)
     current_date = test.current_date 
-    select = select_best_result.ModelSelect(current_date, test_set_type)  
+    select = select_best_result.ModelSelect(current_date, test_set_type)
+    
     for root_path, folder_path, filename_path in os.walk(ConfigPath.model_root_path):
         for elem in folder_path:      
                 model_path = '{}/{}'.format(root_path, elem)            
@@ -62,7 +71,7 @@ if __name__ == '__main__':
         else:
               print ("Please input: \n test \n --select_date\n --test_set_type\n --gpu_id\n --test_batch_num[-1]\n")
               print ("select \n --test_set_type\n --threshold\n")
-	      print ("test-m \n  --test_set_type\n --model_num\n")
+              print ("test-m \n  --test_set_type\n --model_num\n")
 	      
     elif len(sys.argv) == 6:
         if sys.argv[1] == "test":
@@ -70,11 +79,16 @@ if __name__ == '__main__':
             test_set_type = sys.argv[3]
             gpu_id = int(sys.argv[4])
             test_batch_num = int(sys.argv[5])
-            modelTest(select_date, test_set_type, gpu_id, test_batch_num)
+            modelTest(select_date, test_set_type, gpu_id, test_batch_num)    
+        elif sys.argv[1] == "test-single":
+            select_date = sys.argv[2]
+            test_set_type = sys.argv[3]
+            gpu_id = int(sys.argv[4])
+            folder_path = sys.argv[5]
+            modelTestSingle(select_date, test_set_type, gpu_id, folder_path)
         else:
               print ("Please input: \n test \n --select_date\n --test_set_type\n --gpu_id\n --test_batch_num[-1]\n")
-              print ("select \n --test_set_type\n --threshold\n")
-	      print ("test-m \n  --test_set_type\n --model_num\n")
+              print ("test-single \n  --select_date\n --test_set_type\n --gpu_id\n --folder_path")
               
     elif len(sys.argv) == 5:
         if sys.argv[1] == "test":
@@ -84,11 +98,12 @@ if __name__ == '__main__':
             modelTest(select_date, test_set_type, gpu_id)
         else:
               print ("Please input: \n test \n --select_date\n --test_set_type\n --gpu_id\n --test_batch_num[-1]\n")
-              print ("select \n --test_set_type\n --threshold\n") 
-	      print ("test-m \n  --test_set_type\n --model_num\n") 
+
+       
     else:
               print ("Please input: \n test \n --select_date\n --test_set_type\n --gpu_id\n --test_batch_num[-1]\n")
               print ("select \n --test_set_type\n --threshold\n")   
-	      print ("test-m \n --test_set_type\n --model_num\n")       
+              print ("test-m \n --test_set_type\n --model_num\n")    
+              print ("test-single \n  --select_date\n --test_set_type\n --gpu_id\n --folder_path")
               
 
