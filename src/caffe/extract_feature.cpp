@@ -13,6 +13,7 @@ Extract_Feature::Extract_Feature(const std::string &param_proto_path)
     means_.resize(model_num);
     scale_.resize(model_num);
 
+
     for(int i = 0; i < model_num; i++)
     {
         string deploy_path = param_.model_config(i).deploy_path();
@@ -97,6 +98,7 @@ void Extract_Feature::ExtractImageFeature()
             string root_path = param_.model_config(i).image_root_path();
             string image_path = root_path + "/" + image_prefix;
             cv::Mat image = cv::imread(image_path);
+            CHECK_EQ(image.empty(), false) << "image is empty: "<< image_path;
             //transform image into blob
             Blob<float>* input_blob_pt = nets_[i]->input_blobs()[0];
             ImageToBolb2(image, input_blob_pt, i);
