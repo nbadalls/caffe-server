@@ -48,6 +48,7 @@ void RankHardLossLayer<Dtype>::set_mask(const vector<Blob<Dtype>*>& bottom)
 	float hard_ratio = this->layer_param_.rank_hard_loss_param().hard_ratio();
 	float rand_ratio = this->layer_param_.rank_hard_loss_param().rand_ratio();
 	float margin = this->layer_param_.rank_hard_loss_param().margin();
+    RankHardLossParameter::DISTANCE_MODE dist_mode = this->layer_param_.rank_hard_loss_param().dist_mode();
 
 	int hard_num = neg_num * hard_ratio;
 	int rand_num = neg_num * rand_ratio;
@@ -76,7 +77,19 @@ void RankHardLossLayer<Dtype>::set_mask(const vector<Blob<Dtype>*>& bottom)
 			Dtype ts = 0;
 			for(int k = 0; k < dim; k ++)
 			{
-			  ts += (fea1[k] * fea2[k]) ;
+              if(dist_mode == RankHardLossParameter::ELEM_PRODUCT)
+              {
+                ts += (fea1[k] * fea2[k]) ;
+              }
+              else if(dist_mode == RankHardLossParameter::L2_DIST)
+              {
+                ts += (fea1[k] - fea2[k])*(fea1[k] - fea2[k]);
+              }
+              else if(dist_mode == RankHardLossParameter::L1_DIST)
+              {
+                 ts += std::abs(fea1[k] - fea2[k]);
+              }
+
 			}
 			dis_data[i * num + j] = -ts;
 			dis_data[j * num + i] = -ts;
