@@ -253,7 +253,7 @@ message SolverParameter {
   // If command line --weights parameter if specified, it has higher priority
   // and owerwrites this one(s).
   // If --snapshot command line parameter is specified, this one(s) are ignored.
-  // If several model files are expected, they can be listed in a one 
+  // If several model files are expected, they can be listed in a one
   // weights parameter separated by ',' (like in a command string) or
   // in repeated weights parameters separately.
   repeated string weights = 42;
@@ -426,6 +426,16 @@ message LayerParameter {
   optional LabelSpecificAddParameter label_specific_add_param = 3004;
   optional NormalizeParameter normalize_param = 3005;
   optional L2NormParameter l2norm_param = 3006;
+  //三元损失层
+  optional RankHardLossParameter rank_hard_loss_param = 149;
+}
+
+message RankHardLossParameter {
+  optional uint32 neg_num = 1 [default = 1];
+  optional uint32 pair_size = 2 [default = 1];
+  optional float hard_ratio = 3;
+  optional float rand_ratio = 4;
+  optional float margin = 5 [default = 0.5];
 }
 
 // Message that stores parameters used to apply transformation
@@ -831,6 +841,9 @@ message ImageDataParameter {
   // data.
   optional bool mirror = 6 [default = false];
   optional string root_folder = 12 [default = ""];
+
+  //use to generate image pairs for triplet loss
+  optional uint32 pair_size = 13 [default = 1];
 }
 
 message InfogainLossParameter {
@@ -1469,6 +1482,7 @@ message ExtractFeatureParameter {
   optional string image_list = 2;
   optional string image_pair_list = 3;
   repeated ModelInitParameter model_config = 4;
+  optional int32 batch_size = 5 [default = 1];
 }
 
 message ModelInitParameter{
@@ -1482,4 +1496,3 @@ message ModelInitParameter{
 message L2NormParameter {
   optional float eps = 1 [ default = 1e-8];
 }
-
