@@ -132,7 +132,9 @@ def read_deploy_into_proto_changedp(deploy_file, net_proto_layer, bn_use_global_
      text_format.Merge(f.read(), net_proto)
      f.close()
 
-     del net_proto.layer[-2]
+     for index, elem_layer in enumerate(net_proto.layer):
+	if elem_layer.type == "Softmax":
+		del net_proto.layer[index]
 
      #reset all batchnorm use_global_stats to false:
      for elem in net_proto.layer:
