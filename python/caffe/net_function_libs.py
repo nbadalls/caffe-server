@@ -291,3 +291,35 @@ def softmax(net, from_layer, layer_name, num_out):
     net[layer_name] = L.InnerProduct(net[from_layer], **kwargs1)
 
     net['softmax'] = L.Softmax(net[layer_name])
+
+def  TripletRankHardLoss(net, from_layer, neg_num_, hard_ratio_, rand_ratio_, margin_, dist_mode_):
+        dist_type = {
+        0: caffe_pb2.RankHardLossParameter.DISTANCE_MODE.Value('ELEM_PRODUCT'),
+        1: caffe_pb2.RankHardLossParameter.DISTANCE_MODE.Value('L1_DIST'),
+        2: caffe_pb2.RankHardLossParameter.DISTANCE_MODE.Value('L2_DIST'),
+    }
+        kwargs1 = {
+            'rank_hard_loss_param': dict(
+                neg_num = neg_num_,
+                pair_size = 2,
+                hard_ratio = hard_ratio_,
+                rand_ratio = rand_ratio_,
+                margin = margin_,
+                dist_mode = dist_type[dist_mode_]
+                )
+              }
+        net['triplet_loss'] = L.RankHardLoss( net[from_layer], net['label'] ,**kwargs1)
+
+
+def TripletImageDataLayer(source_, batch_size_, root_folder_, pair_size_):
+
+    kwargs = {
+    'image_data_param' : dict(source = source_,
+                        batch_size = batch_size_,
+                        root_folder = root_folder_,
+                        shuffle = True,
+                        pair_size = pair_size_
+                          )
+               } 
+    data, label = L.TripletImageData(ntop=2, **kwargs)
+    return [data, label]

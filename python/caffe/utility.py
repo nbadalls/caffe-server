@@ -147,3 +147,23 @@ def read_deploy_into_proto_changedp(deploy_file, net_proto_layer, bn_use_global_
          net_proto_layer.layer.extend([net_proto.layer[j]])
      return net_proto_layer
 
+def read_deploy_into_proto_config_delete_num(deploy_file, net_proto_layer, bn_use_global_stats, delete_num):
+
+     net_proto = caffe_pb2.NetParameter()
+    #  net_proto_layer = caffe_pb2.NetParameter()
+
+     f = open(deploy_file, 'r')
+     text_format.Merge(f.read(), net_proto)
+     f.close()
+
+     #reset all batchnorm use_global_stats to false:
+     for elem in net_proto.layer:
+          if elem.type == "BatchNorm":
+             elem.batch_norm_param.use_global_stats = bn_use_global_stats
+
+     for i in range(delete_num):
+        del net_proto.layer[-1]
+
+     for j in range(len(net_proto.layer)):
+         net_proto_layer.layer.extend([net_proto.layer[j]])
+     return net_proto_layer
