@@ -20,6 +20,15 @@ class DistillSoftmax(combineModelParam):
     def create_combine_deploy(self):
 
         net_proto , record_layer_index= combine_utility.combine_single_deploy(self.nets, 0)
+        
+        #adjust teacher net's learning rate to 0
+        for  elem_layer in net_proto.layer:
+            if elem_layer.name.find("teacher") >=0:
+                for elem_param in  elem_layer.param:
+                        elem_param.lr_mult = 0
+                        elem_param.decay_mult = 0
+        
+        
         #create add net name list
         each_net_last_layer_name = []
         for key in record_layer_index.keys():
