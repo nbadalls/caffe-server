@@ -46,7 +46,7 @@ def train_model(device_id, resume_training = None, model_date = None, iterate_nu
        
         #'stepvalue': [ 80000, 120000, 160000],
         #'stepvalue': [ 300000],
-        'max_iter': 400000,
+        'max_iter': 200000,
 
         'snapshot': 5000, 
     	# 'device_id' : 4,
@@ -59,7 +59,7 @@ def train_model(device_id, resume_training = None, model_date = None, iterate_nu
         'display': 10,
         'snapshot_after_train':True, #save model after training finished!!
         }
-    batch_size_ = 64
+    batch_size_ = 128
     #current time as defult
     best_model_date = time.strftime('%Y-%m-%d', time.localtime(time.time()))
     #best_model_date = '2018-03-29'

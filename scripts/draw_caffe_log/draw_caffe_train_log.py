@@ -16,7 +16,11 @@ def draw_log_image(parse_log_file):
 
     _, ax1 = plt.subplots()
     ax1.set_title(log_file_name)
-    ax1.plot(train_log["NumIters"], train_log["softmax_loss"], alpha=0.5)
+    if "softmax_loss" in train_log.keys():
+	ax1.plot(train_log["NumIters"], train_log["softmax_loss"], alpha=0.5)
+    elif "triplet_loss" in train_log.keys():
+	ax1.plot(train_log["NumIters"], train_log["triplet_loss"], alpha=0.5)
+    
     ax1.plot(train_log["NumIters"], train_log["LearningRate"]*150, 'g')
     ax1.set_xlabel('iteration')
     ax1.set_ylabel('train loss')

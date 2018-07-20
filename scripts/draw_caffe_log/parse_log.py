@@ -72,6 +72,7 @@ def parse_log(path_to_log):
                 regex_train_output, train_row, train_dict_list,
                 line, iteration, seconds, learning_rate
             )
+
             test_dict_list, test_row = parse_line_for_net_output(
                 regex_test_output, test_row, test_dict_list,
                 line, iteration, seconds, learning_rate
@@ -103,7 +104,8 @@ def parse_line_for_net_output(regex_obj, row, row_dict_list,
                 # the full row checking logic below will push and clear full
                 # rows
                 row_dict_list.append(row)
-
+	
+	    # print(iteration, seconds, learning_rate)
             row = OrderedDict([
                 ('NumIters', iteration),
                 ('Seconds', seconds),
