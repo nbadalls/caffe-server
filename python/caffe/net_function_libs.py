@@ -82,43 +82,6 @@ def full_conection(bottom, lr_mult1, decay_mult1, lr_mult2, decay_mult2,
     fc = L.InnerProduct(bottom, **kwargs)
     return fc
 
-
-#triplet data layer
-def TripletDataLayer(image_folder_, landmark_file_, subjects_per_iter_, samples_per_subject_, o3_subjects_per_iter_,o3_samples_per_subject_,
-                    center_ind_, norm_ratio_, height_, width_):
-        affine_image_param_patches_ = []
-
-        each_affine_image_param = dict(
-            center_ind = center_ind_,
-            norm_mode = caffe_pb2.AffineImage_Norm_Mode.Value('RECT_LE_RE_LM_RM'),
-            norm_ratio = norm_ratio_,
-            fill_type = False,
-            value = 0,
-            image_info = dict(height = height_,
-            width = width_,
-            is_color = True
-             )
-          )
-        affine_image_param_patches_.append(each_affine_image_param)
-
-        kwargs = {
-            'triplet_data_param': dict(
-                         train_sub_param = dict(
-                                        source = landmark_file_,
-                                        imgs_folder = image_folder_,
-                                        key_point_count = 5,
-                                        subjects_per_iter = subjects_per_iter_,
-                                        samples_per_subject = samples_per_subject_,
-                                        o3_subjects_per_iter = o3_subjects_per_iter_,
-                                        o3_samples_per_subject = o3_samples_per_subject_,
-                         ),
-                         affine_image_param = affine_image_param_patches_
-                         )
-                    }
-        data, label = L.TripletData(ntop =2, **kwargs )
-        return [data, label]
-
-
 #affine data layer
 def AffineDataLayer(image_folder_, landmark_file_, label_file_, batch_size_,
                      center_ind_, norm_ratio_, height_, width_ ):
@@ -323,3 +286,18 @@ def TripletImageDataLayer(source_, batch_size_, root_folder_, pair_size_):
                } 
     data, label = L.TripletImageData(ntop=2, **kwargs)
     return [data, label]
+
+#triplet data layer
+def TripletDataLayer(source_, batch_size_, root_folder_, subjects_per_iter_, samples_per_subject_, o3_samples_per_subject_):
+        kwargs = {
+    'image_data_param' : dict(source = source_,
+                        batch_size = batch_size_,
+                        root_folder = root_folder_,
+                        shuffle = False,
+                       subjects_per_iter = subjects_per_iter_,
+                       samples_per_subject = samples_per_subject_,
+                       o3_samples_per_subject = o3_samples_per_subject_
+                          )
+               }        
+        data, label = L.TripletData(ntop =2, **kwargs )
+        return [data, label]
