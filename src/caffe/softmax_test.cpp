@@ -9,6 +9,7 @@ namespace caffe {
     ReadProtoFromTextFileOrDie(param_proto_path, &param_);
 
     //init net
+    batch_size_ = param_.batch_size();
     int num_model = param_.model_config_size();
     scale_.resize(num_model);
     means_.resize(num_model);
@@ -108,6 +109,43 @@ namespace caffe {
      }
  }
 
+ void SoftMax_Test::ImageToBolb_batch(const cv::Mat &image, int offset, int net_id)
+ {
+     Blob<float> * input_bolb_pt = nets_[net_id]->input_blobs()[0];
+     int height = input_bolb_pt->height();
+     int width = input_bolb_pt->width();
+     int channel = input_bolb_pt->channels();
+
+     CHECK_EQ(height, image.rows) << "Height of bolb mismatches the rows of image";
+     CHECK_EQ(width, image.cols) << "Width of bolb mismatches the cols of image";
+     CHECK_EQ(channel, image.channels()) << "channels of bolb mismatches the channels of image";
+
+     float *pt = input_bolb_pt->mutable_cpu_data()+offset;
+     uchar *image_pt = image.data;
+     for(int h = 0; h < height; h++)
+     {
+         for(int w = 0; w < width; w++)
+         {
+             int index = h * width + w ;
+             for(int c = 0; c < channel; c++)
+             {
+                 if(means_[net_id].size() >0 )
+                 {
+                     CHECK_EQ(means_[net_id].size(), channel) << "means channel should equal with blob channels";
+                     pt[index] = (static_cast<float>(*image_pt) - means_[net_id][c]) * scale_[net_id];
+                 }
+                 else
+                 {
+                      pt[index] = static_cast<float>(*image_pt);
+                 }
+
+                 index += height* width;
+                 image_pt++;
+             }
+         }
+     }
+ }
+
  void SoftMax_Test::Predict()
  {
      for(int i = 0; i < image_label_list_.size(); i++)
@@ -148,6 +186,55 @@ namespace caffe {
 
         std::cout << "Complete.. " << i << "/" << image_label_list_.size()-1 << "\r" << std::flush;
      }
+ }
+
+ void SoftMax_Test::Predict_batch()
+ {
+    int batch_num = image_label_list_.size() / batch_size_;
+    int rest_image_num =  image_label_list_.size() % batch_size_;
+    CHECK_EQ(rest_image_num, 0) << "image num: " << image_label_list_.size()
+                                << " batch size: " <<batch_size_ << " remainder should be zeros";
+
+    //init presult
+    presult_.resize(image_label_list_.size());
+    for(int bnum = 0; bnum < batch_num; bnum++)
+    {
+        for(int net_id = 0; net_id < nets_.size(); net_id++)
+        {
+            CHECK_EQ(nets_[net_id]->num_inputs(), 1) << "number of input should be one";
+            string image_root_path = param_.model_config(net_id).image_root_path();
+            Blob<float> * image_bolb_pt = nets_[net_id]->input_blobs()[0];
+            for(int item_id = 0; item_id < batch_size_; item_id++)
+            {
+                int image_id = bnum * batch_size_ + item_id;
+                cv::Mat image = cv::imread(image_root_path + "/" + image_label_list_[image_id].first);
+                CHECK_EQ(image.empty(), false) << "image is empty: "<< image_root_path << std::endl << image_label_list_[image_id].first;
+                int offset =  image_bolb_pt->offset(item_id);
+                ImageToBolb_batch(image,  offset,  net_id);
+                std::cout << "Complete-image.. " << image_id << "/" << image_label_list_.size()-1 << "\r" << std::flush;
+            }
+
+            //output predict result
+            nets_[net_id]->Forward();
+            //last softmax layer's result as output
+            Blob<float> * output_blob_pt = nets_[net_id]->output_blobs()[0];
+            int result_offset = output_blob_pt->count() / batch_size_;
+            for(int item_id = 0; item_id < batch_size_; item_id++)
+            {
+                float* begin = output_blob_pt->mutable_cpu_data() + item_id * result_offset;
+                float* end = begin + result_offset;
+                vector<float> result_item(begin, end);
+                int result_id = bnum * batch_size_ + item_id;
+                if (presult_[result_id].size() == 0)
+                {
+                    presult_[result_id].resize(nets_.size());
+                }
+                presult_[result_id][net_id].push_back((result_item));
+            }
+        }
+
+        std::cout << "Complete.. " << bnum << "/" << batch_num-1 << "\r" << std::flush;
+    }
  }
 
 

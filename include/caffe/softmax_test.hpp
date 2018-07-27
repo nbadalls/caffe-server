@@ -19,8 +19,11 @@ class SoftMax_Test{
     public:
     SoftMax_Test(const string & param_proto_path);
     void ImageToBolb2(const cv::Mat &image, Blob<float> * image_blob, int net_id);
+    void ImageToBolb_batch(const cv::Mat &image, int offset, int net_id);
 
     void Predict();
+
+    void Predict_batch();
 
     vector<vector<SoftmaxResult> > get_presult(){
         return presult_;
@@ -41,6 +44,7 @@ private:
     vector<shared_ptr<Net<float> > > nets_;
     vector<vector<SoftmaxResult> > presult_;
     vector<std::pair<string, int> > image_label_list_;
+    int batch_size_;
 };
 
 }
