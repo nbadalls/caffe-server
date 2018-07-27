@@ -80,43 +80,35 @@ void Livebody_Result::SaveTrueFaceResult2()
         CHECK_EQ(fout_v[i]->is_open(), true) << "Open fail: " << result_path;
     }
 
-    // models
+    // get models
     std::cout << "save result " << std::endl;
     vector<std::pair<string, int> > image_label_list = get_image_label_list();
-    for(int i = 0; i <  presult.size(); i++)
-    {
-        int label = image_label_list[i].second;
-        string image_path = image_label_list[i].first;
-        //list
-        for(int j = 0; j < presult[i].size(); j++)
-        {
-//            (*fout_v[j]) << image_path<< " " << label << " ";
-//            for(int k = 0; k <  presult[i][j][0].size(); k++)
-//            {
-//                float predict_label_result = presult[i][j][0][k];
-//                (*fout_v[j])<<std::setprecision(6) << predict_label_result<<" ";
-//            }
-//            (*fout_v[j]) << std::endl;
 
+    //save according to image list
+    for(int image_id = 0; image_id <  image_label_list.size(); image_id++)
+    {
+        int label = image_label_list[image_id].second;
+        string image_path = image_label_list[image_id].first;
+        //list
+        for(int j = 0; j < presult[image_id].size(); j++)
+        {
             // save label's result
-            float predict_label_result = presult[i][j][0][label];
+            float predict_label_result = presult[image_id][j][0][label];
                (*fout_v[j])<< image_path<< " " << label << " "
                             <<std::setprecision(6) << predict_label_result<<" ";
 
             //save predict's result
             int index = 0;
             float max_value = 0;
-            for(int u = 0; u < presult[i][j][0].size(); u++)
+            for(int u = 0; u < presult[image_id][j][0].size(); u++)
             {
-                   if(presult[i][j][0][u] > max_value)
+                   if(presult[image_id][j][0][u] > max_value)
                    {
-                       max_value = presult[i][j][0][u];
+                       max_value = presult[image_id][j][0][u];
                        index = u;
                    }
             }
-
             *fout_v[j] << index << " " << max_value << std::endl;
-
         }
     }
 

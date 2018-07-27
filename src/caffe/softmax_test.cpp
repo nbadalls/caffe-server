@@ -190,13 +190,10 @@ namespace caffe {
 
  void SoftMax_Test::Predict_batch()
  {
-    int batch_num = image_label_list_.size() / batch_size_;
-    int rest_image_num =  image_label_list_.size() % batch_size_;
-    CHECK_EQ(rest_image_num, 0) << "image num: " << image_label_list_.size()
-                                << " batch size: " <<batch_size_ << " remainder should be zeros";
+    int batch_num = ceil(float(image_label_list_.size()) / float(batch_size_));
 
     //init presult
-    presult_.resize(image_label_list_.size());
+    presult_.resize(batch_num*batch_size_);
     for(int bnum = 0; bnum < batch_num; bnum++)
     {
         for(int net_id = 0; net_id < nets_.size(); net_id++)
@@ -207,6 +204,13 @@ namespace caffe {
             for(int item_id = 0; item_id < batch_size_; item_id++)
             {
                 int image_id = bnum * batch_size_ + item_id;
+
+                //number parts beyond the image list get last image repeated
+                if(image_id > image_label_list_.size()-1)
+                {
+                    image_id =image_label_list_.size()-1;
+                }
+
                 cv::Mat image = cv::imread(image_root_path + "/" + image_label_list_[image_id].first);
                 CHECK_EQ(image.empty(), false) << "image is empty: "<< image_root_path << std::endl << image_label_list_[image_id].first;
                 int offset =  image_bolb_pt->offset(item_id);
@@ -235,6 +239,8 @@ namespace caffe {
 
         std::cout << "Complete.. " << bnum << "/" << batch_num-1 << "\r" << std::flush;
     }
+
+
  }
 
 
