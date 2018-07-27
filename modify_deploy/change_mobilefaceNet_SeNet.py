@@ -34,8 +34,8 @@ def create_SE_part(net, from_layer, conv_num, index, channel_size, concat_layer_
 	up_dim_prob = "conv2_1_prob"
 	net[up_dim_prob] = L.Sigmoid(net[up_dim_name] ,in_place=True)
 
-	Axpy_name = 'conv{}_{}'.format(conv_num, index)
-	print(up_dim_name, concat_layer_name1, concat_layer_name2)
+	Axpy_name = 'acpy-conv{}_{}'.format(conv_num, index)
+	# print(up_dim_name, concat_layer_name1, concat_layer_name2)
 	net[Axpy_name] = L.Axpy(net[up_dim_name] , net[concat_layer_name1], net[concat_layer_name2])
 
 	return Axpy_name

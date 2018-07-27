@@ -92,7 +92,7 @@ class ModelSelect():
         static_dict = {}
         model_name = ""
         accuracy = "fpr	0.00012	acc"
-	# accuracy = "fpr	1e-06	acc"
+        # accuracy = "fpr	1e-05	acc"
         for line in data:
               if line.find('result_v2') >=0 :
                   model_name = line.split('result_v2_')[-1].strip('.txt')
