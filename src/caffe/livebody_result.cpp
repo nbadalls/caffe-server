@@ -59,6 +59,72 @@ void Livebody_Result::SaveTrueFaceResult()
     }
 }
 
+void Livebody_Result::SaveTrueFaceResult2()
+{
+    vector<vector<SoftmaxResult> > presult = get_presult();
+    ExtractFeatureParameter param = get_param();
 
+    int model_num = param.model_config_size();
+    vector<shared_ptr<std::ofstream> > fout_v(model_num);
+
+    //init ofstream
+    for(int i = 0; i < model_num; i++)
+    {
+        string output_path = param.model_config(i).output_path();
+        string model_path = param.model_config(i).model_path();
+        string model_name = model_path.substr(model_path.find_last_of('/')+1);
+        string model_prefix = model_name.substr(0, model_name.find_last_of("."));
+        char result_path[1000];
+        sprintf(result_path, "%s/result_face_recognition_predict_%s.txt", output_path.c_str(), model_prefix.c_str());
+        fout_v[i].reset(new std::ofstream(result_path, ios::out));
+        CHECK_EQ(fout_v[i]->is_open(), true) << "Open fail: " << result_path;
+    }
+
+    // models
+    std::cout << "save result " << std::endl;
+    vector<std::pair<string, int> > image_label_list = get_image_label_list();
+    for(int i = 0; i <  presult.size(); i++)
+    {
+        int label = image_label_list[i].second;
+        string image_path = image_label_list[i].first;
+        //list
+        for(int j = 0; j < presult[i].size(); j++)
+        {
+//            (*fout_v[j]) << image_path<< " " << label << " ";
+//            for(int k = 0; k <  presult[i][j][0].size(); k++)
+//            {
+//                float predict_label_result = presult[i][j][0][k];
+//                (*fout_v[j])<<std::setprecision(6) << predict_label_result<<" ";
+//            }
+//            (*fout_v[j]) << std::endl;
+
+            // save label's result
+            float predict_label_result = presult[i][j][0][label];
+               (*fout_v[j])<< image_path<< " " << label << " "
+                            <<std::setprecision(6) << predict_label_result<<" ";
+
+            //save predict's result
+            int index = 0;
+            float max_value = 0;
+            for(int u = 0; u < presult[i][j][0].size(); u++)
+            {
+                   if(presult[i][j][0][u] > max_value)
+                   {
+                       max_value = presult[i][j][0][u];
+                       index = u;
+                   }
+            }
+
+            *fout_v[j] << index << " " << max_value << std::endl;
+
+        }
+    }
+
+    //close
+    for(int i = 0; i < model_num; i++)
+    {
+        fout_v[i]->close();
+    }
+}
 
 }
