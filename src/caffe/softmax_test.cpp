@@ -38,7 +38,10 @@ namespace caffe {
                 }
             }
         }
+        CHECK_EQ(batch_size_, nets_[i]->input_blobs()[0]->num()) << "batch size should be equal to input number";
     }
+
+
 
     //set run mode
     if(param_.has_run_mode())
@@ -191,6 +194,7 @@ namespace caffe {
  void SoftMax_Test::Predict_batch()
  {
     int batch_num = ceil(float(image_label_list_.size()) / float(batch_size_));
+    std::cout << "batch size is : " << batch_size_ << std::endl;
 
     //init presult
     presult_.resize(batch_num*batch_size_);
@@ -215,7 +219,15 @@ namespace caffe {
                 CHECK_EQ(image.empty(), false) << "image is empty: "<< image_root_path << std::endl << image_label_list_[image_id].first;
                 int offset =  image_bolb_pt->offset(item_id);
                 ImageToBolb_batch(image,  offset,  net_id);
-                std::cout << "Complete-image.. " << image_id << "/" << image_label_list_.size()-1 << "\r" << std::flush;
+
+                if(image_id %100 == 0)
+                {
+                    std::cout << "Complete-image.. " << image_id << "/"
+                              <<image_label_list_.size()-1
+                              << "   [" << int(float(image_id*100)/float(image_label_list_.size()-1))
+                              << "%]" << std::flush;
+                }
+
             }
 
             //output predict result
@@ -237,7 +249,7 @@ namespace caffe {
             }
         }
 
-        std::cout << "Complete.. " << bnum << "/" << batch_num-1 << "\r" << std::flush;
+//        std::cout << "Complete.. " << bnum << "/" << batch_num-1 << "\r" << std::flush;
     }
 
 
