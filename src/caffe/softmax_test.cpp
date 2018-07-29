@@ -38,7 +38,10 @@ namespace caffe {
                 }
             }
         }
+        CHECK_EQ(batch_size_, nets_[i]->input_blobs()[0]->num()) << "batch size should be equal to input number";
     }
+
+
 
     //set run mode
     if(param_.has_run_mode())
@@ -191,6 +194,7 @@ namespace caffe {
  void SoftMax_Test::Predict_batch()
  {
     int batch_num = ceil(float(image_label_list_.size()) / float(batch_size_));
+    std::cout << "batch size is : " << batch_size_ << std::endl;
 
     //init presult
     presult_.resize(batch_num*batch_size_);
@@ -215,7 +219,15 @@ namespace caffe {
                 CHECK_EQ(image.empty(), false) << "image is empty: "<< image_root_path << std::endl << image_label_list_[image_id].first;
                 int offset =  image_bolb_pt->offset(item_id);
                 ImageToBolb_batch(image,  offset,  net_id);
-                std::cout << "Complete-image.. " << image_id << "/" << image_label_list_.size()-1 << "\r" << std::flush;
+
+                if(image_id %100 == 0)
+                {
+                    std::cout << "Complete-image.. " << image_id << "/"
+                              <<image_label_list_.size()-1
+                              << "   [" << int(float(image_id*100)/float(image_label_list_.size()-1))
+                              << "%]" << std::flush;
+                }
+
             }
 
             //output predict result
@@ -228,16 +240,49 @@ namespace caffe {
                 float* begin = output_blob_pt->mutable_cpu_data() + item_id * result_offset;
                 float* end = begin + result_offset;
                 vector<float> result_item(begin, end);
+
+                vector<float> origin_predict_item(4);
+                //get origin label predict result
+                int image_id = bnum * batch_size_ + item_id;
+                //number parts beyond the image list get last image repeated
+                if(image_id > image_label_list_.size()-1)
+                {
+                    image_id =image_label_list_.size()-1;
+                }
+
+                int label = image_label_list_[image_id].second;
+                float origin_result = result_item[label];
+
+                origin_predict_item[0] = label;
+                origin_predict_item[1] = origin_result;
+
+                //get best prefict label
+                int prefict_label = 0;
+                float prefict_possibility = result_item[0];
+
+                for(int i = 0; i < result_item.size(); i++)
+                {
+                    if (result_item[i] > prefict_possibility)
+                    {
+                        prefict_possibility = result_item[i];
+                        prefict_label = i;
+                    }
+                }
+
+                origin_predict_item[2] = prefict_label;
+                origin_predict_item[3] = prefict_possibility;
+
+                //save origin label and possibility predict label and possibility
                 int result_id = bnum * batch_size_ + item_id;
                 if (presult_[result_id].size() == 0)
                 {
                     presult_[result_id].resize(nets_.size());
                 }
-                presult_[result_id][net_id].push_back((result_item));
+                presult_[result_id][net_id].push_back((origin_predict_item));
             }
         }
 
-        std::cout << "Complete.. " << bnum << "/" << batch_num-1 << "\r" << std::flush;
+//        std::cout << "Complete.. " << bnum << "/" << batch_num-1 << "\r" << std::flush;
     }
 
 
