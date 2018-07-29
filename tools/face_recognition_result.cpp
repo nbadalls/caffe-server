@@ -25,6 +25,7 @@ int main(int argc, char*argv[])
     Livebody_Result livebody_predictor(argv[1]);
 //    Livebody_Result livebody_predictor("/home/minivision/SoftWare/caffe-server/tools/test_config_file_E1.prototxt");
     livebody_predictor.Predict_batch();
+//    livebody_predictor.Predict();
     livebody_predictor.SaveTrueFaceResult2();
 
     return 0;

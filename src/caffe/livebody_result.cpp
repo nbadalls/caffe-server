@@ -92,23 +92,18 @@ void Livebody_Result::SaveTrueFaceResult2()
         //list
         for(int j = 0; j < presult[image_id].size(); j++)
         {
+            CHECK_EQ(label, int(presult[image_id][j][0][0]))
+                    << "label in result list is different with label in image list";
             // save label's result
-            float predict_label_result = presult[image_id][j][0][label];
+            float predict_label_result = presult[image_id][j][0][1];
                (*fout_v[j])<< image_path<< " " << label << " "
                             <<std::setprecision(6) << predict_label_result<<" ";
 
             //save predict's result
-            int index = 0;
-            float max_value = 0;
-            for(int u = 0; u < presult[image_id][j][0].size(); u++)
-            {
-                   if(presult[image_id][j][0][u] > max_value)
-                   {
-                       max_value = presult[image_id][j][0][u];
-                       index = u;
-                   }
-            }
-            *fout_v[j] << index << " " << max_value << std::endl;
+            int predict_label = int(presult[image_id][j][0][2]);
+            float predict_possibility = presult[image_id][j][0][3];
+
+            *fout_v[j] << predict_label << " " << predict_possibility << std::endl;
         }
     }
 

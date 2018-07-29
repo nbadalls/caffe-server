@@ -240,12 +240,45 @@ namespace caffe {
                 float* begin = output_blob_pt->mutable_cpu_data() + item_id * result_offset;
                 float* end = begin + result_offset;
                 vector<float> result_item(begin, end);
+
+                vector<float> origin_predict_item(4);
+                //get origin label predict result
+                int image_id = bnum * batch_size_ + item_id;
+                //number parts beyond the image list get last image repeated
+                if(image_id > image_label_list_.size()-1)
+                {
+                    image_id =image_label_list_.size()-1;
+                }
+
+                int label = image_label_list_[image_id].second;
+                float origin_result = result_item[label];
+
+                origin_predict_item[0] = label;
+                origin_predict_item[1] = origin_result;
+
+                //get best prefict label
+                int prefict_label = 0;
+                float prefict_possibility = result_item[0];
+
+                for(int i = 0; i < result_item.size(); i++)
+                {
+                    if (result_item[i] > prefict_possibility)
+                    {
+                        prefict_possibility = result_item[i];
+                        prefict_label = i;
+                    }
+                }
+
+                origin_predict_item[2] = prefict_label;
+                origin_predict_item[3] = prefict_possibility;
+
+                //save origin label and possibility predict label and possibility
                 int result_id = bnum * batch_size_ + item_id;
                 if (presult_[result_id].size() == 0)
                 {
                     presult_[result_id].resize(nets_.size());
                 }
-                presult_[result_id][net_id].push_back((result_item));
+                presult_[result_id][net_id].push_back((origin_predict_item));
             }
         }
 
