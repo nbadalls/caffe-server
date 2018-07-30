@@ -225,7 +225,7 @@ namespace caffe {
                     std::cout << "Complete-image.. " << image_id << "/"
                               <<image_label_list_.size()-1
                               << "   [" << int(float(image_id*100)/float(image_label_list_.size()-1))
-                              << "%]" << std::flush;
+                              << "%]\r" ;
                 }
 
             }
