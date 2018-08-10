@@ -242,6 +242,22 @@ def softmaxLoss(net, from_layer, layer_name, num_out):
 
     net['softmax_loss'] = L.SoftmaxWithLoss(net[layer_name], net['label'])
 
+def softmaxIgnore(net, from_layer, layer_name,label_name, num_out, ignore_label_):
+    kwargs1 = {
+        'param':[dict(lr_mult = 1.0, decay_mult=1.0),dict(lr_mult = 2.0, decay_mult=0.0)],
+        'inner_product_param':dict(
+                num_output = num_out,
+                weight_filler =  dict(type = "gaussian", std = 0.01),
+                bias_filler = dict(type = "constant", value = 0.0),
+        )
+    }
+    net[layer_name] = L.InnerProduct(net[from_layer], **kwargs1)
+
+    net['{}-softmax_loss'.format(layer_name)] = L.SoftmaxWithLoss(net[layer_name], 
+                                                                                                                       net[label_name],  
+                                                                                                loss_param=dict( ignore_label = ignore_label_)
+                                                                                                )
+
 def softmax(net, from_layer, layer_name, num_out):
     kwargs1 = {
         'param':[dict(lr_mult = 1.0, decay_mult=1.0),dict(lr_mult = 2.0, decay_mult=0.0)],
@@ -253,7 +269,8 @@ def softmax(net, from_layer, layer_name, num_out):
     }
     net[layer_name] = L.InnerProduct(net[from_layer], **kwargs1)
 
-    net['softmax'] = L.Softmax(net[layer_name])
+    softmax_layer_name = '{}-softmax'.format(layer_name)
+    net[softmax_layer_name] = L.Softmax(net[layer_name])
 
 def  TripletRankHardLoss(net, from_layer, neg_num_, hard_ratio_, rand_ratio_, margin_, dist_mode_):
         dist_type = {
