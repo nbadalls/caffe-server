@@ -131,6 +131,17 @@ def ImageDataLayer(source_, batch_size_, root_folder_):
     data, label = L.ImageData(ntop=2, **kwargs)
     return [data, label]
 
+def ImageMultilabelDataLayer(source_, batch_size_, root_folder_):
+    kwargs = {
+    'image_data_param' : dict(source = source_,
+                        batch_size = batch_size_,
+                        root_folder = root_folder_,
+                        shuffle = True
+                          )
+               } 
+    data, label = L.ImageDataMultilabel(ntop=2, **kwargs)
+    return [data, label]
+
 def ImageDataLayer_Means(source_, batch_size_, root_folder_, means_, scale_):
     kwargs = {
     'image_data_param' : dict(source = source_,
