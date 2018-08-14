@@ -69,9 +69,14 @@ namespace caffe {
     {
         stringstream iss(line);
         string image_path;
+        iss >> image_path;
+        vector<int> labels;
         int label;
-        iss >> image_path >> label;
-        image_label_list_.push_back(make_pair(image_path, label));
+        while(iss >> label)
+        {
+            labels.push_back(label);
+        }
+        image_label_list_.push_back(make_pair(image_path, labels));
     }
     fin.close();
  }
@@ -168,21 +173,21 @@ namespace caffe {
             //output predict result
             nets_[j]->Forward();
 
-            //last softmax layer's result as output
-            Blob<float> * output_blob_pt = nets_[j]->output_blobs()[0];
+            //save multi output result
+            int output_num = nets_[j]->output_blobs().size();
+            SoftmaxResult temp_result(output_num);
+            for(int out_id = 0; out_id < output_num; out_id++)
+            {
+                //get output blob result
+                Blob<float> * output_blob_pt = nets_[j]->output_blobs()[out_id];
+                //save prefict result
+                int count = output_blob_pt->count();
+                float * begin = output_blob_pt->mutable_cpu_data();
+                float * end = begin + count;
+                temp_result[out_id] = vector<float>(begin, end);
 
-            //save prefict result
-            SoftmaxResult temp_result(1);
-            int count = output_blob_pt->count();
-            float * begin = output_blob_pt->mutable_cpu_data();
-            float * end = begin + count;
-            temp_result[0] = vector<float>(begin, end);
+            }
 
-//            for(int k = 0; k < output_blob_pt->count(); k++)
-//            {
-//                float prefict_elem = *(output_blob_pt->cpu_data() + k);
-//                temp_result[0].push_back(prefict_elem);
-//            }
             nets_result.push_back(temp_result);
         }
          presult_.push_back(nets_result);
@@ -250,7 +255,7 @@ namespace caffe {
                     image_id =image_label_list_.size()-1;
                 }
 
-                int label = image_label_list_[image_id].second;
+                int label = image_label_list_[image_id].second[0];
                 float origin_result = result_item[label];
 
                 origin_predict_item[0] = label;

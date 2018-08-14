@@ -28,10 +28,10 @@ void Livebody_Result::SaveTrueFaceResult()
 
     // models
     std::cout << "save result " << std::endl;
-    vector<std::pair<string, int> > image_label_list = get_image_label_list();
+    vector<std::pair<string, std::vector<int> > > image_label_list = get_image_label_list();
     for(int i = 0; i <  presult.size(); i++)
     {
-        int label = image_label_list[i].second;
+        int label = image_label_list[i].second[0];
         //list
         for(int j = 0; j < presult[i].size(); j++)
         {
@@ -82,12 +82,12 @@ void Livebody_Result::SaveTrueFaceResult2()
 
     // get models
     std::cout << "save result " << std::endl;
-    vector<std::pair<string, int> > image_label_list = get_image_label_list();
+    vector<std::pair<string, std::vector<int> > > image_label_list = get_image_label_list();
 
     //save according to image list
     for(int image_id = 0; image_id <  image_label_list.size(); image_id++)
     {
-        int label = image_label_list[image_id].second;
+        int label = image_label_list[image_id].second[0];
         string image_path = image_label_list[image_id].first;
         //list
         for(int j = 0; j < presult[image_id].size(); j++)
