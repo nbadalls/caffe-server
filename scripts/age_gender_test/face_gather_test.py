@@ -37,7 +37,7 @@ class gethorModelTest():
             else:
                 #set path
                 out_path = '{}/Result_{}'.format(self.model_path,self.test_set)
-                script_path = '{}/scripts/livebody_scripts'.format(ConfigPath.local_caffe_path)
+                script_path = '{}/scripts/age_gender_scripts'.format(ConfigPath.local_caffe_path)
                 utility.make_dirs(out_path)
                 utility.make_dirs(script_path)
 
@@ -54,7 +54,7 @@ class gethorModelTest():
                     execute_path = '{}/verification_test_E{}.sh'.format(script_path, index)
                     f = open(execute_path, 'w')
                     f.write('cd {}\n'.format(ConfigPath.local_caffe_path))
-                    f.write('./build/tools/livebody_predict_result.bin {}'.format(param_path))
+                    f.write('./build/tools/age-gender_predict_result.bin {}'.format(param_path))
                     f.close()
 
                     #execute file
@@ -62,11 +62,11 @@ class gethorModelTest():
                     subprocess.call(execute_path, shell=True)
 
                 #copy scripts back to out path
-            copy_path = '{}/livebody_scripts'.format(self.model_path)
+            copy_path = '{}/age_gender_scripts'.format(self.model_path)
             if not os.path.exists(copy_path):
-                shutil.copytree(script_path,'{}/livebody_scripts'.format(self.model_path) )
+                shutil.copytree(script_path,'{}/age_gender_scripts'.format(self.model_path) )
 
-            self.curvePrecious(out_path)
+            # self.curvePrecious(out_path)
 
     def selectModelDeployList(self):
         folder_list = [elem for elem in os.listdir(self.model_path) if not elem.endswith('.txt') and not elem.endswith('.log') and not elem.endswith('.png') ]
