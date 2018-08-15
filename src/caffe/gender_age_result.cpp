@@ -108,7 +108,7 @@ std::vector<vector<float> > Age_Gender_Result::get_age_gender_accuracy()
              }
          }
         float gender_accuracy = float(gender_true_predict) / float(img_num);
-        float average_age_bias = float(age_bias) / float(age_num);
+        float average_age_bias = float(age_bias) / (float(age_num) + 1e-5);
 
         age_gender_accuracy_result[i].push_back(average_age_bias);
         age_gender_accuracy_result[i].push_back(gender_accuracy);
