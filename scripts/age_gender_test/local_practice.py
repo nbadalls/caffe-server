@@ -6,7 +6,7 @@ use to test local face
 """
 import face_gather_test
 import sys
-
+from config_path import *
 
 def model_test(select_date, test_set, batch_num=-1):
 
@@ -25,4 +25,4 @@ if __name__ == '__main__':
         batch_num =int( sys.argv[3])
         model_test(select_date, test_set, batch_num)
     else:
-         print("input: \n  --select_date\n  --test_set\n --batch_num[-1]")
+         print("input: \n  --select_date\n  --test_set {}\n --batch_num[-1]".format(ConfigPath.test_data_set.keys()))
