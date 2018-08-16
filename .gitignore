@@ -110,3 +110,6 @@ include/caffe/layers/triplet_loss_layers.hpp
 src/caffe/layers/triplet_loss_layer.cpp
 src/caffe/layers/triplet_loss_layer.cu
 src/caffe/layers/triplet_data_layer.cpp
+include/caffe/layers/triplet_data_layer.hpp
+scripts/age_gender_test/config_path.py
+scripts/age_gender_scripts/*

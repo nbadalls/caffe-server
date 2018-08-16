@@ -4,7 +4,6 @@ input_dim: 1
 input_dim: 3
 input_dim: 224
 input_dim: 224
-#################### conv1 ####################
 layer {
   name: "conv1"
   type: "Convolution"
@@ -12,12 +11,14 @@ layer {
   top: "conv1"
   convolution_param {
     num_output: 10
-    kernel_size: 3
-    pad: 1
-    stride: 2
-    # dilation: 1
-    group: 1
     bias_term: false
+    pad: 1
+    kernel_size: 3
+    group: 1
+    stride: 2
+    weight_filler {
+      type: "xavier"
+    }
   }
 }
 layer {
@@ -55,10 +56,8 @@ layer {
     kernel_size: 3
     stride: 2
     pad: 1
-    #ceil_mode: false
   }
 }
-#################### dpn1 ####################
 layer {
   name: "dpn1_match_bn"
   type: "BatchNorm"
@@ -91,23 +90,25 @@ layer {
   top: "dpn1_match_conv"
   convolution_param {
     num_output: 96
-    kernel_size: 1
-    pad: 0
-    stride: 1
-    # dilation: 1
-    group: 1
     bias_term: false
+    pad: 0
+    kernel_size: 1
+    group: 1
+    stride: 1
+    weight_filler {
+      type: "xavier"
+    }
   }
 }
 layer {
   name: "dpn1_match_conv_Slice"
   type: "Slice"
   bottom: "dpn1_match_conv"
-  top: "dpn1_match_conv_split1"  # 0~63
-  top: "dpn1_match_conv_split2"  # 64~95
+  top: "dpn1_match_conv_split1"
+  top: "dpn1_match_conv_split2"
   slice_param {
-    axis: 1
     slice_point: 64
+    axis: 1
   }
 }
 layer {
@@ -142,12 +143,14 @@ layer {
   top: "dpn1_conv1"
   convolution_param {
     num_output: 128
-    kernel_size: 1
-    pad: 0
-    stride: 1
-    # dilation: 1
-    group: 1
     bias_term: false
+    pad: 0
+    kernel_size: 1
+    group: 1
+    stride: 1
+    weight_filler {
+      type: "xavier"
+    }
   }
 }
 layer {
@@ -182,12 +185,14 @@ layer {
   top: "dpn1_conv2"
   convolution_param {
     num_output: 128
-    kernel_size: 3
-    pad: 1
-    stride: 1
-    # dilation: 1
-    group: 32
     bias_term: false
+    pad: 1
+    kernel_size: 3
+    group: 32
+    stride: 1
+    weight_filler {
+      type: "xavier"
+    }
   }
 }
 layer {
@@ -222,12 +227,14 @@ layer {
   top: "dpn1_conv3_branch1"
   convolution_param {
     num_output: 64
-    kernel_size: 1
-    pad: 0
-    stride: 1
-    # dilation: 1
-    group: 1
     bias_term: false
+    pad: 0
+    kernel_size: 1
+    group: 1
+    stride: 1
+    weight_filler {
+      type: "xavier"
+    }
   }
 }
 layer {
@@ -237,40 +244,16 @@ layer {
   top: "dpn1_conv3_branch2"
   convolution_param {
     num_output: 16
-    kernel_size: 1
-    pad: 0
-    stride: 1
-    # dilation: 1
-    group: 1
     bias_term: false
+    pad: 0
+    kernel_size: 1
+    group: 1
+    stride: 1
+    weight_filler {
+      type: "xavier"
+    }
   }
 }
-#layer {
-#  name: "dpn1_conv3"
-#  type: "Convolution"
-#  bottom: "dpn1_conv2"
-#  top: "dpn1_conv3"
-#  convolution_param {
-#    num_output: 272
-#    kernel_size: 1
-#    pad: 0
-#    stride: 1
-#    # dilation: 1
-#    group: 1
-#    bias_term: false
-#  }
-#}
-#layer {
-#  name: "dpn1_conv3_Slice"
-#  type: "Slice"
-#  bottom: "dpn1_conv3"
-#  top: "dpn1_conv3_split1"  # 0~255
-#  top: "dpn1_conv3_split2"  # 256~272
-#  slice_param {
-#    axis: 1
-#    slice_point: 256
-#  }
-#}
 layer {
   name: "dpn1_elewise"
   type: "Eltwise"
@@ -288,7 +271,6 @@ layer {
   bottom: "dpn1_conv3_branch2"
   top: "dpn1_concat"
 }
-#################### dpn2 ####################
 layer {
   name: "dpn2_concat_input"
   type: "Concat"
@@ -328,12 +310,14 @@ layer {
   top: "dpn2_conv1"
   convolution_param {
     num_output: 128
-    kernel_size: 1
-    pad: 0
-    stride: 1
-    # dilation: 1
-    group: 1
     bias_term: false
+    pad: 0
+    kernel_size: 1
+    group: 1
+    stride: 1
+    weight_filler {
+      type: "xavier"
+    }
   }
 }
 layer {
@@ -368,12 +352,14 @@ layer {
   top: "dpn2_conv2"
   convolution_param {
     num_output: 128
-    kernel_size: 3
-    pad: 1
-    stride: 1
-    # dilation: 1
-    group: 32
     bias_term: false
+    pad: 1
+    kernel_size: 3
+    group: 32
+    stride: 1
+    weight_filler {
+      type: "xavier"
+    }
   }
 }
 layer {
@@ -408,12 +394,14 @@ layer {
   top: "dpn2_conv3_branch1"
   convolution_param {
     num_output: 64
-    kernel_size: 1
-    pad: 0
-    stride: 1
-    # dilation: 1
-    group: 1
     bias_term: false
+    pad: 0
+    kernel_size: 1
+    group: 1
+    stride: 1
+    weight_filler {
+      type: "xavier"
+    }
   }
 }
 layer {
@@ -423,40 +411,16 @@ layer {
   top: "dpn2_conv3_branch2"
   convolution_param {
     num_output: 16
-    kernel_size: 1
-    pad: 0
-    stride: 1
-    # dilation: 1
-    group: 1
     bias_term: false
+    pad: 0
+    kernel_size: 1
+    group: 1
+    stride: 1
+    weight_filler {
+      type: "xavier"
+    }
   }
 }
-#layer {
-#  name: "dpn2_conv3"
-#  type: "Convolution"
-#  bottom: "dpn2_conv2"
-#  top: "dpn2_conv3"
-#  convolution_param {
-#    num_output: 272
-#    kernel_size: 1
-#    pad: 0
-#    stride: 1
-#    # dilation: 1
-#    group: 1
-#    bias_term: false
-#  }
-#}
-#layer {
-#  name: "dpn2_conv3_Slice"
-#  type: "Slice"
-#  bottom: "dpn2_conv3"
-#  top: "dpn2_conv3_split1"  # 0~255
-#  top: "dpn2_conv3_split2"  # 256~272
-#  slice_param {
-#    axis: 1
-#    slice_point: 256
-#  }
-#}
 layer {
   name: "dpn2_elewise"
   type: "Eltwise"
@@ -474,7 +438,6 @@ layer {
   bottom: "dpn2_conv3_branch2"
   top: "dpn2_concat"
 }
-#################### dpn3 ####################
 layer {
   name: "dpn3_concat_input"
   type: "Concat"
@@ -514,12 +477,14 @@ layer {
   top: "dpn3_conv1"
   convolution_param {
     num_output: 128
-    kernel_size: 1
-    pad: 0
-    stride: 1
-    # dilation: 1
-    group: 1
     bias_term: false
+    pad: 0
+    kernel_size: 1
+    group: 1
+    stride: 1
+    weight_filler {
+      type: "xavier"
+    }
   }
 }
 layer {
@@ -554,12 +519,14 @@ layer {
   top: "dpn3_conv2"
   convolution_param {
     num_output: 128
-    kernel_size: 3
-    pad: 1
-    stride: 1
-    # dilation: 1
-    group: 32
     bias_term: false
+    pad: 1
+    kernel_size: 3
+    group: 32
+    stride: 1
+    weight_filler {
+      type: "xavier"
+    }
   }
 }
 layer {
@@ -594,12 +561,14 @@ layer {
   top: "dpn3_conv3_branch1"
   convolution_param {
     num_output: 64
-    kernel_size: 1
-    pad: 0
-    stride: 1
-    # dilation: 1
-    group: 1
     bias_term: false
+    pad: 0
+    kernel_size: 1
+    group: 1
+    stride: 1
+    weight_filler {
+      type: "xavier"
+    }
   }
 }
 layer {
@@ -609,40 +578,16 @@ layer {
   top: "dpn3_conv3_branch2"
   convolution_param {
     num_output: 16
-    kernel_size: 1
-    pad: 0
-    stride: 1
-    # dilation: 1
-    group: 1
     bias_term: false
+    pad: 0
+    kernel_size: 1
+    group: 1
+    stride: 1
+    weight_filler {
+      type: "xavier"
+    }
   }
 }
-#layer {
-#  name: "dpn3_conv3"
-#  type: "Convolution"
-#  bottom: "dpn3_conv2"
-#  top: "dpn3_conv3"
-#  convolution_param {
-#    num_output: 272
-#    kernel_size: 1
-#    pad: 0
-#    stride: 1
-#    # dilation: 1
-#    group: 1
-#    bias_term: false
-#  }
-#}
-#layer {
-#  name: "dpn3_conv3_Slice"
-#  type: "Slice"
-#  bottom: "dpn3_conv3"
-#  top: "dpn3_conv3_split1"  # 0~255
-#  top: "dpn3_conv3_split2"  # 256~272
-#  slice_param {
-#    axis: 1
-#    slice_point: 256
-#  }
-#}
 layer {
   name: "dpn3_elewise"
   type: "Eltwise"
@@ -660,7 +605,6 @@ layer {
   bottom: "dpn3_conv3_branch2"
   top: "dpn3_concat"
 }
-#################### dpn4 ####################
 layer {
   name: "dpn4_concat_input"
   type: "Concat"
@@ -700,23 +644,25 @@ layer {
   top: "dpn4_match_conv"
   convolution_param {
     num_output: 192
-    kernel_size: 1
-    pad: 0
-    stride: 2
-    # dilation: 1
-    group: 1
     bias_term: false
+    pad: 0
+    kernel_size: 1
+    group: 1
+    stride: 2
+    weight_filler {
+      type: "xavier"
+    }
   }
 }
 layer {
   name: "dpn4_match_conv_Slice"
   type: "Slice"
   bottom: "dpn4_match_conv"
-  top: "dpn4_match_conv_split1"  # 0~127
-  top: "dpn4_match_conv_split2"  # 128~191
+  top: "dpn4_match_conv_split1"
+  top: "dpn4_match_conv_split2"
   slice_param {
-    axis: 1
     slice_point: 128
+    axis: 1
   }
 }
 layer {
@@ -751,12 +697,14 @@ layer {
   top: "dpn4_conv1"
   convolution_param {
     num_output: 256
-    kernel_size: 1
-    pad: 0
-    stride: 1
-    # dilation: 1
-    group: 1
     bias_term: false
+    pad: 0
+    kernel_size: 1
+    group: 1
+    stride: 1
+    weight_filler {
+      type: "xavier"
+    }
   }
 }
 layer {
@@ -791,12 +739,14 @@ layer {
   top: "dpn4_conv2"
   convolution_param {
     num_output: 256
-    kernel_size: 3
-    pad: 1
-    stride: 2
-    # dilation: 1
-    group: 32
     bias_term: false
+    pad: 1
+    kernel_size: 3
+    group: 32
+    stride: 2
+    weight_filler {
+      type: "xavier"
+    }
   }
 }
 layer {
@@ -831,12 +781,14 @@ layer {
   top: "dpn4_conv3_branch1"
   convolution_param {
     num_output: 128
-    kernel_size: 1
-    pad: 0
-    stride: 1
-    # dilation: 1
-    group: 1
     bias_term: false
+    pad: 0
+    kernel_size: 1
+    group: 1
+    stride: 1
+    weight_filler {
+      type: "xavier"
+    }
   }
 }
 layer {
@@ -846,40 +798,16 @@ layer {
   top: "dpn4_conv3_branch2"
   convolution_param {
     num_output: 32
-    kernel_size: 1
-    pad: 0
-    stride: 1
-    # dilation: 1
-    group: 1
     bias_term: false
+    pad: 0
+    kernel_size: 1
+    group: 1
+    stride: 1
+    weight_filler {
+      type: "xavier"
+    }
   }
 }
-#layer {
-#  name: "dpn4_conv3"
-#  type: "Convolution"
-#  bottom: "dpn4_conv2"
-#  top: "dpn4_conv3"
-# convolution_param {
-#   num_output: 544
-#    kernel_size: 1
-#    pad: 0
-#    stride: 1
-#    # dilation: 1
-#    group: 1
-#    bias_term: false
-#  }
-#}
-#layer {
-#  name: "dpn4_conv3_Slice"
-#  type: "Slice"
-#  bottom: "dpn4_conv3"
-#  top: "dpn4_conv3_split1"  # 0~511
-#  top: "dpn4_conv3_split2"  # 511~544
-#  slice_param {
-#    axis: 1
-#    slice_point: 512
-#  }
-#}
 layer {
   name: "dpn4_elewise"
   type: "Eltwise"
@@ -897,7 +825,6 @@ layer {
   bottom: "dpn4_conv3_branch2"
   top: "dpn4_concat"
 }
-#################### dpn5 ####################
 layer {
   name: "dpn5_concat_input"
   type: "Concat"
@@ -937,12 +864,14 @@ layer {
   top: "dpn5_conv1"
   convolution_param {
     num_output: 256
-    kernel_size: 1
-    pad: 0
-    stride: 1
-    # dilation: 1
-    group: 1
     bias_term: false
+    pad: 0
+    kernel_size: 1
+    group: 1
+    stride: 1
+    weight_filler {
+      type: "xavier"
+    }
   }
 }
 layer {
@@ -977,12 +906,14 @@ layer {
   top: "dpn5_conv2"
   convolution_param {
     num_output: 256
-    kernel_size: 3
-    pad: 1
-    stride: 1
-    # dilation: 1
-    group: 32
     bias_term: false
+    pad: 1
+    kernel_size: 3
+    group: 32
+    stride: 1
+    weight_filler {
+      type: "xavier"
+    }
   }
 }
 layer {
@@ -1017,12 +948,14 @@ layer {
   top: "dpn5_conv3_branch1"
   convolution_param {
     num_output: 128
-    kernel_size: 1
-    pad: 0
-    stride: 1
-    # dilation: 1
-    group: 1
     bias_term: false
+    pad: 0
+    kernel_size: 1
+    group: 1
+    stride: 1
+    weight_filler {
+      type: "xavier"
+    }
   }
 }
 layer {
@@ -1032,40 +965,16 @@ layer {
   top: "dpn5_conv3_branch2"
   convolution_param {
     num_output: 32
-    kernel_size: 1
-    pad: 0
-    stride: 1
-    # dilation: 1
-    group: 1
     bias_term: false
+    pad: 0
+    kernel_size: 1
+    group: 1
+    stride: 1
+    weight_filler {
+      type: "xavier"
+    }
   }
 }
-#layer {
-#  name: "dpn5_conv3"
-#  type: "Convolution"
-#  bottom: "dpn5_conv2"
-#  top: "dpn5_conv3"
-#  convolution_param {
-#    num_output: 544
-#    kernel_size: 1
-#    pad: 0
-#    stride: 1
-#    # dilation: 1
-#    group: 1
-#    bias_term: false
-#  }
-#}
-#layer {
-# name: "dpn5_conv3_Slice"
-#  type: "Slice"
-#  bottom: "dpn5_conv3"
-#  top: "dpn5_conv3_split1"  # 0~511
-#  top: "dpn5_conv3_split2"  # 512~544
-#  slice_param {
-#    axis: 1
-#    slice_point: 512
-#  }
-#}
 layer {
   name: "dpn5_elewise"
   type: "Eltwise"
@@ -1083,7 +992,6 @@ layer {
   bottom: "dpn5_conv3_branch2"
   top: "dpn5_concat"
 }
-#################### dpn6 ####################
 layer {
   name: "dpn6_concat_input"
   type: "Concat"
@@ -1123,12 +1031,14 @@ layer {
   top: "dpn6_conv1"
   convolution_param {
     num_output: 256
-    kernel_size: 1
-    pad: 0
-    stride: 1
-    # dilation: 1
-    group: 1
     bias_term: false
+    pad: 0
+    kernel_size: 1
+    group: 1
+    stride: 1
+    weight_filler {
+      type: "xavier"
+    }
   }
 }
 layer {
@@ -1163,12 +1073,14 @@ layer {
   top: "dpn6_conv2"
   convolution_param {
     num_output: 256
-    kernel_size: 3
-    pad: 1
-    stride: 1
-    # dilation: 1
-    group: 32
     bias_term: false
+    pad: 1
+    kernel_size: 3
+    group: 32
+    stride: 1
+    weight_filler {
+      type: "xavier"
+    }
   }
 }
 layer {
@@ -1203,12 +1115,14 @@ layer {
   top: "dpn6_conv3_branch1"
   convolution_param {
     num_output: 128
-    kernel_size: 1
-    pad: 0
-    stride: 1
-    # dilation: 1
-    group: 1
     bias_term: false
+    pad: 0
+    kernel_size: 1
+    group: 1
+    stride: 1
+    weight_filler {
+      type: "xavier"
+    }
   }
 }
 layer {
@@ -1218,40 +1132,16 @@ layer {
   top: "dpn6_conv3_branch2"
   convolution_param {
     num_output: 32
-    kernel_size: 1
-    pad: 0
-    stride: 1
-    # dilation: 1
-    group: 1
     bias_term: false
+    pad: 0
+    kernel_size: 1
+    group: 1
+    stride: 1
+    weight_filler {
+      type: "xavier"
+    }
   }
 }
-#layer {
-#  name: "dpn6_conv3"
-#  type: "Convolution"
-#  bottom: "dpn6_conv2"
-#  top: "dpn6_conv3"
-#  convolution_param {
-#  	 num_output: 544
-#    kernel_size: 1
-#    pad: 0
-#    stride: 1
-#    # dilation: 1
-#    group: 1
-#    bias_term: false
-#  }
-#}
-#layer {
-#  name: "dpn6_conv3_Slice"
-#  type: "Slice"
-#  bottom: "dpn6_conv3"
-#  top: "dpn6_conv3_split1"  # 0~511
-#  top: "dpn6_conv3_split2"  # 512~544
-#  slice_param {
-#    axis: 1
-#    slice_point: 512
-#  }
-#}
 layer {
   name: "dpn6_elewise"
   type: "Eltwise"
@@ -1269,7 +1159,6 @@ layer {
   bottom: "dpn6_conv3_branch2"
   top: "dpn6_concat"
 }
-#################### dpn7 ####################
 layer {
   name: "dpn7_concat_input"
   type: "Concat"
@@ -1309,12 +1198,14 @@ layer {
   top: "dpn7_conv1"
   convolution_param {
     num_output: 256
-    kernel_size: 1
-    pad: 0
-    stride: 1
-    # dilation: 1
-    group: 1
     bias_term: false
+    pad: 0
+    kernel_size: 1
+    group: 1
+    stride: 1
+    weight_filler {
+      type: "xavier"
+    }
   }
 }
 layer {
@@ -1349,12 +1240,14 @@ layer {
   top: "dpn7_conv2"
   convolution_param {
     num_output: 256
-    kernel_size: 3
-    pad: 1
-    stride: 1
-    # dilation: 1
-    group: 32
     bias_term: false
+    pad: 1
+    kernel_size: 3
+    group: 32
+    stride: 1
+    weight_filler {
+      type: "xavier"
+    }
   }
 }
 layer {
@@ -1389,12 +1282,14 @@ layer {
   top: "dpn7_conv3_branch1"
   convolution_param {
     num_output: 128
-    kernel_size: 1
-    pad: 0
-    stride: 1
-    # dilation: 1
-    group: 1
     bias_term: false
+    pad: 0
+    kernel_size: 1
+    group: 1
+    stride: 1
+    weight_filler {
+      type: "xavier"
+    }
   }
 }
 layer {
@@ -1404,40 +1299,16 @@ layer {
   top: "dpn7_conv3_branch2"
   convolution_param {
     num_output: 32
-    kernel_size: 1
-    pad: 0
-    stride: 1
-    # dilation: 1
-    group: 1
     bias_term: false
+    pad: 0
+    kernel_size: 1
+    group: 1
+    stride: 1
+    weight_filler {
+      type: "xavier"
+    }
   }
 }
-#layer {
-#  name: "dpn7_conv3"
-#  type: "Convolution"
-#  bottom: "dpn7_conv2"
-#  top: "dpn7_conv3"
-#  convolution_param {
-#    num_output: 544
-#    kernel_size: 1
-#    pad: 0
-#    stride: 1
-#    # dilation: 1
-#    group: 1
-#    bias_term: false
-#  }
-#}
-#layer {
-#  name: "dpn7_conv3_Slice"
-#  type: "Slice"
-#  bottom: "dpn7_conv3"
-#  top: "dpn7_conv3_split1"  # 0~511
-#  top: "dpn7_conv3_split2"  # 512~544
-#  slice_param {
-#    axis: 1
-#    slice_point: 512
-#  }
-#}
 layer {
   name: "dpn7_elewise"
   type: "Eltwise"
@@ -1455,7 +1326,6 @@ layer {
   bottom: "dpn7_conv3_branch2"
   top: "dpn7_concat"
 }
-#################### dpn8 ####################
 layer {
   name: "dpn8_concat_input"
   type: "Concat"
@@ -1495,23 +1365,25 @@ layer {
   top: "dpn8_match_conv"
   convolution_param {
     num_output: 320
-    kernel_size: 1
-    pad: 0
-    stride: 2
-    # dilation: 1
-    group: 1
     bias_term: false
+    pad: 0
+    kernel_size: 1
+    group: 1
+    stride: 2
+    weight_filler {
+      type: "xavier"
+    }
   }
 }
 layer {
   name: "dpn8_match_conv_Slice"
   type: "Slice"
   bottom: "dpn8_match_conv"
-  top: "dpn8_match_conv_split1"  # 0~255
-  top: "dpn8_match_conv_split2"  # 256~319
+  top: "dpn8_match_conv_split1"
+  top: "dpn8_match_conv_split2"
   slice_param {
-    axis: 1
     slice_point: 256
+    axis: 1
   }
 }
 layer {
@@ -1546,12 +1418,14 @@ layer {
   top: "dpn8_conv1"
   convolution_param {
     num_output: 512
-    kernel_size: 1
-    pad: 0
-    stride: 1
-    # dilation: 1
-    group: 1
     bias_term: false
+    pad: 0
+    kernel_size: 1
+    group: 1
+    stride: 1
+    weight_filler {
+      type: "xavier"
+    }
   }
 }
 layer {
@@ -1586,12 +1460,14 @@ layer {
   top: "dpn8_conv2"
   convolution_param {
     num_output: 512
-    kernel_size: 3
-    pad: 1
-    stride: 2
-    # dilation: 1
-    group: 32
     bias_term: false
+    pad: 1
+    kernel_size: 3
+    group: 32
+    stride: 2
+    weight_filler {
+      type: "xavier"
+    }
   }
 }
 layer {
@@ -1626,12 +1502,14 @@ layer {
   top: "dpn8_conv3_branch1"
   convolution_param {
     num_output: 256
-    kernel_size: 1
-    pad: 0
-    stride: 1
-    # dilation: 1
-    group: 1
     bias_term: false
+    pad: 0
+    kernel_size: 1
+    group: 1
+    stride: 1
+    weight_filler {
+      type: "xavier"
+    }
   }
 }
 layer {
@@ -1641,40 +1519,16 @@ layer {
   top: "dpn8_conv3_branch2"
   convolution_param {
     num_output: 32
-    kernel_size: 1
-    pad: 0
-    stride: 1
-    # dilation: 1
-    group: 1
     bias_term: false
+    pad: 0
+    kernel_size: 1
+    group: 1
+    stride: 1
+    weight_filler {
+      type: "xavier"
+    }
   }
 }
-#layer {
-#  name: "dpn8_conv3"
-#  type: "Convolution"
-#  bottom: "dpn8_conv2"
-#  top: "dpn8_conv3"
-#  convolution_param {
-#    num_output: 1048
-#    kernel_size: 1
-#    pad: 0
-#    stride: 1
-#    # dilation: 1
-#    group: 1
-#    bias_term: false
-#  }
-#}
-#layer {
-#  name: "dpn8_conv3_Slice"
-#  type: "Slice"
-#  bottom: "dpn8_conv3"
-#  top: "dpn8_conv3_split1"  # 0~1023
-#  top: "dpn8_conv3_split2"  # 1024~1048
-#  slice_param {
-#    axis: 1
-#    slice_point: 1024
-#  }
-#}
 layer {
   name: "dpn8_elewise"
   type: "Eltwise"
@@ -1692,7 +1546,6 @@ layer {
   bottom: "dpn8_conv3_branch2"
   top: "dpn8_concat"
 }
-#################### dpn9 ####################
 layer {
   name: "dpn9_concat_input"
   type: "Concat"
@@ -1732,12 +1585,14 @@ layer {
   top: "dpn9_conv1"
   convolution_param {
     num_output: 512
-    kernel_size: 1
-    pad: 0
-    stride: 1
-    # dilation: 1
-    group: 1
     bias_term: false
+    pad: 0
+    kernel_size: 1
+    group: 1
+    stride: 1
+    weight_filler {
+      type: "xavier"
+    }
   }
 }
 layer {
@@ -1772,12 +1627,14 @@ layer {
   top: "dpn9_conv2"
   convolution_param {
     num_output: 512
-    kernel_size: 3
-    pad: 1
-    stride: 1
-    # dilation: 1
-    group: 32
     bias_term: false
+    pad: 1
+    kernel_size: 3
+    group: 32
+    stride: 1
+    weight_filler {
+      type: "xavier"
+    }
   }
 }
 layer {
@@ -1812,12 +1669,14 @@ layer {
   top: "dpn9_conv3_branch1"
   convolution_param {
     num_output: 256
-    kernel_size: 1
-    pad: 0
-    stride: 1
-    # dilation: 1
-    group: 1
     bias_term: false
+    pad: 0
+    kernel_size: 1
+    group: 1
+    stride: 1
+    weight_filler {
+      type: "xavier"
+    }
   }
 }
 layer {
@@ -1827,40 +1686,16 @@ layer {
   top: "dpn9_conv3_branch2"
   convolution_param {
     num_output: 32
-    kernel_size: 1
-    pad: 0
-    stride: 1
-    # dilation: 1
-    group: 1
     bias_term: false
+    pad: 0
+    kernel_size: 1
+    group: 1
+    stride: 1
+    weight_filler {
+      type: "xavier"
+    }
   }
 }
-#layer {
-#  name: "dpn9_conv3"
-#  type: "Convolution"
-#  bottom: "dpn9_conv2"
-#  top: "dpn9_conv3"
-#  convolution_param {
-#    num_output: 1048
-#    kernel_size: 1
-#    pad: 0
-#    stride: 1
-#    # dilation: 1
-#    group: 1
-#    bias_term: false
-#  }
-#}
-#layer {
-#  name: "dpn9_conv3_Slice"
-#  type: "Slice"
-#  bottom: "dpn9_conv3"
-#  top: "dpn9_conv3_split1"  # 0~1023
-#  top: "dpn9_conv3_split2"  # 1024~1048
-#  slice_param {
-#    axis: 1
-#    slice_point: 1024
-#  }
-#}
 layer {
   name: "dpn9_elewise"
   type: "Eltwise"
@@ -1878,7 +1713,6 @@ layer {
   bottom: "dpn9_conv3_branch2"
   top: "dpn9_concat"
 }
-#################### dpn10 ####################
 layer {
   name: "dpn10_concat_input"
   type: "Concat"
@@ -1918,12 +1752,14 @@ layer {
   top: "dpn10_conv1"
   convolution_param {
     num_output: 512
-    kernel_size: 1
-    pad: 0
-    stride: 1
-    # dilation: 1
-    group: 1
     bias_term: false
+    pad: 0
+    kernel_size: 1
+    group: 1
+    stride: 1
+    weight_filler {
+      type: "xavier"
+    }
   }
 }
 layer {
@@ -1958,12 +1794,14 @@ layer {
   top: "dpn10_conv2"
   convolution_param {
     num_output: 512
-    kernel_size: 3
-    pad: 1
-    stride: 1
-    # dilation: 1
-    group: 32
     bias_term: false
+    pad: 1
+    kernel_size: 3
+    group: 32
+    stride: 1
+    weight_filler {
+      type: "xavier"
+    }
   }
 }
 layer {
@@ -1987,9 +1825,9 @@ layer {
 }
 layer {
   name: "dpn10_conv2_relu"
-  top: "dpn10_conv2"
-  bottom: "dpn10_conv2"
   type: "ReLU"
+  bottom: "dpn10_conv2"
+  top: "dpn10_conv2"
 }
 layer {
   name: "dpn10_conv3_branch1"
@@ -1998,12 +1836,14 @@ layer {
   top: "dpn10_conv3_branch1"
   convolution_param {
     num_output: 256
-    kernel_size: 1
-    pad: 0
-    stride: 1
-    # dilation: 1
-    group: 1
     bias_term: false
+    pad: 0
+    kernel_size: 1
+    group: 1
+    stride: 1
+    weight_filler {
+      type: "xavier"
+    }
   }
 }
 layer {
@@ -2013,40 +1853,16 @@ layer {
   top: "dpn10_conv3_branch2"
   convolution_param {
     num_output: 32
-    kernel_size: 1
-    pad: 0
-    stride: 1
-    # dilation: 1
-    group: 1
     bias_term: false
+    pad: 0
+    kernel_size: 1
+    group: 1
+    stride: 1
+    weight_filler {
+      type: "xavier"
+    }
   }
 }
-#layer {
-#  name: "dpn10_conv3"
-#  type: "Convolution"
-#  bottom: "dpn10_conv2"
-#  top: "dpn10_conv3"
-#  convolution_param {
-#    num_output: 1048
-#    kernel_size: 1
-#    pad: 0
-#    stride: 1
-#    # dilation: 1
-#    group: 1
-#    bias_term: false
-#  }
-#}
-#layer {
-#  name: "dpn10_conv3_Slice"
-#  type: "Slice"
-#  bottom: "dpn10_conv3"
-#  top: "dpn10_conv3_split1"  # 0~1023
-#  top: "dpn10_conv3_split2"  # 1024~1048
-#  slice_param {
-#    axis: 1
-#    slice_point: 1024
-#  }
-#}
 layer {
   name: "dpn10_elewise"
   type: "Eltwise"
@@ -2064,7 +1880,6 @@ layer {
   bottom: "dpn10_conv3_branch2"
   top: "dpn10_concat"
 }
-#################### dpn11 ####################
 layer {
   name: "dpn11_concat_input"
   type: "Concat"
@@ -2099,17 +1914,19 @@ layer {
 }
 layer {
   name: "dpn11_conv1"
+  type: "Convolution"
   bottom: "dpn11_bn"
   top: "dpn11_conv1"
-  type: "Convolution"
   convolution_param {
     num_output: 512
-    kernel_size: 1
-    pad: 0
-    stride: 1
-    # dilation: 1
-    group: 1
     bias_term: false
+    pad: 0
+    kernel_size: 1
+    group: 1
+    stride: 1
+    weight_filler {
+      type: "xavier"
+    }
   }
 }
 layer {
@@ -2144,12 +1961,14 @@ layer {
   top: "dpn11_conv2"
   convolution_param {
     num_output: 512
-    kernel_size: 3
-    pad: 1
-    stride: 1
-    # dilation: 1
-    group: 32
     bias_term: false
+    pad: 1
+    kernel_size: 3
+    group: 32
+    stride: 1
+    weight_filler {
+      type: "xavier"
+    }
   }
 }
 layer {
@@ -2184,12 +2003,14 @@ layer {
   top: "dpn11_conv3_branch1"
   convolution_param {
     num_output: 256
-    kernel_size: 1
-    pad: 0
-    stride: 1
-    # dilation: 1
-    group: 1
     bias_term: false
+    pad: 0
+    kernel_size: 1
+    group: 1
+    stride: 1
+    weight_filler {
+      type: "xavier"
+    }
   }
 }
 layer {
@@ -2199,40 +2020,16 @@ layer {
   top: "dpn11_conv3_branch2"
   convolution_param {
     num_output: 32
-    kernel_size: 1
-    pad: 0
-    stride: 1
-    # dilation: 1
-    group: 1
     bias_term: false
+    pad: 0
+    kernel_size: 1
+    group: 1
+    stride: 1
+    weight_filler {
+      type: "xavier"
+    }
   }
 }
-#layer {
-#  name: "dpn11_conv3"
-#  type: "Convolution"
-#  bottom: "dpn11_conv2"
-#  top: "dpn11_conv3"
-#  convolution_param {
-#    num_output: 1048
-#    kernel_size: 1
-#    pad: 0
-#    stride: 1
-#    # dilation: 1
-#    group: 1
-#    bias_term: false
-#  }
-#}
-#layer {
-#  name: "dpn11_conv3_Slice"
-#  type: "Slice"
-#  bottom: "dpn11_conv3"
-#  top: "dpn11_conv3_split1"  # 0~1023
-#  top: "dpn11_conv3_split2"  # 1024~1048
-#  slice_param {
-#    axis: 1
-#    slice_point: 1024
-#  }
-#}
 layer {
   name: "dpn11_elewise"
   type: "Eltwise"
@@ -2250,7 +2047,6 @@ layer {
   bottom: "dpn11_conv3_branch2"
   top: "dpn11_concat"
 }
-#################### dpn12 ####################
 layer {
   name: "dpn12_concat_input"
   type: "Concat"
@@ -2290,12 +2086,14 @@ layer {
   top: "dpn12_conv1"
   convolution_param {
     num_output: 512
-    kernel_size: 1
-    pad: 0
-    stride: 1
-    # dilation: 1
-    group: 1
     bias_term: false
+    pad: 0
+    kernel_size: 1
+    group: 1
+    stride: 1
+    weight_filler {
+      type: "xavier"
+    }
   }
 }
 layer {
@@ -2330,12 +2128,14 @@ layer {
   top: "dpn12_conv2"
   convolution_param {
     num_output: 512
-    kernel_size: 3
-    pad: 1
-    stride: 1
-    # dilation: 1
-    group: 32
     bias_term: false
+    pad: 1
+    kernel_size: 3
+    group: 32
+    stride: 1
+    weight_filler {
+      type: "xavier"
+    }
   }
 }
 layer {
@@ -2370,12 +2170,14 @@ layer {
   top: "dpn12_conv3_branch1"
   convolution_param {
     num_output: 256
-    kernel_size: 1
-    pad: 0
-    stride: 1
-    # dilation: 1
-    group: 1
     bias_term: false
+    pad: 0
+    kernel_size: 1
+    group: 1
+    stride: 1
+    weight_filler {
+      type: "xavier"
+    }
   }
 }
 layer {
@@ -2385,40 +2187,16 @@ layer {
   top: "dpn12_conv3_branch2"
   convolution_param {
     num_output: 32
-    kernel_size: 1
-    pad: 0
-    stride: 1
-    # dilation: 1
-    group: 1
     bias_term: false
+    pad: 0
+    kernel_size: 1
+    group: 1
+    stride: 1
+    weight_filler {
+      type: "xavier"
+    }
   }
 }
-#layer {
-#  name: "dpn12_conv3"
-#  type: "Convolution"
-#  bottom: "dpn12_conv2"
-#  top: "dpn12_conv3"
-#  convolution_param {
-#    num_output: 1048
-#    kernel_size: 1
-#    pad: 0
-#    stride: 1
-#    # dilation: 1
-#    group: 1
-#    bias_term: false
-#  }
-#}
-#layer {
-#  name: "dpn12_conv3_Slice"
-#  type: "Slice"
-#  bottom: "dpn12_conv3"
-#  top: "dpn12_conv3_split1"  # 0~1023
-#  top: "dpn12_conv3_split2"  # 1024~1048
-#  slice_param {
-#    axis: 1
-#    slice_point: 1024
-#  }
-#}
 layer {
   name: "dpn12_elewise"
   type: "Eltwise"
@@ -2436,7 +2214,6 @@ layer {
   bottom: "dpn12_conv3_branch2"
   top: "dpn12_concat"
 }
-#################### dpn13 ####################
 layer {
   name: "dpn13_concat_input"
   type: "Concat"
@@ -2476,19 +2253,21 @@ layer {
   top: "dpn13_conv1"
   convolution_param {
     num_output: 512
-    kernel_size: 1
-    pad: 0
-    stride: 1
-    # dilation: 1
-    group: 1
     bias_term: false
+    pad: 0
+    kernel_size: 1
+    group: 1
+    stride: 1
+    weight_filler {
+      type: "xavier"
+    }
   }
 }
 layer {
   name: "dpn13_conv1_bn"
+  type: "BatchNorm"
   bottom: "dpn13_conv1"
   top: "dpn13_conv1"
-  type: "BatchNorm"
   batch_norm_param {
     use_global_stats: true
     eps: 0.001
@@ -2516,12 +2295,14 @@ layer {
   top: "dpn13_conv2"
   convolution_param {
     num_output: 512
-    kernel_size: 3
-    pad: 1
-    stride: 1
-    # dilation: 1
-    group: 32
     bias_term: false
+    pad: 1
+    kernel_size: 3
+    group: 32
+    stride: 1
+    weight_filler {
+      type: "xavier"
+    }
   }
 }
 layer {
@@ -2556,12 +2337,14 @@ layer {
   top: "dpn13_conv3_branch1"
   convolution_param {
     num_output: 256
-    kernel_size: 1
-    pad: 0
-    stride: 1
-    # dilation: 1
-    group: 1
     bias_term: false
+    pad: 0
+    kernel_size: 1
+    group: 1
+    stride: 1
+    weight_filler {
+      type: "xavier"
+    }
   }
 }
 layer {
@@ -2571,40 +2354,16 @@ layer {
   top: "dpn13_conv3_branch2"
   convolution_param {
     num_output: 32
-    kernel_size: 1
-    pad: 0
-    stride: 1
-    # dilation: 1
-    group: 1
     bias_term: false
+    pad: 0
+    kernel_size: 1
+    group: 1
+    stride: 1
+    weight_filler {
+      type: "xavier"
+    }
   }
 }
-#layer {
-#  name: "dpn13_conv3"
-#  type: "Convolution"
-#  bottom: "dpn13_conv2"
-#  top: "dpn13_conv3"
-#  convolution_param {
-#    num_output: 1048
-#    kernel_size: 1
-#    pad: 0
-#    stride: 1
-#    # dilation: 1
-#    group: 1
-#    bias_term: false
-#  }
-#}
-#layer {
-#  name: "dpn13_conv3_Slice"
-#  type: "Slice"
-#  bottom: "dpn13_conv3"
-#  top: "dpn13_conv3_split1"  # 0~1023
-#  top: "dpn13_conv3_split2"  # 1024~1048
-#  slice_param {
-#    axis: 1
-#    slice_point: 1024
-#  }
-#}
 layer {
   name: "dpn13_elewise"
   type: "Eltwise"
@@ -2622,7 +2381,6 @@ layer {
   bottom: "dpn13_conv3_branch2"
   top: "dpn13_concat"
 }
-#################### dpn14 ####################
 layer {
   name: "dpn14_concat_input"
   type: "Concat"
@@ -2662,12 +2420,14 @@ layer {
   top: "dpn14_conv1"
   convolution_param {
     num_output: 512
-    kernel_size: 1
-    pad: 0
-    stride: 1
-    # dilation: 1
-    group: 1
     bias_term: false
+    pad: 0
+    kernel_size: 1
+    group: 1
+    stride: 1
+    weight_filler {
+      type: "xavier"
+    }
   }
 }
 layer {
@@ -2702,12 +2462,14 @@ layer {
   top: "dpn14_conv2"
   convolution_param {
     num_output: 512
-    kernel_size: 3
-    pad: 1
-    stride: 1
-    # dilation: 1
-    group: 32
     bias_term: false
+    pad: 1
+    kernel_size: 3
+    group: 32
+    stride: 1
+    weight_filler {
+      type: "xavier"
+    }
   }
 }
 layer {
@@ -2742,12 +2504,14 @@ layer {
   top: "dpn14_conv3_branch1"
   convolution_param {
     num_output: 256
-    kernel_size: 1
-    pad: 0
-    stride: 1
-    # dilation: 1
-    group: 1
     bias_term: false
+    pad: 0
+    kernel_size: 1
+    group: 1
+    stride: 1
+    weight_filler {
+      type: "xavier"
+    }
   }
 }
 layer {
@@ -2757,40 +2521,16 @@ layer {
   top: "dpn14_conv3_branch2"
   convolution_param {
     num_output: 32
-    kernel_size: 1
-    pad: 0
-    stride: 1
-    # dilation: 1
-    group: 1
     bias_term: false
+    pad: 0
+    kernel_size: 1
+    group: 1
+    stride: 1
+    weight_filler {
+      type: "xavier"
+    }
   }
 }
-#layer {
-#  name: "dpn14_conv3"
-#  type: "Convolution"
-#  bottom: "dpn14_conv2"
-#  top: "dpn14_conv3"
-#  convolution_param {
-#    num_output: 1048
-#    kernel_size: 1
-#    pad: 0
-#    stride: 1
-#    # dilation: 1
-#    group: 1
-#    bias_term: false
-#  }
-#}
-#layer {
-#  name: "dpn14_conv3_Slice"
-#  type: "Slice"
-#  bottom: "dpn14_conv3"
-#  top: "dpn14_conv3_split1"  # 0~1023
-#  top: "dpn14_conv3_split2"  # 1024~1048
-#  slice_param {
-#    axis: 1
-#    slice_point: 1024
-#  }
-#}
 layer {
   name: "dpn14_elewise"
   type: "Eltwise"
@@ -2808,7 +2548,6 @@ layer {
   bottom: "dpn14_conv3_branch2"
   top: "dpn14_concat"
 }
-#################### dpn15 ####################
 layer {
   name: "dpn15_concat_input"
   type: "Concat"
@@ -2848,12 +2587,14 @@ layer {
   top: "dpn15_conv1"
   convolution_param {
     num_output: 512
-    kernel_size: 1
-    pad: 0
-    stride: 1
-    # dilation: 1
-    group: 1
     bias_term: false
+    pad: 0
+    kernel_size: 1
+    group: 1
+    stride: 1
+    weight_filler {
+      type: "xavier"
+    }
   }
 }
 layer {
@@ -2883,17 +2624,19 @@ layer {
 }
 layer {
   name: "dpn15_conv2"
+  type: "Convolution"
   bottom: "dpn15_conv1"
   top: "dpn15_conv2"
-  type: "Convolution"
   convolution_param {
     num_output: 512
-    kernel_size: 3
-    pad: 1
-    stride: 1
-    # dilation: 1
-    group: 32
     bias_term: false
+    pad: 1
+    kernel_size: 3
+    group: 32
+    stride: 1
+    weight_filler {
+      type: "xavier"
+    }
   }
 }
 layer {
@@ -2928,12 +2671,14 @@ layer {
   top: "dpn15_conv3_branch1"
   convolution_param {
     num_output: 256
-    kernel_size: 1
-    pad: 0
-    stride: 1
-    # dilation: 1
-    group: 1
     bias_term: false
+    pad: 0
+    kernel_size: 1
+    group: 1
+    stride: 1
+    weight_filler {
+      type: "xavier"
+    }
   }
 }
 layer {
@@ -2943,40 +2688,16 @@ layer {
   top: "dpn15_conv3_branch2"
   convolution_param {
     num_output: 32
-    kernel_size: 1
-    pad: 0
-    stride: 1
-    # dilation: 1
-    group: 1
     bias_term: false
+    pad: 0
+    kernel_size: 1
+    group: 1
+    stride: 1
+    weight_filler {
+      type: "xavier"
+    }
   }
 }
-#layer {
-#  name: "dpn15_conv3"
-#  type: "Convolution"
-#  bottom: "dpn15_conv2"
-#  top: "dpn15_conv3"
-#  convolution_param {
-#    num_output: 1048
-#    kernel_size: 1
-#    pad: 0
-#    stride: 1
-#    # dilation: 1
-#    group: 1
-#    bias_term: false
-#  }
-#}
-#layer {
-#  name: "dpn15_conv3_Slice"
-#  type: "Slice"
-#  bottom: "dpn15_conv3"
-#  top: "dpn15_conv3_split1"  # 0~1023
-#  top: "dpn15_conv3_split2"  # 1024~1048
-#  slice_param {
-#    axis: 1
-#    slice_point: 1024
-#  }
-#}
 layer {
   name: "dpn15_elewise"
   type: "Eltwise"
@@ -2984,7 +2705,7 @@ layer {
   bottom: "dpn15_conv3_branch1"
   top: "dpn15_elewise"
   eltwise_param {
-   operation: SUM
+    operation: SUM
   }
 }
 layer {
@@ -2994,7 +2715,6 @@ layer {
   bottom: "dpn15_conv3_branch2"
   top: "dpn15_concat"
 }
-#################### dpn16 ####################
 layer {
   name: "dpn16_concat_input"
   type: "Concat"
@@ -3034,12 +2754,14 @@ layer {
   top: "dpn16_conv1"
   convolution_param {
     num_output: 512
-    kernel_size: 1
-    pad: 0
-    stride: 1
-    # dilation: 1
-    group: 1
     bias_term: false
+    pad: 0
+    kernel_size: 1
+    group: 1
+    stride: 1
+    weight_filler {
+      type: "xavier"
+    }
   }
 }
 layer {
@@ -3074,12 +2796,14 @@ layer {
   top: "dpn16_conv2"
   convolution_param {
     num_output: 512
-    kernel_size: 3
-    pad: 1
-    stride: 1
-    # dilation: 1
-    group: 32
     bias_term: false
+    pad: 1
+    kernel_size: 3
+    group: 32
+    stride: 1
+    weight_filler {
+      type: "xavier"
+    }
   }
 }
 layer {
@@ -3114,12 +2838,14 @@ layer {
   top: "dpn16_conv3_branch1"
   convolution_param {
     num_output: 256
-    kernel_size: 1
-    pad: 0
-    stride: 1
-    # dilation: 1
-    group: 1
     bias_term: false
+    pad: 0
+    kernel_size: 1
+    group: 1
+    stride: 1
+    weight_filler {
+      type: "xavier"
+    }
   }
 }
 layer {
@@ -3129,40 +2855,16 @@ layer {
   top: "dpn16_conv3_branch2"
   convolution_param {
     num_output: 32
-    kernel_size: 1
-    pad: 0
-    stride: 1
-    # dilation: 1
-    group: 1
     bias_term: false
+    pad: 0
+    kernel_size: 1
+    group: 1
+    stride: 1
+    weight_filler {
+      type: "xavier"
+    }
   }
 }
-#layer {
-#  name: "dpn16_conv3"
-#  type: "Convolution"
-#  bottom: "dpn16_conv2"
-#  top: "dpn16_conv3"
-#  convolution_param {
-#    num_output: 1048
-#    kernel_size: 1
-#    pad: 0
-#    stride: 1
-#    # dilation: 1
-#    group: 1
-#    bias_term: false
-#  }
-#}
-#layer {
-#  name: "dpn16_conv3_Slice"
-#  type: "Slice"
-#  bottom: "dpn16_conv3"
-#  top: "dpn16_conv3_split1"  # 0~1023
-#  top: "dpn16_conv3_split2"  # 1024~1048
-#  slice_param {
-#    axis: 1
-#    slice_point: 1024
-#  }
-#}
 layer {
   name: "dpn16_elewise"
   type: "Eltwise"
@@ -3180,7 +2882,6 @@ layer {
   bottom: "dpn16_conv3_branch2"
   top: "dpn16_concat"
 }
-#################### dpn17 ####################
 layer {
   name: "dpn17_concat_input"
   type: "Concat"
@@ -3220,12 +2921,14 @@ layer {
   top: "dpn17_conv1"
   convolution_param {
     num_output: 512
-    kernel_size: 1
-    pad: 0
-    stride: 1
-    # dilation: 1
-    group: 1
     bias_term: false
+    pad: 0
+    kernel_size: 1
+    group: 1
+    stride: 1
+    weight_filler {
+      type: "xavier"
+    }
   }
 }
 layer {
@@ -3260,12 +2963,14 @@ layer {
   top: "dpn17_conv2"
   convolution_param {
     num_output: 512
-    kernel_size: 3
-    pad: 1
-    stride: 1
-    # dilation: 1
-    group: 32
     bias_term: false
+    pad: 1
+    kernel_size: 3
+    group: 32
+    stride: 1
+    weight_filler {
+      type: "xavier"
+    }
   }
 }
 layer {
@@ -3300,12 +3005,14 @@ layer {
   top: "dpn17_conv3_branch1"
   convolution_param {
     num_output: 256
-    kernel_size: 1
-    pad: 0
-    stride: 1
-    # dilation: 1
-    group: 1
     bias_term: false
+    pad: 0
+    kernel_size: 1
+    group: 1
+    stride: 1
+    weight_filler {
+      type: "xavier"
+    }
   }
 }
 layer {
@@ -3315,40 +3022,16 @@ layer {
   top: "dpn17_conv3_branch2"
   convolution_param {
     num_output: 32
-    kernel_size: 1
-    pad: 0
-    stride: 1
-    # dilation: 1
-    group: 1
     bias_term: false
+    pad: 0
+    kernel_size: 1
+    group: 1
+    stride: 1
+    weight_filler {
+      type: "xavier"
+    }
   }
 }
-#layer {
-#  name: "dpn17_conv3"
-#  type: "Convolution"
-#  bottom: "dpn17_conv2"
-#  top: "dpn17_conv3"
-#  convolution_param {
-#    num_output: 1048
-#    kernel_size: 1
-#    pad: 0
-#    stride: 1
-#    # dilation: 1
-#    group: 1
-#    bias_term: false
-#  }
-#}
-#layer {
-#  name: "dpn17_conv3_Slice"
-#  type: "Slice"
-#  bottom: "dpn17_conv3"
-#  top: "dpn17_conv3_split1"  # 0~1023
-#  top: "dpn17_conv3_split2"  # 1024~1048
-#  slice_param {
-#    axis: 1
-#   slice_point: 1024
-#  }
-#}
 layer {
   name: "dpn17_elewise"
   type: "Eltwise"
@@ -3366,7 +3049,6 @@ layer {
   bottom: "dpn17_conv3_branch2"
   top: "dpn17_concat"
 }
-#################### dpn18 ####################
 layer {
   name: "dpn18_concat_input"
   type: "Concat"
@@ -3406,12 +3088,14 @@ layer {
   top: "dpn18_conv1"
   convolution_param {
     num_output: 512
-    kernel_size: 1
-    pad: 0
-    stride: 1
-    # dilation: 1
-    group: 1
     bias_term: false
+    pad: 0
+    kernel_size: 1
+    group: 1
+    stride: 1
+    weight_filler {
+      type: "xavier"
+    }
   }
 }
 layer {
@@ -3446,12 +3130,14 @@ layer {
   top: "dpn18_conv2"
   convolution_param {
     num_output: 512
-    kernel_size: 3
-    pad: 1
-    stride: 1
-    # dilation: 1
-    group: 32
     bias_term: false
+    pad: 1
+    kernel_size: 3
+    group: 32
+    stride: 1
+    weight_filler {
+      type: "xavier"
+    }
   }
 }
 layer {
@@ -3486,12 +3172,14 @@ layer {
   top: "dpn18_conv3_branch1"
   convolution_param {
     num_output: 256
-    kernel_size: 1
-    pad: 0
-    stride: 1
-    # dilation: 1
-    group: 1
     bias_term: false
+    pad: 0
+    kernel_size: 1
+    group: 1
+    stride: 1
+    weight_filler {
+      type: "xavier"
+    }
   }
 }
 layer {
@@ -3501,40 +3189,16 @@ layer {
   top: "dpn18_conv3_branch2"
   convolution_param {
     num_output: 32
-    kernel_size: 1
-    pad: 0
-    stride: 1
-    # dilation: 1
-    group: 1
     bias_term: false
+    pad: 0
+    kernel_size: 1
+    group: 1
+    stride: 1
+    weight_filler {
+      type: "xavier"
+    }
   }
 }
-#layer {
-#  name: "dpn18_conv3"
-#  type: "Convolution"
-#  bottom: "dpn18_conv2"
-#  top: "dpn18_conv3"
-#  convolution_param {
-#    num_output: 1048
-#    kernel_size: 1
-#    pad: 0
-#    stride: 1
-#    # dilation: 1
-#    group: 1
-#    bias_term: false
-#  }
-#}
-#layer {
-#  name: "dpn18_conv3_Slice"
-#  type: "Slice"
-#  bottom: "dpn18_conv3"
-#  top: "dpn18_conv3_split1"  # 0~1023
-#  top: "dpn18_conv3_split2"  # 1024~1048
-#  slice_param {
-#    axis: 1
-#    slice_point: 1024
-#  }
-#}
 layer {
   name: "dpn18_elewise"
   type: "Eltwise"
@@ -3552,7 +3216,6 @@ layer {
   bottom: "dpn18_conv3_branch2"
   top: "dpn18_concat"
 }
-#################### dpn19 ####################
 layer {
   name: "dpn19_concat_input"
   type: "Concat"
@@ -3592,12 +3255,14 @@ layer {
   top: "dpn19_conv1"
   convolution_param {
     num_output: 512
-    kernel_size: 1
-    pad: 0
-    stride: 1
-    # dilation: 1
-    group: 1
     bias_term: false
+    pad: 0
+    kernel_size: 1
+    group: 1
+    stride: 1
+    weight_filler {
+      type: "xavier"
+    }
   }
 }
 layer {
@@ -3632,12 +3297,14 @@ layer {
   top: "dpn19_conv2"
   convolution_param {
     num_output: 512
-    kernel_size: 3
-    pad: 1
-    stride: 1
-    # dilation: 1
-    group: 32
     bias_term: false
+    pad: 1
+    kernel_size: 3
+    group: 32
+    stride: 1
+    weight_filler {
+      type: "xavier"
+    }
   }
 }
 layer {
@@ -3672,12 +3339,14 @@ layer {
   top: "dpn19_conv3_branch1"
   convolution_param {
     num_output: 256
-    kernel_size: 1
-    pad: 0
-    stride: 1
-    # dilation: 1
-    group: 1
     bias_term: false
+    pad: 0
+    kernel_size: 1
+    group: 1
+    stride: 1
+    weight_filler {
+      type: "xavier"
+    }
   }
 }
 layer {
@@ -3687,40 +3356,16 @@ layer {
   top: "dpn19_conv3_branch2"
   convolution_param {
     num_output: 32
-    kernel_size: 1
-    pad: 0
-    stride: 1
-    # dilation: 1
-    group: 1
     bias_term: false
+    pad: 0
+    kernel_size: 1
+    group: 1
+    stride: 1
+    weight_filler {
+      type: "xavier"
+    }
   }
 }
-#layer {
-#  name: "dpn19_conv3"
-#  type: "Convolution"
-#  bottom: "dpn19_conv2"
-#  top: "dpn19_conv3"
-#  convolution_param {
-#    num_output: 1048
-#    kernel_size: 1
-#    pad: 0
-#    stride: 1
-#    # dilation: 1
-#    group: 1
-#    bias_term: false
-#  }
-#}
-#layer {
-#  name: "dpn19_conv3_Slice"
-#  type: "Slice"
-#  bottom: "dpn19_conv3"
-#  top: "dpn19_conv3_split1"  # 0~1023
-#  top: "dpn19_conv3_split2"  # 1024~1048
-#  slice_param {
-#    axis: 1
-#    slice_point: 1024
-#  }
-#}
 layer {
   name: "dpn19_elewise"
   type: "Eltwise"
@@ -3738,7 +3383,6 @@ layer {
   bottom: "dpn19_conv3_branch2"
   top: "dpn19_concat"
 }
-#################### dpn20 ####################
 layer {
   name: "dpn20_concat_input"
   type: "Concat"
@@ -3778,23 +3422,25 @@ layer {
   top: "dpn20_match_conv"
   convolution_param {
     num_output: 640
-    kernel_size: 1
-    pad: 0
-    stride: 2
-    # dilation: 1
-    group: 1
     bias_term: false
+    pad: 0
+    kernel_size: 1
+    group: 1
+    stride: 2
+    weight_filler {
+      type: "xavier"
+    }
   }
 }
 layer {
   name: "dpn20_match_conv_Slice"
   type: "Slice"
   bottom: "dpn20_match_conv"
-  top: "dpn20_match_conv_split1"  # 0~511
-  top: "dpn20_match_conv_split2"  # 512~639
+  top: "dpn20_match_conv_split1"
+  top: "dpn20_match_conv_split2"
   slice_param {
-    axis: 1
     slice_point: 512
+    axis: 1
   }
 }
 layer {
@@ -3829,12 +3475,14 @@ layer {
   top: "dpn20_conv1"
   convolution_param {
     num_output: 1024
-    kernel_size: 1
-    pad: 0
-    stride: 1
-    # dilation: 1
-    group: 1
     bias_term: false
+    pad: 0
+    kernel_size: 1
+    group: 1
+    stride: 1
+    weight_filler {
+      type: "xavier"
+    }
   }
 }
 layer {
@@ -3869,12 +3517,14 @@ layer {
   top: "dpn20_conv2"
   convolution_param {
     num_output: 1024
-    kernel_size: 3
-    pad: 1
-    stride: 2
-    # dilation: 1
-    group: 32
     bias_term: false
+    pad: 1
+    kernel_size: 3
+    group: 32
+    stride: 2
+    weight_filler {
+      type: "xavier"
+    }
   }
 }
 layer {
@@ -3909,12 +3559,14 @@ layer {
   top: "dpn20_conv3_branch1"
   convolution_param {
     num_output: 512
-    kernel_size: 1
-    pad: 0
-    stride: 1
-    # dilation: 1
-    group: 1
     bias_term: false
+    pad: 0
+    kernel_size: 1
+    group: 1
+    stride: 1
+    weight_filler {
+      type: "xavier"
+    }
   }
 }
 layer {
@@ -3924,40 +3576,16 @@ layer {
   top: "dpn20_conv3_branch2"
   convolution_param {
     num_output: 64
-    kernel_size: 1
-    pad: 0
-    stride: 1
-    # dilation: 1
-    group: 1
     bias_term: false
+    pad: 0
+    kernel_size: 1
+    group: 1
+    stride: 1
+    weight_filler {
+      type: "xavier"
+    }
   }
 }
-#layer {
-#  name: "dpn20_conv3"
-#  type: "Convolution"
-#  bottom: "dpn20_conv2"
-#  top: "dpn20_conv3"
-#  convolution_param {
-#    num_output: 2176
-#    kernel_size: 1
-#    pad: 0
-#    stride: 1
-#    # dilation: 1
-#    group: 1
-#    bias_term: false
-#  }
-#}
-#layer {
-#  name: "dpn20_conv3_Slice"
-#  type: "Slice"
-#  bottom: "dpn20_conv3"
-#  top: "dpn20_conv3_split1"  # 0~2047
-#  top: "dpn20_conv3_split2"  # 2048~2176
-#  slice_param {
-#    axis: 1
-#   slice_point: 2048
-#  }
-#}
 layer {
   name: "dpn20_elewise"
   type: "Eltwise"
@@ -3975,7 +3603,6 @@ layer {
   bottom: "dpn20_conv3_branch2"
   top: "dpn20_concat"
 }
-#################### dpn21 ####################
 layer {
   name: "dpn21_concat_input"
   type: "Concat"
@@ -4015,12 +3642,14 @@ layer {
   top: "dpn21_conv1"
   convolution_param {
     num_output: 1024
-    kernel_size: 1
-    pad: 0
-    stride: 1
-    # dilation: 1
-    group: 1
     bias_term: false
+    pad: 0
+    kernel_size: 1
+    group: 1
+    stride: 1
+    weight_filler {
+      type: "xavier"
+    }
   }
 }
 layer {
@@ -4055,12 +3684,14 @@ layer {
   top: "dpn21_conv2"
   convolution_param {
     num_output: 1024
-    kernel_size: 3
-    pad: 1
-    stride: 1
-    # dilation: 1
-    group: 32
     bias_term: false
+    pad: 1
+    kernel_size: 3
+    group: 32
+    stride: 1
+    weight_filler {
+      type: "xavier"
+    }
   }
 }
 layer {
@@ -4095,12 +3726,14 @@ layer {
   top: "dpn21_conv3_branch1"
   convolution_param {
     num_output: 512
-    kernel_size: 1
-    pad: 0
-    stride: 1
-    # dilation: 1
-    group: 1
     bias_term: false
+    pad: 0
+    kernel_size: 1
+    group: 1
+    stride: 1
+    weight_filler {
+      type: "xavier"
+    }
   }
 }
 layer {
@@ -4110,40 +3743,16 @@ layer {
   top: "dpn21_conv3_branch2"
   convolution_param {
     num_output: 64
-    kernel_size: 1
-    pad: 0
-    stride: 1
-    # dilation: 1
-    group: 1
     bias_term: false
+    pad: 0
+    kernel_size: 1
+    group: 1
+    stride: 1
+    weight_filler {
+      type: "xavier"
+    }
   }
 }
-#layer {
-#  name: "dpn21_conv3"
-#  type: "Convolution"
-#  bottom: "dpn21_conv2"
-#  top: "dpn21_conv3"
-#  convolution_param {
-#    num_output: 2176
-#    kernel_size: 1
-#    pad: 0
-#    stride: 1
-#    # dilation: 1
-#    group: 1
-#    bias_term: false
-#  }
-#}
-#layer {
-#  name: "dpn21_conv3_Slice"
-#  type: "Slice"
-#  bottom: "dpn21_conv3"
-#  top: "dpn21_conv3_split1"  # 0~2047
-#  top: "dpn21_conv3_split2"  # 2048~2176
-#  slice_param {
-#    axis: 1
-#    slice_point: 2048
-#  }
-#}
 layer {
   name: "dpn21_elewise"
   type: "Eltwise"
@@ -4161,7 +3770,6 @@ layer {
   bottom: "dpn21_conv3_branch2"
   top: "dpn21_concat"
 }
-#################### dpn22 ####################
 layer {
   name: "dpn22_concat_input"
   type: "Concat"
@@ -4201,12 +3809,14 @@ layer {
   top: "dpn22_conv1"
   convolution_param {
     num_output: 1024
-    kernel_size: 1
-    pad: 0
-    stride: 1
-    # dilation: 1
-    group: 1
     bias_term: false
+    pad: 0
+    kernel_size: 1
+    group: 1
+    stride: 1
+    weight_filler {
+      type: "xavier"
+    }
   }
 }
 layer {
@@ -4241,12 +3851,14 @@ layer {
   top: "dpn22_conv2"
   convolution_param {
     num_output: 1024
-    kernel_size: 3
-    pad: 1
-    stride: 1
-    # dilation: 1
-    group: 32
     bias_term: false
+    pad: 1
+    kernel_size: 3
+    group: 32
+    stride: 1
+    weight_filler {
+      type: "xavier"
+    }
   }
 }
 layer {
@@ -4281,12 +3893,14 @@ layer {
   top: "dpn22_conv3_branch1"
   convolution_param {
     num_output: 512
-    kernel_size: 1
-    pad: 0
-    stride: 1
-    # dilation: 1
-    group: 1
     bias_term: false
+    pad: 0
+    kernel_size: 1
+    group: 1
+    stride: 1
+    weight_filler {
+      type: "xavier"
+    }
   }
 }
 layer {
@@ -4296,40 +3910,16 @@ layer {
   top: "dpn22_conv3_branch2"
   convolution_param {
     num_output: 64
-    kernel_size: 1
-    pad: 0
-    stride: 1
-    # dilation: 1
-    group: 1
     bias_term: false
+    pad: 0
+    kernel_size: 1
+    group: 1
+    stride: 1
+    weight_filler {
+      type: "xavier"
+    }
   }
 }
-#layer {
-#  name: "dpn22_conv3"
-#  type: "Convolution"
-#  bottom: "dpn22_conv2"
-#  top: "dpn22_conv3"
-#  convolution_param {
-#    num_output: 2176
-#    kernel_size: 1
-#    pad: 0
-#    stride: 1
-#    # dilation: 1
-#    group: 1
-#    bias_term: false
-#  }
-#}
-#layer {
-#  name: "dpn22_conv3_Slice"
-#  type: "Slice"
-#  bottom: "dpn22_conv3"
-#  top: "dpn22_conv3_split1"  # 0~2047
-#  top: "dpn22_conv3_split2"  # 2048~2176
-#  slice_param {
-#    axis: 1
-#    slice_point: 2048
-#  }
-#}
 layer {
   name: "dpn22_elewise"
   type: "Eltwise"
@@ -4347,7 +3937,6 @@ layer {
   bottom: "dpn22_conv3_branch2"
   top: "dpn22_concat"
 }
-#################### pool_ave ####################
 layer {
   name: "pool_ave_concat_input"
   type: "Concat"
@@ -4357,9 +3946,9 @@ layer {
 }
 layer {
   name: "pool_ave_concat_bn"
+  type: "BatchNorm"
   bottom: "pool_ave_concat_input"
   top: "pool_ave_concat_bn"
-  type: "BatchNorm"
   batch_norm_param {
     use_global_stats: true
     eps: 0.001
@@ -4386,15 +3975,15 @@ layer {
   bottom: "pool_ave_concat_bn"
   top: "pool_ave"
   pooling_param {
-    global_pooling : true
     pool: AVE
+    global_pooling: true
   }
 }
 layer {
-  name: "pool_ave_flat"
+  name: "pool_ave_flat1"
   type: "Flatten"
   bottom: "pool_ave"
-  top: "pool_ave_flat"
+  top: "pool_ave_flat1"
   flatten_param {
     axis: 1
   }
@@ -4402,12 +3991,12 @@ layer {
 layer {
   name: "l2"
   type: "L2Norm"
-  bottom: "pool_ave_flat"
+  bottom: "pool_ave_flat1"
   top: "l2"
 }
-
 layer {
   name: "silence"
   type: "Silence"
   bottom: "l2"
 }
+

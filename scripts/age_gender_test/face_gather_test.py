@@ -23,10 +23,10 @@ import roc_curve_maker
 from config_path import *
 
 class gethorModelTest():
-    def __init__(self,  select_date, test_set , test_type, test_batch_num=-1):
+    def __init__(self,  select_date, test_set , test_batch_num=-1):
         self.test_set = test_set
         self.select_date = select_date
-        self.model_path = "{}/{}".format(ConfigPath.test_type[test_type] , self.select_date)
+        self.model_path = "{}/{}".format(ConfigPath.model_root_path , self.select_date)
         self.test_batch_num = test_batch_num
 
     def testRun(self):
@@ -37,7 +37,7 @@ class gethorModelTest():
             else:
                 #set path
                 out_path = '{}/Result_{}'.format(self.model_path,self.test_set)
-                script_path = '{}/scripts/face_feature_scripts'.format(ConfigPath.local_caffe_path)
+                script_path = '{}/scripts/age_gender_scripts'.format(ConfigPath.local_caffe_path)
                 utility.make_dirs(out_path)
                 utility.make_dirs(script_path)
 
@@ -54,7 +54,7 @@ class gethorModelTest():
                     execute_path = '{}/verification_test_E{}.sh'.format(script_path, index)
                     f = open(execute_path, 'w')
                     f.write('cd {}\n'.format(ConfigPath.local_caffe_path))
-                    f.write('./build/tools/face_feature_extractor.bin {}'.format(param_path))
+                    f.write('./build/tools/age-gender_predict_result.bin {}'.format(param_path))
                     f.close()
 
                     #execute file
@@ -62,11 +62,11 @@ class gethorModelTest():
                     subprocess.call(execute_path, shell=True)
 
                 #copy scripts back to out path
-            copy_path = '{}/face_feature_scripts'.format(self.model_path)
+            copy_path = '{}/age_gender_scripts'.format(self.model_path)
             if not os.path.exists(copy_path):
-                shutil.copytree(script_path,'{}/face_feature_scripts'.format(self.model_path) )
+                shutil.copytree(script_path,'{}/age_gender_scripts'.format(self.model_path) )
 
-            self.curvePrecious(out_path)
+            # self.curvePrecious(out_path)
 
     def selectModelDeployList(self):
         folder_list = [elem for elem in os.listdir(self.model_path) if not elem.endswith('.txt') and not elem.endswith('.log') and not elem.endswith('.png') ]
@@ -125,31 +125,19 @@ class gethorModelTest():
                                         )
                                     )
                     else:
-                       if model_name_path.find('Means') >=0:
-                           each_param = caffe_pb_feature.ModelInitParameter(
-                                        image_root_path = '{}/{}'.format(ConfigPath.test_data_set[self.test_set]['imgs_folder'], patch_info),
-                                        deploy_path = deploy_path,
-                                        model_path = model_name_path,
-                                        output_path = output_result_path,
-                                        data_transform = caffe_pb_feature.TransformationParameter(
-                                            mean_value = [127.5, 127.5,127.5],
-                                            scale = 128.0
-                                            )
-                                        )
-                       else:
-                           each_param = caffe_pb_feature.ModelInitParameter(
-                                        image_root_path = '{}/{}'.format(ConfigPath.test_data_set[self.test_set]['imgs_folder'], patch_info),
-                                        deploy_path = deploy_path,
-                                        model_path = model_name_path,
-                                        output_path = output_result_path,
-                                        )
+                       each_param = caffe_pb_feature.ModelInitParameter(
+                                    image_root_path = '{}/{}'.format(ConfigPath.test_data_set[self.test_set]['imgs_folder'], patch_info),
+                                    deploy_path = deploy_path,
+                                    model_path = model_name_path,
+                                    output_path = output_result_path,
+                                    )
                     model_param_config.append(each_param)
 
             feature = caffe_pb_feature.ExtractFeatureParameter(
             run_mode = caffe_pb_feature.ExtractFeatureParameter.RunMode.Value('GPU'),
                             device_id = 0,
                             image_list = ConfigPath.test_data_set[self.test_set]['image_list'],
-                            image_pair_list = ConfigPath.test_data_set[self.test_set]['pairs_file'],
+                            # image_pair_list = ConfigPath.test_data_set[self.test_set]['pairs_file'],
                             model_config = model_param_config
                         )
             return feature
@@ -157,7 +145,7 @@ class gethorModelTest():
     #draw roc curve and statistic result
     def curvePrecious(self, output_result_path):
         statistic_info = []
-        model_list = [elem for elem in os.listdir(output_result_path) if elem.find('result_v2') >=0 and elem.endswith('.txt')] #find selected date's model
+        model_list = [elem for elem in os.listdir(output_result_path) if elem.find('result_livebody') >=0 and elem.endswith('.txt')] #find selected date's model
         for filename in model_list:
            roc_image_name = filename.replace('.txt', '_ROC.png')
            #print(roc_image_name)

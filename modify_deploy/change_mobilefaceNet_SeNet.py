@@ -113,8 +113,8 @@ def add_SE_part_into_MobileFaceNet(net_deploy_path, dst_deploy_path):
 
 
 if __name__ == '__main__':
-	net_deploy_path = "./deploy_lib/MobileFaceNet-bn_deploy.prototxt"
-	dst_deploy_path = "./modify_deploy/deploy.prototxt"
+	net_deploy_path = "./deploy_lib/MobileFaceNet-layer232-bn_deploy.prototxt"
+	dst_deploy_path = "./modify_deploy/SE-MobileFaceNet-layer232-bn_deploy.prototxt"
 	add_SE_part_into_MobileFaceNet(net_deploy_path, dst_deploy_path)
 
 

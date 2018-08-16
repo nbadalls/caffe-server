@@ -28,7 +28,7 @@ def add_SE_part_into_faceNet2s4m(net_deploy_path, dst_deploy_path):
                     if next_index > len(net_proto.layer)-1:
                     	next_index = len(net_proto.layer)-1
                     #insert SE uint
-                    # print(index, elem_layer.name, net_proto.layer[next_index].type)            
+                    # print(index, elem_layer.name, net_proto.layer[next_index].type)
                     if elem_layer.name.find("relu") >=0 and net_proto.layer[next_index].type == "Eltwise":
 
                          SeNet_proto.layer.extend([elem_layer])
