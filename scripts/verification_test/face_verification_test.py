@@ -104,6 +104,7 @@ class ModelTest():
 
         model_param_config = []
         for elem in model_list:
+
             if mean_value != None:
                 each_param = caffe_pb2.ModelInitParameter(
                                     image_root_path = '{}/{}'.format(ConfigPath.test_data_set[self.test_set_type]['imgs_folder'], patch_info),
@@ -115,6 +116,17 @@ class ModelTest():
                                         scale = scale
                                         )
                                     )
+            elif elem.find("Means") >=0:
+                each_param = caffe_pb2.ModelInitParameter(
+                    image_root_path = '{}/{}'.format(ConfigPath.test_data_set[self.test_set_type]['imgs_folder'], patch_info),
+                    deploy_path = dst_deploy_path,
+                    model_path = '{}/{}'.format(self.model_path, elem),
+                    output_path = output_result_path,
+                    data_transform = caffe_pb2.TransformationParameter(
+                     mean_value = [127.5, 127.5, 127.5],
+                      scale = 128.0
+                      )
+                    )
             else:
                 each_param = caffe_pb2.ModelInitParameter(
                                     image_root_path = '{}/{}'.format(ConfigPath.test_data_set[self.test_set_type]['imgs_folder'], patch_info),
