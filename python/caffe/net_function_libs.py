@@ -265,9 +265,8 @@ def softmaxIgnore(net, from_layer, layer_name,label_name, num_out, ignore_label_
     net[layer_name] = L.InnerProduct(net[from_layer], **kwargs1)
 
     net['{}-softmax_loss'.format(layer_name)] = L.SoftmaxWithLoss(net[layer_name], 
-                                                                                                                       net[label_name],  
-                                                                                                loss_param=dict( ignore_label = ignore_label_)
-                                                                                                )
+                                                    net[label_name],  
+                                        loss_param=dict( ignore_label = ignore_label_))
 
 def softmax(net, from_layer, layer_name, num_out):
     kwargs1 = {
