@@ -6,23 +6,26 @@ use to test local face
 """
 import face_gather_test
 import sys
+from config_path import *
 
+def model_test(select_date, test_set, test_type, batch_num=-1):
 
-def model_test(select_date, test_set, batch_num=-1):
-
-    test = face_gather_test.gethorModelTest(select_date, test_set, batch_num)
+    test = face_gather_test.gethorModelTest(select_date, test_set, test_type, batch_num)
     test.testRun()
 
 if __name__ == '__main__':
 
-    if len(sys.argv)  == 3:
+    if len(sys.argv)  == 4:
         select_date = sys.argv[1]
         test_set = sys.argv[2]
-        model_test(select_date, test_set)
-    elif len(sys.argv) == 4:
+        test_type = sys.argv[3]
+        model_test(select_date, test_set, test_type)
+    elif len(sys.argv) == 5:
         select_date = sys.argv[1]
         test_set = sys.argv[2]
-        batch_num =int( sys.argv[3])
-        model_test(select_date, test_set, batch_num)
+        test_type = sys.argv[3]
+        batch_num =int( sys.argv[4])
+        model_test(select_date, test_set, test_type, batch_num)
     else:
-         print("input: \n  --select_date\n  --test_set\n --batch_num[-1]")
+         print("input: \n  --select_date\n  --test_set {}\n  --test_type {}\n  --batch_num[-1]".format(
+         ConfigPath.test_data_set.keys(), ConfigPath.test_type.keys()))

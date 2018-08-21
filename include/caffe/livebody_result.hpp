@@ -16,6 +16,7 @@ class Livebody_Result : public SoftMax_Test
 public:
     Livebody_Result(const string & param_path);
     void SaveTrueFaceResult();
+    void SaveTrueFaceResult2();
 
 private:
 

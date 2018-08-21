@@ -311,84 +311,11 @@ layer {
     bias_term: true
   }
 }
-###################
 
-layer {
-  name: "matchconv1"
-  type: "Convolution"
-  bottom: "conv1"
-  top: "matchconv1"
-  param {
-    lr_mult: 1
-    decay_mult: 1
-  }
-  convolution_param {
-    num_output: 64
-    kernel_size: 1
-    stride: 2
-    pad: 0
-    weight_filler {
-      type: "xavier"
-    }
-    bias_term:false
-  }
-}
-
-layer {
-  name: "matchconv1/bn"
-  type: "BatchNorm"
-  bottom: "matchconv1"
-  top: "matchconv1"
-  param {
-    lr_mult: 0
-    decay_mult: 0
-  }
-  param {
-    lr_mult: 0
-    decay_mult: 0
-  }
-  param {
-    lr_mult: 0
-    decay_mult: 0
-  }
-}
-layer {
-  name: "matchconv1/scale"
-  type: "Scale"
-  bottom: "matchconv1"
-  top: "matchconv1"
-  param {
-    lr_mult: 1
-    decay_mult: 0
-  }
-  param {
-    lr_mult: 1
-    decay_mult: 0
-  }
-  scale_param {
-    bias_term: true
-  }
-}
-layer {
-  name: "relu_matchconv1"
-  type: "PReLU"
-  bottom: "matchconv1"
-  top: "matchconv1"
-}
-
-layer {
-  name: "res1_1"
-  type: "Eltwise"
-  bottom: "matchconv1"
-  bottom: "conv2_em"
-  top: "res1_1"
-}
-
-###################
 layer {
   name: "conv2_1_ex"
   type: "Convolution"
-  bottom: "res1_1"
+  bottom: "conv2_em"
   top: "conv2_1_ex"
   param {
     lr_mult: 1
@@ -575,7 +502,7 @@ layer {
 layer {
   name: "res2_1"
   type: "Eltwise"
-  bottom: "res1_1"
+  bottom: "conv2_em"
   bottom: "conv2_1_em"
   top: "res2_1"
 }
@@ -1353,85 +1280,11 @@ layer {
     bias_term: true
   }
 }
-###################
-
-layer {
-  name: "matchconv2"
-  type: "Convolution"
-  bottom: "res2_4"
-  top: "matchconv2"
-  param {
-    lr_mult: 1
-    decay_mult: 1
-  }
-  convolution_param {
-    num_output: 128
-    kernel_size: 1
-    stride: 2
-    pad: 0
-    weight_filler {
-      type: "xavier"
-    }
-    bias_term:false
-  }
-}
-
-layer {
-  name: "matchconv2/bn"
-  type: "BatchNorm"
-  bottom: "matchconv2"
-  top: "matchconv2"
-  param {
-    lr_mult: 0
-    decay_mult: 0
-  }
-  param {
-    lr_mult: 0
-    decay_mult: 0
-  }
-  param {
-    lr_mult: 0
-    decay_mult: 0
-  }
-}
-layer {
-  name: "matchconv2/scale"
-  type: "Scale"
-  bottom: "matchconv2"
-  top: "matchconv2"
-  param {
-    lr_mult: 1
-    decay_mult: 0
-  }
-  param {
-    lr_mult: 1
-    decay_mult: 0
-  }
-  scale_param {
-    bias_term: true
-  }
-}
-layer {
-  name: "relu_matchconv2"
-  type: "PReLU"
-  bottom: "matchconv2"
-  top: "matchconv2"
-}
-
-layer {
-  name: "res3_0"
-  type: "Eltwise"
-  bottom: "matchconv2"
-  bottom: "conv3_em"
-  top: "res3_0"
-}
-
-###################
 
 layer {
   name: "conv3_1_ex"
   type: "Convolution"
-  bottom: "res3_0"
+  bottom: "conv3_em"
   top: "conv3_1_ex"
   param {
     lr_mult: 1
@@ -1618,7 +1471,7 @@ layer {
 layer {
   name: "res3_1"
   type: "Eltwise"
-  bottom: "res3_0"
+  bottom: "conv3_em"
   bottom: "conv3_1_em"
   top: "res3_1"
 }
@@ -2789,85 +2642,10 @@ layer {
   }
 }
 
-###################
-
-layer {
-  name: "matchconv3"
-  type: "Convolution"
-  bottom: "res3_6"
-  top: "matchconv3"
-  param {
-    lr_mult: 1
-    decay_mult: 1
-  }
-  convolution_param {
-    num_output: 128
-    kernel_size: 1
-    stride: 2
-    pad: 0
-    weight_filler {
-      type: "xavier"
-    }
-    bias_term:false
-  }
-}
-
-layer {
-  name: "matchconv3/bn"
-  type: "BatchNorm"
-  bottom: "matchconv3"
-  top: "matchconv3"
-  param {
-    lr_mult: 0
-    decay_mult: 0
-  }
-  param {
-    lr_mult: 0
-    decay_mult: 0
-  }
-  param {
-    lr_mult: 0
-    decay_mult: 0
-  }
-}
-layer {
-  name: "matchconv3/scale"
-  type: "Scale"
-  bottom: "matchconv3"
-  top: "matchconv3"
-  param {
-    lr_mult: 1
-    decay_mult: 0
-  }
-  param {
-    lr_mult: 1
-    decay_mult: 0
-  }
-  scale_param {
-    bias_term: true
-  }
-}
-layer {
-  name: "relu_matchconv3"
-  type: "PReLU"
-  bottom: "matchconv3"
-  top: "matchconv3"
-}
-
-layer {
-  name: "res4_0"
-  type: "Eltwise"
-  bottom: "matchconv3"
-  bottom: "conv4_em"
-  top: "res4_0"
-}
-
-###################
-
 layer {
   name: "conv4_1_ex"
   type: "Convolution"
-  bottom: "res4_0"
+  bottom: "conv4_em"
   top: "conv4_1_ex"
   param {
     lr_mult: 1
@@ -3054,7 +2832,7 @@ layer {
 layer {
   name: "res4_1"
   type: "Eltwise"
-  bottom: "res4_0"
+  bottom: "conv4_em"
   bottom: "conv4_1_em"
   top: "res4_1"
 }
@@ -3331,8 +3109,8 @@ layer {
   convolution_param {
     num_output: 512
     group:512
-    kernel_h: 7
-    kernel_w:6
+    kernel_h: 5
+    kernel_w:4
     stride: 1
     pad: 0
     weight_filler {
@@ -3381,7 +3159,7 @@ layer {
 
 
 layer {
-  name: "fc5"
+  name: "fcc5"
   type: "InnerProduct"
   bottom: "conv5_dw"
   top: "fc5"

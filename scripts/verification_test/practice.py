@@ -24,12 +24,11 @@ from config_path import *
 
 
 def modelTest(select_date, test_set_type, gpu_id, test_batch_num = -1):
-    
+
         #init class
     test = face_verification_test.ModelTest(select_date, test_set_type, gpu_id, test_batch_num)
     current_date = test.current_date 
-    select = select_best_result.ModelSelect(current_date, test_set_type)
-    
+    select = select_best_result.ModelSelect(current_date, test_set_type)  
     for root_path, folder_path, filename_path in os.walk(ConfigPath.model_root_path):
         for elem in folder_path:      
                 model_path = '{}/{}'.format(root_path, elem)            

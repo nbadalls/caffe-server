@@ -102,6 +102,14 @@ MANIFEST-*
 train_examples/*
 Makefile.config
 scripts/verification_test/config_path.py
+scripts/livebody_scripts/*
 scripts/face_feature_extractor_result/*
 scripts/livebody_test/config_path.py
 python/train_set.py
+include/caffe/layers/triplet_loss_layers.hpp
+src/caffe/layers/triplet_loss_layer.cpp
+src/caffe/layers/triplet_loss_layer.cu
+src/caffe/layers/triplet_data_layer.cpp
+include/caffe/layers/triplet_data_layer.hpp
+scripts/age_gender_test/config_path.py
+scripts/age_gender_scripts/*

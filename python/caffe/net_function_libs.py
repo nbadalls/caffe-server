@@ -82,43 +82,6 @@ def full_conection(bottom, lr_mult1, decay_mult1, lr_mult2, decay_mult2,
     fc = L.InnerProduct(bottom, **kwargs)
     return fc
 
-
-#triplet data layer
-def TripletDataLayer(image_folder_, landmark_file_, subjects_per_iter_, samples_per_subject_, o3_subjects_per_iter_,o3_samples_per_subject_,
-                    center_ind_, norm_ratio_, height_, width_):
-        affine_image_param_patches_ = []
-
-        each_affine_image_param = dict(
-            center_ind = center_ind_,
-            norm_mode = caffe_pb2.AffineImage_Norm_Mode.Value('RECT_LE_RE_LM_RM'),
-            norm_ratio = norm_ratio_,
-            fill_type = False,
-            value = 0,
-            image_info = dict(height = height_,
-            width = width_,
-            is_color = True
-             )
-          )
-        affine_image_param_patches_.append(each_affine_image_param)
-
-        kwargs = {
-            'triplet_data_param': dict(
-                         train_sub_param = dict(
-                                        source = landmark_file_,
-                                        imgs_folder = image_folder_,
-                                        key_point_count = 5,
-                                        subjects_per_iter = subjects_per_iter_,
-                                        samples_per_subject = samples_per_subject_,
-                                        o3_subjects_per_iter = o3_subjects_per_iter_,
-                                        o3_samples_per_subject = o3_samples_per_subject_,
-                         ),
-                         affine_image_param = affine_image_param_patches_
-                         )
-                    }
-        data, label = L.TripletData(ntop =2, **kwargs )
-        return [data, label]
-
-
 #affine data layer
 def AffineDataLayer(image_folder_, landmark_file_, label_file_, batch_size_,
                      center_ind_, norm_ratio_, height_, width_ ):
@@ -166,6 +129,17 @@ def ImageDataLayer(source_, batch_size_, root_folder_):
                           )
                } 
     data, label = L.ImageData(ntop=2, **kwargs)
+    return [data, label]
+
+def ImageMultilabelDataLayer(source_, batch_size_, root_folder_):
+    kwargs = {
+    'image_data_param' : dict(source = source_,
+                        batch_size = batch_size_,
+                        root_folder = root_folder_,
+                        shuffle = True
+                          )
+               } 
+    data, label = L.ImageDataMultilabel(ntop=2, **kwargs)
     return [data, label]
 
 def ImageDataLayer_Means(source_, batch_size_, root_folder_, means_, scale_):
@@ -279,6 +253,21 @@ def softmaxLoss(net, from_layer, layer_name, num_out):
 
     net['softmax_loss'] = L.SoftmaxWithLoss(net[layer_name], net['label'])
 
+def softmaxIgnore(net, from_layer, layer_name,label_name, num_out, ignore_label_):
+    kwargs1 = {
+        'param':[dict(lr_mult = 1.0, decay_mult=1.0),dict(lr_mult = 2.0, decay_mult=0.0)],
+        'inner_product_param':dict(
+                num_output = num_out,
+                weight_filler =  dict(type = "gaussian", std = 0.01),
+                bias_filler = dict(type = "constant", value = 0.0),
+        )
+    }
+    net[layer_name] = L.InnerProduct(net[from_layer], **kwargs1)
+
+    net['{}-softmax_loss'.format(layer_name)] = L.SoftmaxWithLoss(net[layer_name], 
+                                                    net[label_name],  
+                                        loss_param=dict( ignore_label = ignore_label_))
+
 def softmax(net, from_layer, layer_name, num_out):
     kwargs1 = {
         'param':[dict(lr_mult = 1.0, decay_mult=1.0),dict(lr_mult = 2.0, decay_mult=0.0)],
@@ -290,4 +279,52 @@ def softmax(net, from_layer, layer_name, num_out):
     }
     net[layer_name] = L.InnerProduct(net[from_layer], **kwargs1)
 
-    net['softmax'] = L.Softmax(net[layer_name])
+    softmax_layer_name = '{}-softmax'.format(layer_name)
+    net[softmax_layer_name] = L.Softmax(net[layer_name])
+
+def  TripletRankHardLoss(net, from_layer, neg_num_, hard_ratio_, rand_ratio_, margin_, dist_mode_):
+        dist_type = {
+        0: caffe_pb2.RankHardLossParameter.DISTANCE_MODE.Value('ELEM_PRODUCT'),
+        1: caffe_pb2.RankHardLossParameter.DISTANCE_MODE.Value('L1_DIST'),
+        2: caffe_pb2.RankHardLossParameter.DISTANCE_MODE.Value('L2_DIST'),
+    }
+        kwargs1 = {
+            'rank_hard_loss_param': dict(
+                neg_num = neg_num_,
+                pair_size = 2,
+                hard_ratio = hard_ratio_,
+                rand_ratio = rand_ratio_,
+                margin = margin_,
+                dist_mode = dist_type[dist_mode_]
+                )
+              }
+        net['triplet_loss'] = L.RankHardLoss( net[from_layer], net['label'] ,**kwargs1)
+
+
+def TripletImageDataLayer(source_, batch_size_, root_folder_, pair_size_):
+
+    kwargs = {
+    'image_data_param' : dict(source = source_,
+                        batch_size = batch_size_,
+                        root_folder = root_folder_,
+                        shuffle = True,
+                        pair_size = pair_size_
+                          )
+               } 
+    data, label = L.TripletImageData(ntop=2, **kwargs)
+    return [data, label]
+
+#triplet data layer
+def TripletDataLayer(source_, batch_size_, root_folder_, subjects_per_iter_, samples_per_subject_, o3_samples_per_subject_):
+        kwargs = {
+    'image_data_param' : dict(source = source_,
+                        batch_size = batch_size_,
+                        root_folder = root_folder_,
+                        shuffle = False,
+                       subjects_per_iter = subjects_per_iter_,
+                       samples_per_subject = samples_per_subject_,
+                       o3_samples_per_subject = o3_samples_per_subject_
+                          )
+               }        
+        data, label = L.TripletData(ntop =2, **kwargs )
+        return [data, label]

@@ -253,7 +253,7 @@ message SolverParameter {
   // If command line --weights parameter if specified, it has higher priority
   // and owerwrites this one(s).
   // If --snapshot command line parameter is specified, this one(s) are ignored.
-  // If several model files are expected, they can be listed in a one 
+  // If several model files are expected, they can be listed in a one
   // weights parameter separated by ',' (like in a command string) or
   // in repeated weights parameters separately.
   repeated string weights = 42;
@@ -426,6 +426,24 @@ message LayerParameter {
   optional LabelSpecificAddParameter label_specific_add_param = 3004;
   optional NormalizeParameter normalize_param = 3005;
   optional L2NormParameter l2norm_param = 3006;
+  //三元损失层
+  optional RankHardLossParameter rank_hard_loss_param = 149;
+  //Triplet loss layer
+  optional TripletLossParamter triplet_loss_param = 3007;
+}
+
+message RankHardLossParameter {
+  optional uint32 neg_num = 1 [default = 1];
+  optional uint32 pair_size = 2 [default = 1];
+  optional float hard_ratio = 3;
+  optional float rand_ratio = 4;
+  optional float margin = 5 [default = 0.5];
+  enum DISTANCE_MODE{
+    ELEM_PRODUCT = 0;
+    L2_DIST = 1;
+    L1_DIST = 2;
+  }
+  required DISTANCE_MODE dist_mode= 6 [default = ELEM_PRODUCT];
 }
 
 // Message that stores parameters used to apply transformation
@@ -831,6 +849,14 @@ message ImageDataParameter {
   // data.
   optional bool mirror = 6 [default = false];
   optional string root_folder = 12 [default = ""];
+
+  //use to generate image pairs for triplet loss
+  optional uint32 pair_size = 13 [default = 1];
+
+  //triplet data layer param
+  optional int32 subjects_per_iter = 14 [ default = 10 ];
+  optional int32 samples_per_subject = 15 [ default = 10 ];
+  optional int32 o3_samples_per_subject = 17 [ default = 1 ];
 }
 
 message InfogainLossParameter {
@@ -1469,6 +1495,7 @@ message ExtractFeatureParameter {
   optional string image_list = 2;
   optional string image_pair_list = 3;
   repeated ModelInitParameter model_config = 4;
+  optional int32 batch_size = 5 [default = 1];
 }
 
 message ModelInitParameter{
@@ -1483,3 +1510,23 @@ message L2NormParameter {
   optional float eps = 1 [ default = 1e-8];
 }
 
+message TripletLossParamter {
+  optional float margin = 1 [ default = -1 ];
+
+  optional bool hard_triplet_mode = 4 [ default = false ];
+  optional float hard_triplet_margin = 2 [ default = 0 ];
+  optional float hard_triplet_ratio = 3 [ default = 0.5 ];
+
+  // 在选(o1, o2, o3)的时候，允许o1跟o2是同一个样本。
+  optional bool allow_duplicate_o1 = 5 [ default = false ];
+
+  optional int32 max_triplets_count = 7 [ default = -1 ];
+
+  optional bool do_triplet = 8 [ default = true ];
+  optional float triplet_loss_weight = 11 [ default = 1 ];
+
+  optional bool do_pair = 9 [ default = false ];
+  optional float pair_margin = 10 [ default = 4 ];
+  optional float pair_loss_weight = 12 [ default = 1 ];
+  optional float pair_pos_neg_ratio = 13 [ default = 1 ];
+}

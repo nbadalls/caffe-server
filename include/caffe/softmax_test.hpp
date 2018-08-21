@@ -19,8 +19,11 @@ class SoftMax_Test{
     public:
     SoftMax_Test(const string & param_proto_path);
     void ImageToBolb2(const cv::Mat &image, Blob<float> * image_blob, int net_id);
+    void ImageToBolb_batch(const cv::Mat &image, int offset, int net_id);
 
     void Predict();
+
+    void Predict_batch();
 
     vector<vector<SoftmaxResult> > get_presult(){
         return presult_;
@@ -30,7 +33,7 @@ class SoftMax_Test{
         return param_;
     }
 
-    vector<std::pair<string, int> > get_image_label_list(){
+    vector<std::pair<string, std::vector<int> > > get_image_label_list(){
         return image_label_list_;
     }
 
@@ -39,8 +42,10 @@ private:
     vector<vector<float> > means_; //matches with multi-nets
     vector<float> scale_;
     vector<shared_ptr<Net<float> > > nets_;
+    //image_num -> model_num -> label -> num
     vector<vector<SoftmaxResult> > presult_;
-    vector<std::pair<string, int> > image_label_list_;
+    vector<std::pair<string, std::vector<int> > > image_label_list_;
+    int batch_size_;
 };
 
 }

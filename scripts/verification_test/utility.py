@@ -35,13 +35,14 @@ def sort_model_name(model_name_list):
            if line.find('iter') >=0 and line.find('.txt') >=0:
                 model_name = line.split('.txt')[0]
                 num = int(model_name.split('_')[-1])
-                dict_model_name[num] = line
-    key = sorted(dict_model_name.keys())
-    print (key)
+                dict_model_name[line] = num
+    ditem = dict_model_name.items()
+    ditem.sort(key = lambda k :k[1])
+    # print (key)
     sort_list = []
-    for elem in key:
+    for key, value in ditem:
         #print (dict_model_name[elem])
-        sort_list.append(dict_model_name[elem])
+        sort_list.append(key)
     return sort_list
 
 def make_dirs(path):
