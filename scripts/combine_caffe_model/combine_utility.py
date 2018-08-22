@@ -14,18 +14,19 @@ import caffe_pb2
 
 #all deploy with same input size
 #del_last_layer_num indice  delete num of last layers
+#record_layer_index record each net's last layer's indice and name
+#example: record_layer_index[1] = "softmax-1" record_layer_index[25] = "softmax-2" 
 def combine_single_deploy(nets_info, del_last_layer_num):
     net_proto = caffe_pb2.NetParameter()
-    record_layer_index = {} 
-    num_nets = len(nets_info) 
+    record_layer_index = {}
+    num_nets = len(nets_info)
     #init  net proto
     if num_nets > 0:
         f = open(nets_info[0]['dstNet'], 'r')
         text_format.Merge(f.read(), net_proto)
         f.close()
-        
+
         net_proto.input[0] = "data"
-        net_proto.layer[0].bottom[0] = "data"
         for i in range(del_last_layer_num):
             del net_proto.layer[-1]
         #sum last number togther
@@ -33,21 +34,21 @@ def combine_single_deploy(nets_info, del_last_layer_num):
         record_layer_index[sum_layer_num] = net_proto.layer[len(net_proto.layer)-1].name
         #concat first layer with "data"
         net_proto.layer[0].bottom[0] = "data"
-        
-      #write into each  layer 
+
+      #write into each  layer
         for index in range(1, num_nets):
             net_proto_single = caffe_pb2.NetParameter()
             f = open(nets_info[index]['dstNet'], 'r')
             text_format.Merge(f.read(), net_proto_single)
-            f.close()            
+            f.close()
             #concat all combine net name togther
             net_proto.name += "||{}".format(net_proto_single.name)
             #concat first layer with "data"
             net_proto_single.layer[0].bottom[0] = "data"
-            
+
             for i in range(del_last_layer_num):
                 del net_proto_single.layer[-1]
-                
+
             sum_layer_num+=len(net_proto_single.layer)
             record_layer_index[sum_layer_num] = net_proto_single.layer[len(net_proto_single.layer)-1].name
             #combine into net proto
@@ -55,7 +56,7 @@ def combine_single_deploy(nets_info, del_last_layer_num):
                 #net_proto.layer+= elem_layer
                  net_proto.layer.extend([elem_layer])
     return net_proto, record_layer_index
-                
+
 
 def create_single_prefix_deploy(nets):
         for elem_net in nets:
@@ -63,10 +64,10 @@ def create_single_prefix_deploy(nets):
             addedPrefix = elem_net['prefix']
             outputNet = elem_net['dstNet']
             outputMap =  elem_net['outputLayerMap']
-            
+
             with open(inputNet,'r') as f:
                 originalNetSpec = f.read().splitlines()
-    
+
             nameMap=[]
             for idx in xrange(len(originalNetSpec)):
                 if ('name:' in originalNetSpec[idx]) or ('top:' in originalNetSpec[idx]) or ('bottom:' in originalNetSpec[idx]) or ('input:' in originalNetSpec[idx]):
@@ -76,18 +77,18 @@ def create_single_prefix_deploy(nets):
                     print (originalNetSpec[idx])
                     if (('name:' in originalNetSpec[idx]) or ('input:' in originalNetSpec[idx])) and ('#' not in originalNetSpec[idx]):
                         nameMap.append(originalText.split('"')[1] + ',' + newText.split('"')[1])
-        
+
             with open(outputNet,'w') as f:
                 for line in originalNetSpec:
                     f.write("{}\n".format(line))
-        
+
             with open(outputMap,'w') as f:
                 for line in nameMap:
                     f.write("{}\n".format(line))
-            f.close()         
-            
-            
-#Input model path information 
+            f.close()
+
+
+#Input model path information
 def create_single_net(root_path, dst_path, patch_folder, prefix_name):
     #root_path = "/home/minivision/Work_File/Combine_Model/FakeFace/Combine"
     #patch_folder = ['FakeFace_fc_0.4_96x96_DeepID_S', 'FakeFace_le_0.3_80x80_DeepID', 'FakeFace_le_re_n_0.8_60x60_DeepID']
@@ -105,7 +106,7 @@ def create_single_net(root_path, dst_path, patch_folder, prefix_name):
 
     nets = []
     dst_model_path = {}
-    
+
     for i in range(len(patch_folder)):
         net_info = {}
 
@@ -126,7 +127,7 @@ def create_single_net(root_path, dst_path, patch_folder, prefix_name):
         net_info['pretrained_model'] = model_path[i]
         net_info['layer_map'] = net_info['outputLayerMap']
         nets.append(net_info)
-        
+
     dst_model_path['dst_deploy'] = '{}/combine_{}_models_deploy.prototxt'.format(dst_path, len(nets))
     dst_model_path['dst_model'] = '{}/combine_{}_models.caffemodel'.format(dst_path, len(nets))
     return nets, dst_model_path

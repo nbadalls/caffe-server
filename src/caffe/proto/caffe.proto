@@ -424,6 +424,8 @@ message LayerParameter {
   optional WindowDataParameter window_data_param = 129;
 
   optional LabelSpecificAddParameter label_specific_add_param = 3004;
+  optional LabelSpecificCosineAddParameter label_specific_cosine_add_param = 3008;
+  optional LabelSpecificCosineSubParameter label_specific_cosine_sub_param = 3009;
   optional NormalizeParameter normalize_param = 3005;
   optional L2NormParameter l2norm_param = 3006;
   //三元损失层
@@ -1476,6 +1478,16 @@ message LabelSpecificAddParameter {
   optional bool transform_test = 2 [default = false];
 }
 
+//Add by zkx 2018-08-22
+//from Arc Face 
+message LabelSpecificCosineAddParameter {
+  optional float m = 1 [default = -0.5];
+}
+message LabelSpecificCosineSubParameter {
+  optional float margin_m = 1 [default = -0.35];
+  optional float margin_theta = 2 [default = 0.5];
+}
+//end
 
 message NormalizeParameter {
   optional string normalize_type = 1 [default = "L2"];
@@ -1529,4 +1541,90 @@ message TripletLossParamter {
   optional float pair_margin = 10 [ default = 4 ];
   optional float pair_loss_weight = 12 [ default = 1 ];
   optional float pair_pos_neg_ratio = 13 [ default = 1 ];
+}
+
+message TestVerificationParameter {
+  optional bool restart = 1 [ default = true ];
+
+  required string pairs_file = 2;
+  optional string landmarks_file = 3;
+  required string imgs_folder = 4;
+  optional string output_folder = 5;
+
+  optional RunMode run_mode = 30;
+
+  required ExtractReIDFeatures reid_info = 1001;
+  optional bool flip = 10 [ default = false ];
+}
+
+message RunMode {
+  // the mode will be used: 0 for CPU and 1 for GPU. Use GPU in default.
+  enum Mode {
+    CPU = 0;
+    GPU = 1;
+  }
+  optional Mode mode = 17 [default = GPU];
+  // the device_id will that be used in GPU mode. Use device_id = 0 in default.
+  optional int32 device_id = 18 [default = 0];
+}
+
+message ExtractReIDFeatures {
+  repeated NetWorkInfo net_info = 1;
+
+
+  optional bool flip = 3 [ default = false ];
+
+  optional RunMode run_mode = 4;
+
+  optional bool concat = 5 [ default = true ];
+  optional bool save_single_model = 6 [ default = true ];
+}
+
+message NetWorkInfo {
+  required string net_path = 1;
+  optional string pretrained_net_path = 2;
+
+  optional RunMode run_mode = 3;
+
+  optional AffineImageParameter affine_image_param = 4;
+  optional string id = 5;
+}
+
+message AffineImageParameter {
+
+  // 当center_ind的size为1的时候：
+  // 	目标图像会以下标为center_ind的landmark为中心
+  // 	center_ind为负数表示以左右眼左右嘴角的四个点的中点作为目标图像的中心
+  // 当center_ind的size大于1的时候，表示取多个点的中心
+  repeated int32 center_ind = 1;
+
+  optional AffineImage_Norm_Mode norm_mode = 2 [ default = RECT_LE_RE_LM_RM ];
+  optional float norm_ratio = 3 [ default = 0.5 ];
+
+  // 裁剪图片的时候，如果填充超过源图像的像素
+  // 每个dst(i, j)都会对应与一个src(a, b)，
+  // 当(a, b)不在源图像上的时候（超出源图像）：
+  //(1) fill_type为true：用value来填充dst(i, j)的值
+  //(2) fill_type为false：用源图像上距离(a, b)的点的值来填充dst(i, j)的值
+  optional bool fill_type = 7 [ default = true ];
+  optional uint32 value = 8 [ default = 0 ];
+
+  optional ImageInfo image_info = 9;
+}
+
+enum AffineImage_Norm_Mode {
+  // 以左眼到左嘴角以及右眼到右嘴角的平均距离作为标准距离
+  AVE_LE2LM_RE2RM = 0;
+
+  // 以包含左右眼左右嘴角的最小矩形的对角线对应的正方形的边长作为标准距离
+  RECT_LE_RE_LM_RM = 1;
+
+  // 以眼距作为归一化标准
+  LE2RE = 2;
+}
+
+message ImageInfo {
+  optional int32 height = 1 [ default = 40 ];
+  optional int32 width = 2 [ default = 40 ];
+  optional bool is_color = 3 [default = true];
 }
