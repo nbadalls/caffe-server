@@ -7,6 +7,17 @@ Use to configure model path
 
 class ConfigPath:pass
 
+<<<<<<< HEAD
+ConfigPath.local_data_path = "/media/minivision/OliverSSD/LiveBody"
+ConfigPath.local_caffe_path = "/home/minivision/SoftWare/caffe-server"
+ConfigPath.model_root_path = "/media/minivision/OliverSSD/LiveBody/select_best_result"
+ConfigPath.deploy_root_path = "{}/deploy_lib".format(ConfigPath.local_caffe_path)
+ConfigPath.out_root_path = ""
+
+ConfigPath.best_model_path = ""
+
+ConfigPath.best_verification_model_path = ""
+=======
 ConfigPath.local_data_path = "/home/minivision/Data/FakeFace"
 ConfigPath.local_caffe_path1 = "/home/zkx/Project/caffe-master"
 ConfigPath.local_caffe_path2 = "/home/zkx/Project/caffe_reid_min"
@@ -16,10 +27,17 @@ ConfigPath.best_model_path = "/home/zkx/Project/train_models/livebody_result"
 ConfigPath.best_model_path = "/home/zkx/Project/train_models/livebody_best_select_model"
 ConfigPath.best_verification_model_path = "/home/zkx/Project/train_models/livebody_best_combine_model"
 
+>>>>>>> origin/master
 
 
 ConfigPath.test_data_set = {
 
+<<<<<<< HEAD
+         'live-haar':{
+           'imgs_folder' : "{}/Testset/Test7_xch/patches-haar/".format(ConfigPath.local_data_path),
+           #save patch into bmp format
+           'image_list'  : "{}/Testset/Test7_xch/Landmark_label_bmp.txt".format(ConfigPath.local_data_path)
+=======
          'live-mtcnn':{
            'imgs_folder' : "{}/TestSet/Test7_xch/patch-mtcnn/".format(ConfigPath.local_data_path),
            #save patch into bmp format
@@ -30,5 +48,6 @@ ConfigPath.test_data_set = {
            'imgs_folder' : "{}/TestSet/Test7_xch/patch-mtcnn-small/".format(ConfigPath.local_data_path),
            #save patch into bmp format
            'image_list'  : "{}/TestSet/Test7_xch/Test7_smalllandmark_result/Test7_small_landmarks_label.txt".format(ConfigPath.local_data_path)
+>>>>>>> origin/master
            },
 }

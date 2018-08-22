@@ -1,4 +1,4 @@
-name: "student/2018-07-03_FakeFaceMtcnn_le_0.1_75x60_fakeface3_DeepIDCReluC3_zkx||teacher/2018-07-02_FakeFaceMtcnn_le_0.1_75x60_fakeface2_MobileFaceNet-k-5-4_zkx"
+name: "student/2018-08-07_FakeFaceMtcnn_le_0.1_75x60_fakeface4_DeepIDCReluC3_zkx||teacher/2018-08-07_FakeFaceMtcnn_le_0.1_75x60_fakeface4_MobileFaceNet-k-5-4_zkx"
 input: "data"
 input_dim: 1
 input_dim: 3
@@ -292,8 +292,8 @@ layer {
   bottom: "data"
   top: "teacher/conv1"
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   convolution_param {
     num_output: 64
@@ -312,16 +312,16 @@ layer {
   bottom: "teacher/conv1"
   top: "teacher/conv1"
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   batch_norm_param {
     use_global_stats: true
@@ -333,12 +333,12 @@ layer {
   bottom: "teacher/conv1"
   top: "teacher/conv1"
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   scale_param {
     bias_term: true
@@ -352,12 +352,12 @@ layer {
 }
 layer {
   name: "teacher/conv1_dw"
-  type: "Convolution"
+  type: "DepthwiseConvolution"
   bottom: "teacher/conv1"
   top: "teacher/conv1_dw"
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   convolution_param {
     num_output: 64
@@ -377,16 +377,16 @@ layer {
   bottom: "teacher/conv1_dw"
   top: "teacher/conv1_dw"
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   batch_norm_param {
     use_global_stats: true
@@ -398,12 +398,12 @@ layer {
   bottom: "teacher/conv1_dw"
   top: "teacher/conv1_dw"
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   scale_param {
     bias_term: true
@@ -421,8 +421,8 @@ layer {
   bottom: "teacher/conv1_dw"
   top: "teacher/conv2_ex"
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   convolution_param {
     num_output: 128
@@ -441,16 +441,16 @@ layer {
   bottom: "teacher/conv2_ex"
   top: "teacher/conv2_ex"
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   batch_norm_param {
     use_global_stats: true
@@ -462,12 +462,12 @@ layer {
   bottom: "teacher/conv2_ex"
   top: "teacher/conv2_ex"
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   scale_param {
     bias_term: true
@@ -481,12 +481,12 @@ layer {
 }
 layer {
   name: "teacher/conv2_dw"
-  type: "Convolution"
+  type: "DepthwiseConvolution"
   bottom: "teacher/conv2_ex"
   top: "teacher/conv2_dw"
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   convolution_param {
     num_output: 128
@@ -507,16 +507,16 @@ layer {
   bottom: "teacher/conv2_dw"
   top: "teacher/conv2_dw"
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   batch_norm_param {
     use_global_stats: true
@@ -528,12 +528,12 @@ layer {
   bottom: "teacher/conv2_dw"
   top: "teacher/conv2_dw"
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   scale_param {
     bias_term: true
@@ -551,8 +551,8 @@ layer {
   bottom: "teacher/conv2_dw"
   top: "teacher/conv2_em"
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   convolution_param {
     num_output: 64
@@ -571,16 +571,16 @@ layer {
   bottom: "teacher/conv2_em"
   top: "teacher/conv2_em"
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   batch_norm_param {
     use_global_stats: true
@@ -592,12 +592,12 @@ layer {
   bottom: "teacher/conv2_em"
   top: "teacher/conv2_em"
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   scale_param {
     bias_term: true
@@ -609,8 +609,8 @@ layer {
   bottom: "teacher/conv2_em"
   top: "teacher/conv2_1_ex"
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   convolution_param {
     num_output: 128
@@ -629,16 +629,16 @@ layer {
   bottom: "teacher/conv2_1_ex"
   top: "teacher/conv2_1_ex"
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   batch_norm_param {
     use_global_stats: true
@@ -650,12 +650,12 @@ layer {
   bottom: "teacher/conv2_1_ex"
   top: "teacher/conv2_1_ex"
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   scale_param {
     bias_term: true
@@ -669,12 +669,12 @@ layer {
 }
 layer {
   name: "teacher/conv2_1_dw"
-  type: "Convolution"
+  type: "DepthwiseConvolution"
   bottom: "teacher/conv2_1_ex"
   top: "teacher/conv2_1_dw"
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   convolution_param {
     num_output: 128
@@ -695,16 +695,16 @@ layer {
   bottom: "teacher/conv2_1_dw"
   top: "teacher/conv2_1_dw"
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   batch_norm_param {
     use_global_stats: true
@@ -716,12 +716,12 @@ layer {
   bottom: "teacher/conv2_1_dw"
   top: "teacher/conv2_1_dw"
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   scale_param {
     bias_term: true
@@ -739,8 +739,8 @@ layer {
   bottom: "teacher/conv2_1_dw"
   top: "teacher/conv2_1_em"
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   convolution_param {
     num_output: 64
@@ -759,16 +759,16 @@ layer {
   bottom: "teacher/conv2_1_em"
   top: "teacher/conv2_1_em"
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   batch_norm_param {
     use_global_stats: true
@@ -780,12 +780,12 @@ layer {
   bottom: "teacher/conv2_1_em"
   top: "teacher/conv2_1_em"
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   scale_param {
     bias_term: true
@@ -804,8 +804,8 @@ layer {
   bottom: "teacher/res2_1"
   top: "teacher/conv2_2_ex"
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   convolution_param {
     num_output: 128
@@ -824,16 +824,16 @@ layer {
   bottom: "teacher/conv2_2_ex"
   top: "teacher/conv2_2_ex"
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   batch_norm_param {
     use_global_stats: true
@@ -845,12 +845,12 @@ layer {
   bottom: "teacher/conv2_2_ex"
   top: "teacher/conv2_2_ex"
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   scale_param {
     bias_term: true
@@ -864,12 +864,12 @@ layer {
 }
 layer {
   name: "teacher/conv2_2_dw"
-  type: "Convolution"
+  type: "DepthwiseConvolution"
   bottom: "teacher/conv2_2_ex"
   top: "teacher/conv2_2_dw"
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   convolution_param {
     num_output: 128
@@ -890,16 +890,16 @@ layer {
   bottom: "teacher/conv2_2_dw"
   top: "teacher/conv2_2_dw"
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   batch_norm_param {
     use_global_stats: true
@@ -911,12 +911,12 @@ layer {
   bottom: "teacher/conv2_2_dw"
   top: "teacher/conv2_2_dw"
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   scale_param {
     bias_term: true
@@ -934,8 +934,8 @@ layer {
   bottom: "teacher/conv2_2_dw"
   top: "teacher/conv2_2_em"
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   convolution_param {
     num_output: 64
@@ -954,16 +954,16 @@ layer {
   bottom: "teacher/conv2_2_em"
   top: "teacher/conv2_2_em"
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   batch_norm_param {
     use_global_stats: true
@@ -975,12 +975,12 @@ layer {
   bottom: "teacher/conv2_2_em"
   top: "teacher/conv2_2_em"
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   scale_param {
     bias_term: true
@@ -999,8 +999,8 @@ layer {
   bottom: "teacher/res2_2"
   top: "teacher/conv2_3_ex"
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   convolution_param {
     num_output: 128
@@ -1019,16 +1019,16 @@ layer {
   bottom: "teacher/conv2_3_ex"
   top: "teacher/conv2_3_ex"
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   batch_norm_param {
     use_global_stats: true
@@ -1040,12 +1040,12 @@ layer {
   bottom: "teacher/conv2_3_ex"
   top: "teacher/conv2_3_ex"
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   scale_param {
     bias_term: true
@@ -1059,12 +1059,12 @@ layer {
 }
 layer {
   name: "teacher/conv2_3_dw"
-  type: "Convolution"
+  type: "DepthwiseConvolution"
   bottom: "teacher/conv2_3_ex"
   top: "teacher/conv2_3_dw"
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   convolution_param {
     num_output: 128
@@ -1085,16 +1085,16 @@ layer {
   bottom: "teacher/conv2_3_dw"
   top: "teacher/conv2_3_dw"
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   batch_norm_param {
     use_global_stats: true
@@ -1106,12 +1106,12 @@ layer {
   bottom: "teacher/conv2_3_dw"
   top: "teacher/conv2_3_dw"
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   scale_param {
     bias_term: true
@@ -1129,8 +1129,8 @@ layer {
   bottom: "teacher/conv2_3_dw"
   top: "teacher/conv2_3_em"
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   convolution_param {
     num_output: 64
@@ -1149,16 +1149,16 @@ layer {
   bottom: "teacher/conv2_3_em"
   top: "teacher/conv2_3_em"
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   batch_norm_param {
     use_global_stats: true
@@ -1170,12 +1170,12 @@ layer {
   bottom: "teacher/conv2_3_em"
   top: "teacher/conv2_3_em"
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   scale_param {
     bias_term: true
@@ -1194,8 +1194,8 @@ layer {
   bottom: "teacher/res2_3"
   top: "teacher/conv2_4_ex"
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   convolution_param {
     num_output: 128
@@ -1214,16 +1214,16 @@ layer {
   bottom: "teacher/conv2_4_ex"
   top: "teacher/conv2_4_ex"
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   batch_norm_param {
     use_global_stats: true
@@ -1235,12 +1235,12 @@ layer {
   bottom: "teacher/conv2_4_ex"
   top: "teacher/conv2_4_ex"
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   scale_param {
     bias_term: true
@@ -1254,12 +1254,12 @@ layer {
 }
 layer {
   name: "teacher/conv2_4_dw"
-  type: "Convolution"
+  type: "DepthwiseConvolution"
   bottom: "teacher/conv2_4_ex"
   top: "teacher/conv2_4_dw"
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   convolution_param {
     num_output: 128
@@ -1280,16 +1280,16 @@ layer {
   bottom: "teacher/conv2_4_dw"
   top: "teacher/conv2_4_dw"
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   batch_norm_param {
     use_global_stats: true
@@ -1301,12 +1301,12 @@ layer {
   bottom: "teacher/conv2_4_dw"
   top: "teacher/conv2_4_dw"
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   scale_param {
     bias_term: true
@@ -1324,8 +1324,8 @@ layer {
   bottom: "teacher/conv2_4_dw"
   top: "teacher/conv2_4_em"
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   convolution_param {
     num_output: 64
@@ -1344,16 +1344,16 @@ layer {
   bottom: "teacher/conv2_4_em"
   top: "teacher/conv2_4_em"
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   batch_norm_param {
     use_global_stats: true
@@ -1365,12 +1365,12 @@ layer {
   bottom: "teacher/conv2_4_em"
   top: "teacher/conv2_4_em"
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   scale_param {
     bias_term: true
@@ -1389,8 +1389,8 @@ layer {
   bottom: "teacher/res2_4"
   top: "teacher/conv3_ex"
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   convolution_param {
     num_output: 256
@@ -1409,16 +1409,16 @@ layer {
   bottom: "teacher/conv3_ex"
   top: "teacher/conv3_ex"
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   batch_norm_param {
     use_global_stats: true
@@ -1430,12 +1430,12 @@ layer {
   bottom: "teacher/conv3_ex"
   top: "teacher/conv3_ex"
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   scale_param {
     bias_term: true
@@ -1449,12 +1449,12 @@ layer {
 }
 layer {
   name: "teacher/conv3_dw"
-  type: "Convolution"
+  type: "DepthwiseConvolution"
   bottom: "teacher/conv3_ex"
   top: "teacher/conv3_dw"
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   convolution_param {
     num_output: 256
@@ -1475,16 +1475,16 @@ layer {
   bottom: "teacher/conv3_dw"
   top: "teacher/conv3_dw"
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   batch_norm_param {
     use_global_stats: true
@@ -1496,12 +1496,12 @@ layer {
   bottom: "teacher/conv3_dw"
   top: "teacher/conv3_dw"
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   scale_param {
     bias_term: true
@@ -1519,8 +1519,8 @@ layer {
   bottom: "teacher/conv3_dw"
   top: "teacher/conv3_em"
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   convolution_param {
     num_output: 128
@@ -1539,16 +1539,16 @@ layer {
   bottom: "teacher/conv3_em"
   top: "teacher/conv3_em"
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   batch_norm_param {
     use_global_stats: true
@@ -1560,12 +1560,12 @@ layer {
   bottom: "teacher/conv3_em"
   top: "teacher/conv3_em"
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   scale_param {
     bias_term: true
@@ -1577,8 +1577,8 @@ layer {
   bottom: "teacher/conv3_em"
   top: "teacher/conv3_1_ex"
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   convolution_param {
     num_output: 256
@@ -1597,16 +1597,16 @@ layer {
   bottom: "teacher/conv3_1_ex"
   top: "teacher/conv3_1_ex"
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   batch_norm_param {
     use_global_stats: true
@@ -1618,12 +1618,12 @@ layer {
   bottom: "teacher/conv3_1_ex"
   top: "teacher/conv3_1_ex"
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   scale_param {
     bias_term: true
@@ -1637,12 +1637,12 @@ layer {
 }
 layer {
   name: "teacher/conv3_1_dw"
-  type: "Convolution"
+  type: "DepthwiseConvolution"
   bottom: "teacher/conv3_1_ex"
   top: "teacher/conv3_1_dw"
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   convolution_param {
     num_output: 256
@@ -1663,16 +1663,16 @@ layer {
   bottom: "teacher/conv3_1_dw"
   top: "teacher/conv3_1_dw"
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   batch_norm_param {
     use_global_stats: true
@@ -1684,12 +1684,12 @@ layer {
   bottom: "teacher/conv3_1_dw"
   top: "teacher/conv3_1_dw"
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   scale_param {
     bias_term: true
@@ -1707,8 +1707,8 @@ layer {
   bottom: "teacher/conv3_1_dw"
   top: "teacher/conv3_1_em"
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   convolution_param {
     num_output: 128
@@ -1727,16 +1727,16 @@ layer {
   bottom: "teacher/conv3_1_em"
   top: "teacher/conv3_1_em"
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   batch_norm_param {
     use_global_stats: true
@@ -1748,12 +1748,12 @@ layer {
   bottom: "teacher/conv3_1_em"
   top: "teacher/conv3_1_em"
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   scale_param {
     bias_term: true
@@ -1772,8 +1772,8 @@ layer {
   bottom: "teacher/res3_1"
   top: "teacher/conv3_2_ex"
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   convolution_param {
     num_output: 256
@@ -1792,16 +1792,16 @@ layer {
   bottom: "teacher/conv3_2_ex"
   top: "teacher/conv3_2_ex"
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   batch_norm_param {
     use_global_stats: true
@@ -1813,12 +1813,12 @@ layer {
   bottom: "teacher/conv3_2_ex"
   top: "teacher/conv3_2_ex"
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   scale_param {
     bias_term: true
@@ -1832,12 +1832,12 @@ layer {
 }
 layer {
   name: "teacher/conv3_2_dw"
-  type: "Convolution"
+  type: "DepthwiseConvolution"
   bottom: "teacher/conv3_2_ex"
   top: "teacher/conv3_2_dw"
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   convolution_param {
     num_output: 256
@@ -1858,16 +1858,16 @@ layer {
   bottom: "teacher/conv3_2_dw"
   top: "teacher/conv3_2_dw"
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   batch_norm_param {
     use_global_stats: true
@@ -1879,12 +1879,12 @@ layer {
   bottom: "teacher/conv3_2_dw"
   top: "teacher/conv3_2_dw"
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   scale_param {
     bias_term: true
@@ -1902,8 +1902,8 @@ layer {
   bottom: "teacher/conv3_2_dw"
   top: "teacher/conv3_2_em"
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   convolution_param {
     num_output: 128
@@ -1922,16 +1922,16 @@ layer {
   bottom: "teacher/conv3_2_em"
   top: "teacher/conv3_2_em"
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   batch_norm_param {
     use_global_stats: true
@@ -1943,12 +1943,12 @@ layer {
   bottom: "teacher/conv3_2_em"
   top: "teacher/conv3_2_em"
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   scale_param {
     bias_term: true
@@ -1967,8 +1967,8 @@ layer {
   bottom: "teacher/res3_2"
   top: "teacher/conv3_3_ex"
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   convolution_param {
     num_output: 256
@@ -1987,16 +1987,16 @@ layer {
   bottom: "teacher/conv3_3_ex"
   top: "teacher/conv3_3_ex"
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   batch_norm_param {
     use_global_stats: true
@@ -2008,12 +2008,12 @@ layer {
   bottom: "teacher/conv3_3_ex"
   top: "teacher/conv3_3_ex"
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   scale_param {
     bias_term: true
@@ -2027,12 +2027,12 @@ layer {
 }
 layer {
   name: "teacher/conv3_3_dw"
-  type: "Convolution"
+  type: "DepthwiseConvolution"
   bottom: "teacher/conv3_3_ex"
   top: "teacher/conv3_3_dw"
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   convolution_param {
     num_output: 256
@@ -2053,16 +2053,16 @@ layer {
   bottom: "teacher/conv3_3_dw"
   top: "teacher/conv3_3_dw"
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   batch_norm_param {
     use_global_stats: true
@@ -2074,12 +2074,12 @@ layer {
   bottom: "teacher/conv3_3_dw"
   top: "teacher/conv3_3_dw"
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   scale_param {
     bias_term: true
@@ -2097,8 +2097,8 @@ layer {
   bottom: "teacher/conv3_3_dw"
   top: "teacher/conv3_3_em"
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   convolution_param {
     num_output: 128
@@ -2117,16 +2117,16 @@ layer {
   bottom: "teacher/conv3_3_em"
   top: "teacher/conv3_3_em"
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   batch_norm_param {
     use_global_stats: true
@@ -2138,12 +2138,12 @@ layer {
   bottom: "teacher/conv3_3_em"
   top: "teacher/conv3_3_em"
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   scale_param {
     bias_term: true
@@ -2162,8 +2162,8 @@ layer {
   bottom: "teacher/res3_3"
   top: "teacher/conv3_4_ex"
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   convolution_param {
     num_output: 256
@@ -2182,16 +2182,16 @@ layer {
   bottom: "teacher/conv3_4_ex"
   top: "teacher/conv3_4_ex"
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   batch_norm_param {
     use_global_stats: true
@@ -2203,12 +2203,12 @@ layer {
   bottom: "teacher/conv3_4_ex"
   top: "teacher/conv3_4_ex"
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   scale_param {
     bias_term: true
@@ -2222,12 +2222,12 @@ layer {
 }
 layer {
   name: "teacher/conv3_4_dw"
-  type: "Convolution"
+  type: "DepthwiseConvolution"
   bottom: "teacher/conv3_4_ex"
   top: "teacher/conv3_4_dw"
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   convolution_param {
     num_output: 256
@@ -2248,16 +2248,16 @@ layer {
   bottom: "teacher/conv3_4_dw"
   top: "teacher/conv3_4_dw"
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   batch_norm_param {
     use_global_stats: true
@@ -2269,12 +2269,12 @@ layer {
   bottom: "teacher/conv3_4_dw"
   top: "teacher/conv3_4_dw"
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   scale_param {
     bias_term: true
@@ -2292,8 +2292,8 @@ layer {
   bottom: "teacher/conv3_4_dw"
   top: "teacher/conv3_4_em"
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   convolution_param {
     num_output: 128
@@ -2312,16 +2312,16 @@ layer {
   bottom: "teacher/conv3_4_em"
   top: "teacher/conv3_4_em"
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   batch_norm_param {
     use_global_stats: true
@@ -2333,12 +2333,12 @@ layer {
   bottom: "teacher/conv3_4_em"
   top: "teacher/conv3_4_em"
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   scale_param {
     bias_term: true
@@ -2357,8 +2357,8 @@ layer {
   bottom: "teacher/res3_4"
   top: "teacher/conv3_5_ex"
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   convolution_param {
     num_output: 256
@@ -2377,16 +2377,16 @@ layer {
   bottom: "teacher/conv3_5_ex"
   top: "teacher/conv3_5_ex"
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   batch_norm_param {
     use_global_stats: true
@@ -2398,12 +2398,12 @@ layer {
   bottom: "teacher/conv3_5_ex"
   top: "teacher/conv3_5_ex"
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   scale_param {
     bias_term: true
@@ -2417,12 +2417,12 @@ layer {
 }
 layer {
   name: "teacher/conv3_5_dw"
-  type: "Convolution"
+  type: "DepthwiseConvolution"
   bottom: "teacher/conv3_5_ex"
   top: "teacher/conv3_5_dw"
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   convolution_param {
     num_output: 256
@@ -2443,16 +2443,16 @@ layer {
   bottom: "teacher/conv3_5_dw"
   top: "teacher/conv3_5_dw"
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   batch_norm_param {
     use_global_stats: true
@@ -2464,12 +2464,12 @@ layer {
   bottom: "teacher/conv3_5_dw"
   top: "teacher/conv3_5_dw"
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   scale_param {
     bias_term: true
@@ -2487,8 +2487,8 @@ layer {
   bottom: "teacher/conv3_5_dw"
   top: "teacher/conv3_5_em"
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   convolution_param {
     num_output: 128
@@ -2507,16 +2507,16 @@ layer {
   bottom: "teacher/conv3_5_em"
   top: "teacher/conv3_5_em"
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   batch_norm_param {
     use_global_stats: true
@@ -2528,12 +2528,12 @@ layer {
   bottom: "teacher/conv3_5_em"
   top: "teacher/conv3_5_em"
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   scale_param {
     bias_term: true
@@ -2552,8 +2552,8 @@ layer {
   bottom: "teacher/res3_5"
   top: "teacher/conv3_6_ex"
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   convolution_param {
     num_output: 256
@@ -2572,16 +2572,16 @@ layer {
   bottom: "teacher/conv3_6_ex"
   top: "teacher/conv3_6_ex"
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   batch_norm_param {
     use_global_stats: true
@@ -2593,12 +2593,12 @@ layer {
   bottom: "teacher/conv3_6_ex"
   top: "teacher/conv3_6_ex"
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   scale_param {
     bias_term: true
@@ -2612,12 +2612,12 @@ layer {
 }
 layer {
   name: "teacher/conv3_6_dw"
-  type: "Convolution"
+  type: "DepthwiseConvolution"
   bottom: "teacher/conv3_6_ex"
   top: "teacher/conv3_6_dw"
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   convolution_param {
     num_output: 256
@@ -2638,16 +2638,16 @@ layer {
   bottom: "teacher/conv3_6_dw"
   top: "teacher/conv3_6_dw"
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   batch_norm_param {
     use_global_stats: true
@@ -2659,12 +2659,12 @@ layer {
   bottom: "teacher/conv3_6_dw"
   top: "teacher/conv3_6_dw"
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   scale_param {
     bias_term: true
@@ -2682,8 +2682,8 @@ layer {
   bottom: "teacher/conv3_6_dw"
   top: "teacher/conv3_6_em"
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   convolution_param {
     num_output: 128
@@ -2702,16 +2702,16 @@ layer {
   bottom: "teacher/conv3_6_em"
   top: "teacher/conv3_6_em"
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   batch_norm_param {
     use_global_stats: true
@@ -2723,12 +2723,12 @@ layer {
   bottom: "teacher/conv3_6_em"
   top: "teacher/conv3_6_em"
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   scale_param {
     bias_term: true
@@ -2747,8 +2747,8 @@ layer {
   bottom: "teacher/res3_6"
   top: "teacher/conv4_ex"
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   convolution_param {
     num_output: 512
@@ -2767,16 +2767,16 @@ layer {
   bottom: "teacher/conv4_ex"
   top: "teacher/conv4_ex"
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   batch_norm_param {
     use_global_stats: true
@@ -2788,12 +2788,12 @@ layer {
   bottom: "teacher/conv4_ex"
   top: "teacher/conv4_ex"
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   scale_param {
     bias_term: true
@@ -2807,12 +2807,12 @@ layer {
 }
 layer {
   name: "teacher/conv4_dw"
-  type: "Convolution"
+  type: "DepthwiseConvolution"
   bottom: "teacher/conv4_ex"
   top: "teacher/conv4_dw"
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   convolution_param {
     num_output: 512
@@ -2833,16 +2833,16 @@ layer {
   bottom: "teacher/conv4_dw"
   top: "teacher/conv4_dw"
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   batch_norm_param {
     use_global_stats: true
@@ -2854,12 +2854,12 @@ layer {
   bottom: "teacher/conv4_dw"
   top: "teacher/conv4_dw"
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   scale_param {
     bias_term: true
@@ -2877,8 +2877,8 @@ layer {
   bottom: "teacher/conv4_dw"
   top: "teacher/conv4_em"
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   convolution_param {
     num_output: 128
@@ -2897,16 +2897,16 @@ layer {
   bottom: "teacher/conv4_em"
   top: "teacher/conv4_em"
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   batch_norm_param {
     use_global_stats: true
@@ -2918,12 +2918,12 @@ layer {
   bottom: "teacher/conv4_em"
   top: "teacher/conv4_em"
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   scale_param {
     bias_term: true
@@ -2935,8 +2935,8 @@ layer {
   bottom: "teacher/conv4_em"
   top: "teacher/conv4_1_ex"
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   convolution_param {
     num_output: 256
@@ -2955,16 +2955,16 @@ layer {
   bottom: "teacher/conv4_1_ex"
   top: "teacher/conv4_1_ex"
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   batch_norm_param {
     use_global_stats: true
@@ -2976,12 +2976,12 @@ layer {
   bottom: "teacher/conv4_1_ex"
   top: "teacher/conv4_1_ex"
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   scale_param {
     bias_term: true
@@ -2995,12 +2995,12 @@ layer {
 }
 layer {
   name: "teacher/conv4_1_dw"
-  type: "Convolution"
+  type: "DepthwiseConvolution"
   bottom: "teacher/conv4_1_ex"
   top: "teacher/conv4_1_dw"
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   convolution_param {
     num_output: 256
@@ -3021,16 +3021,16 @@ layer {
   bottom: "teacher/conv4_1_dw"
   top: "teacher/conv4_1_dw"
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   batch_norm_param {
     use_global_stats: true
@@ -3042,12 +3042,12 @@ layer {
   bottom: "teacher/conv4_1_dw"
   top: "teacher/conv4_1_dw"
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   scale_param {
     bias_term: true
@@ -3065,8 +3065,8 @@ layer {
   bottom: "teacher/conv4_1_dw"
   top: "teacher/conv4_1_em"
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   convolution_param {
     num_output: 128
@@ -3085,16 +3085,16 @@ layer {
   bottom: "teacher/conv4_1_em"
   top: "teacher/conv4_1_em"
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   batch_norm_param {
     use_global_stats: true
@@ -3106,12 +3106,12 @@ layer {
   bottom: "teacher/conv4_1_em"
   top: "teacher/conv4_1_em"
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   scale_param {
     bias_term: true
@@ -3130,8 +3130,8 @@ layer {
   bottom: "teacher/res4_1"
   top: "teacher/conv4_2_ex"
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   convolution_param {
     num_output: 256
@@ -3150,16 +3150,16 @@ layer {
   bottom: "teacher/conv4_2_ex"
   top: "teacher/conv4_2_ex"
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   batch_norm_param {
     use_global_stats: true
@@ -3171,12 +3171,12 @@ layer {
   bottom: "teacher/conv4_2_ex"
   top: "teacher/conv4_2_ex"
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   scale_param {
     bias_term: true
@@ -3190,12 +3190,12 @@ layer {
 }
 layer {
   name: "teacher/conv4_2_dw"
-  type: "Convolution"
+  type: "DepthwiseConvolution"
   bottom: "teacher/conv4_2_ex"
   top: "teacher/conv4_2_dw"
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   convolution_param {
     num_output: 256
@@ -3216,16 +3216,16 @@ layer {
   bottom: "teacher/conv4_2_dw"
   top: "teacher/conv4_2_dw"
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   batch_norm_param {
     use_global_stats: true
@@ -3237,12 +3237,12 @@ layer {
   bottom: "teacher/conv4_2_dw"
   top: "teacher/conv4_2_dw"
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   scale_param {
     bias_term: true
@@ -3260,8 +3260,8 @@ layer {
   bottom: "teacher/conv4_2_dw"
   top: "teacher/conv4_2_em"
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   convolution_param {
     num_output: 128
@@ -3280,16 +3280,16 @@ layer {
   bottom: "teacher/conv4_2_em"
   top: "teacher/conv4_2_em"
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   batch_norm_param {
     use_global_stats: true
@@ -3301,12 +3301,12 @@ layer {
   bottom: "teacher/conv4_2_em"
   top: "teacher/conv4_2_em"
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   scale_param {
     bias_term: true
@@ -3325,8 +3325,8 @@ layer {
   bottom: "teacher/res4_2"
   top: "teacher/conv5_ex"
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   convolution_param {
     num_output: 512
@@ -3345,16 +3345,16 @@ layer {
   bottom: "teacher/conv5_ex"
   top: "teacher/conv5_ex"
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   batch_norm_param {
     use_global_stats: true
@@ -3366,12 +3366,12 @@ layer {
   bottom: "teacher/conv5_ex"
   top: "teacher/conv5_ex"
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   scale_param {
     bias_term: true
@@ -3385,12 +3385,12 @@ layer {
 }
 layer {
   name: "teacher/convc5_dw"
-  type: "Convolution"
+  type: "DepthwiseConvolution"
   bottom: "teacher/conv5_ex"
   top: "teacher/conv5_dw"
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   convolution_param {
     num_output: 512
@@ -3412,16 +3412,16 @@ layer {
   bottom: "teacher/conv5_dw"
   top: "teacher/conv5_dw"
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   batch_norm_param {
     use_global_stats: true
@@ -3433,12 +3433,12 @@ layer {
   bottom: "teacher/conv5_dw"
   top: "teacher/conv5_dw"
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   scale_param {
     bias_term: true
@@ -3450,8 +3450,8 @@ layer {
   bottom: "teacher/conv5_dw"
   top: "teacher/fc5"
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   inner_product_param {
     num_output: 128
@@ -3467,12 +3467,12 @@ layer {
   bottom: "teacher/fc5"
   top: "teacher/fc6"
   param {
-    lr_mult: 0.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   param {
-    lr_mult: 2.0
-    decay_mult: 0.0
+    lr_mult: 0
+    decay_mult: 0
   }
   inner_product_param {
     num_output: 4
@@ -3492,5 +3492,6 @@ layer {
   type: "EuclideanLoss"
   bottom: "student/fc2"
   bottom: "teacher/fc6"
+  top:"euclidean_loss"
 }
 

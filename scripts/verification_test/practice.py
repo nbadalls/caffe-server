@@ -46,6 +46,16 @@ def selectThreshold(test_set_type, threshold):
     current_date = time.strftime('%Y-%m-%d', time.localtime())
     select = select_best_result.ModelSelect(current_date, test_set_type)
     select.selectVerificationModel(threshold)
+
+def selectThreshold2(current_date, test_set_type, threshold):
+    #current_date = time.strftime('%Y-%m-%d', time.localtime())
+    select = select_best_result.ModelSelect(current_date, test_set_type)
+    select.selectVerificationModel(threshold)
+
+def selectThresholdDate(select_date, test_set_type, threshold):
+
+    select = select_best_result.ModelSelect(select_date, test_set_type)
+    select.selectVerificationModel(threshold)
     
 
 if __name__ == '__main__':
@@ -71,10 +81,18 @@ if __name__ == '__main__':
             gpu_id = int(sys.argv[4])
             test_batch_num = int(sys.argv[5])
             modelTest(select_date, test_set_type, gpu_id, test_batch_num)
+	elif sys.argv[1] == "select":
+		current_date = sys.argv[2]
+                select_date = sys.argv[3]
+                test_set_type = sys.argv[4]
+                threshold = float(sys.argv[5])
+                selectThresholdDate(current_date, select_date, test_set_type, threshold)	     
+            
         else:
               print ("Please input: \n test \n --select_date\n --test_set_type\n --gpu_id\n --test_batch_num[-1]\n")
-              print ("select \n --test_set_type\n --threshold\n")
+              print ("select \n -- select_date\n--test_set_type\n --threshold\n")
 	      print ("test-m \n  --test_set_type\n --model_num\n")
+	      
               
     elif len(sys.argv) == 5:
         if sys.argv[1] == "test":
@@ -82,6 +100,11 @@ if __name__ == '__main__':
             test_set_type = sys.argv[3]
             gpu_id = int(sys.argv[4])
             modelTest(select_date, test_set_type, gpu_id)
+        elif sys.argv[1] == "select":
+                select_date = sys.argv[2]
+                test_set_type = sys.argv[3]
+                threshold = float(sys.argv[4])
+                selectThresholdDate(select_date, test_set_type, threshold)
         else:
               print ("Please input: \n test \n --select_date\n --test_set_type\n --gpu_id\n --test_batch_num[-1]\n")
               print ("select \n --test_set_type\n --threshold\n") 

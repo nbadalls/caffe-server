@@ -8,7 +8,7 @@ Created on Wed May 30 10:59:26 2018
 import time
 import sys
 import os
-
+sys.path.append('/home/zkx-97/anaconda2/lib/python2.7/site-packages')
 import face_verification_test
 import select_best_result
 from config_path import *
@@ -26,7 +26,7 @@ def modelTestSingle(select_date, test_set_type, gpu_id, folder_path, test_batch_
     test = face_verification_test.ModelTest(select_date, test_set_type, gpu_id, test_batch_num)
     current_date = test.current_date 
     select = select_best_result.ModelSelect(current_date, test_set_type)
-    model_path = '{}/FakeFaceMtcnnDistill/{}'.format(ConfigPath.model_root_path, folder_path)
+    model_path = '{}/FakeFaceMtcnn/{}'.format(ConfigPath.model_root_path, folder_path)
     test.runTest(model_path)
     select.findBestModel()
     
