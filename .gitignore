@@ -113,3 +113,7 @@ src/caffe/layers/triplet_data_layer.cpp
 include/caffe/layers/triplet_data_layer.hpp
 scripts/age_gender_test/config_path.py
 scripts/age_gender_scripts/*
+tools/DeepIdpatchCropper.cpp
+scripts/CropPatch/*
+include/caffe/util/util_img.hpp
+src/caffe/util/util_img.cpp
