@@ -117,3 +117,6 @@ tools/DeepIdpatchCropper.cpp
 scripts/CropPatch/*
 include/caffe/util/util_img.hpp
 src/caffe/util/util_img.cpp
+src/caffe/layers/affine_crop_layer.cpp
+src/caffe/layers/affine_crop_layer.cu
+include/caffe/layers/affine_crop_layer.hpp
