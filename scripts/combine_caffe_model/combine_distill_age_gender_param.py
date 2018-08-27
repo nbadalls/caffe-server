@@ -12,6 +12,7 @@ from combine_model_param import *
 from layer_lib import *
 import time
 import os
+from getPatchInfoFunc import *
 
 
 class DistillAgeGender(combineModelParam):

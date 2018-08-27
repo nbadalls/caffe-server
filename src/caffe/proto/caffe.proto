@@ -432,6 +432,7 @@ message LayerParameter {
   optional RankHardLossParameter rank_hard_loss_param = 149;
   //Triplet loss layer
   optional TripletLossParamter triplet_loss_param = 3007;
+  optional AffineCropParameter affine_crop_param = 3310;
 }
 
 message RankHardLossParameter {
@@ -1479,7 +1480,7 @@ message LabelSpecificAddParameter {
 }
 
 //Add by zkx 2018-08-22
-//from Arc Face 
+//from Arc Face
 message LabelSpecificCosineAddParameter {
   optional float m = 1 [default = -0.5];
 }
@@ -1600,6 +1601,7 @@ message AffineImageParameter {
 
   optional AffineImage_Norm_Mode norm_mode = 2 [ default = RECT_LE_RE_LM_RM ];
   optional float norm_ratio = 3 [ default = 0.5 ];
+  optional int32 center_ind_num = 10;
 
   // 裁剪图片的时候，如果填充超过源图像的像素
   // 每个dst(i, j)都会对应与一个src(a, b)，
@@ -1627,4 +1629,9 @@ message ImageInfo {
   optional int32 height = 1 [ default = 40 ];
   optional int32 width = 2 [ default = 40 ];
   optional bool is_color = 3 [default = true];
+}
+
+message AffineCropParameter {
+    required bool show_output_image = 1 [default = false];
+    repeated AffineImageParameter affine_image_param = 2;
 }

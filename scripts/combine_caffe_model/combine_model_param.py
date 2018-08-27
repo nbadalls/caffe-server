@@ -23,6 +23,7 @@ class combineModelParam():
         nets, dst_model_path = combine_utility.create_single_net(self.single_root_path, self.dst_combine_path, patch_folder, prefix_names)
         self.nets = nets
         self.dst_model_path = dst_model_path
+        self.prefix_names = prefix_names
 
 #sinple version simplely combine net together
     def create_combine_deploy(self ):
