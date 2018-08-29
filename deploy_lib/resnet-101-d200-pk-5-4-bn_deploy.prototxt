@@ -4389,12 +4389,9 @@ layer {
   top: "pool5"
   pooling_param {
     pool: AVE
-<<<<<<< HEAD
-    kernel_size: 7
-=======
+   
     kernel_h: 5
     kernel_w: 4
->>>>>>> origin/master
     stride: 1
   }
 }

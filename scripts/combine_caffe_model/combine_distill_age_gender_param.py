@@ -12,9 +12,10 @@ from combine_model_param import *
 from layer_lib import *
 import time
 import os
+from getPatchInfoFunc import *
 
 
-class DistillSoftmax(combineModelParam):
+class DistillAgeGender(combineModelParam):
     def __init__(self, single_root_path, dst_combine_path):
         combineModelParam.__init__(self,single_root_path,dst_combine_path )
 
@@ -30,19 +31,28 @@ class DistillSoftmax(combineModelParam):
                         elem_param.decay_mult = 0
 
 
-        #create add net name list
-        each_net_last_layer_name = []
+        #create added euclidean_loss_layer bottom list
+        gender_fc_layer_name = []
+        age_fc_layer_name = []
         for key in record_layer_index.keys():
-            add_name = net_proto.layer[key-1].name
-            each_net_last_layer_name.append(add_name)
-            #delete last teacher softmax layer
-            if add_name.find("teacher") >=0:
+            gen_fc = net_proto.layer[key-1].name
+            age_fc = net_proto.layer[key-3].name
+            gender_fc_layer_name.append(gen_fc)
+            age_fc_layer_name.append(age_fc)
+
+        #del softmax layer
+        for key in record_layer_index.keys():
+            if net_proto.layer[key].name.find('teacher') >=0:
                del net_proto.layer[key]
+               del net_proto.layer[key-2]
+
         #add euclidean_loss_layer
-        euclidean_proto = create_euclidean_loss_layer(each_net_last_layer_name)
+        euclidean_proto_age = create_euclidean_loss_layer(age_fc_layer_name, "_age")
+        euclidean_proto_gender = create_euclidean_loss_layer(gender_fc_layer_name, "_gender")
         f = open(self.dst_model_path['dst_deploy'], 'w')
         print(net_proto, file = f)
-        print(euclidean_proto, file = f)
+        print(euclidean_proto_age, file = f)
+        print(euclidean_proto_gender, file = f)
         #print(softmax_proto, file = f)
         f.close()
 
@@ -51,13 +61,13 @@ if __name__ == '__main__':
 
     date = time.strftime('%Y-%m-%d %H-%M-%S',time.localtime(time.time()))
     # root_path = "/media/minivision/OliverSSD/LiveBody/select_best_result/HistoryBestModel"
-    root_path = "/media/minivision/OliverSSD/LiveBody/select_best_result/2018-08-09/disdill"
-    dst_path = "/media/minivision/OliverSSD/LiveBody/select_best_result/Combined_model_distill/{}".format(date)
+    root_path = "/media/minivision/OliverSSD/GenderAge/best_models/distill"
+    dst_path = "/media/minivision/OliverSSD/GenderAge/best_models/Combined_model_distill/{}".format(date)
     if not os.path.exists(dst_path):
         os.makedirs(dst_path)
 
-    patch_folder = ["FakeFaceMtcnn_fc_0.4_80x80_fakeface4_DeepIDCReluC3",
-    "FakeFaceMtcnn_fc_0.4_80x80_fakeface4_MobileFaceNet-k-5-5" ]
+    patch_folder = ["2018-08-14_AgeGenderMtcnn_re_0.2_80x50_age-gender-dataset1_DeepID_zkx_iter_125000",
+    "2018-08-14_AgeGenderMtcnn_re_0.2_80x50_age-gender-dataset1_MobileFaceNet-k-5-4_zkx_iter_105000" ]
     prefix_names = ["student", "teacher"]
 
     f = open('{}/net_info.txt'.format(dst_path), 'w')
@@ -66,5 +76,5 @@ if __name__ == '__main__':
     f.close()
 
 
-    combine_model = DistillSoftmax(root_path,dst_path )
+    combine_model = DistillAgeGender(root_path,dst_path )
     combine_model.model_combination(patch_folder, prefix_names)
