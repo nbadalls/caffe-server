@@ -9,6 +9,7 @@ import sys
 sys.path.append('/home/minivision/SoftWare/caffe-server/python')
 import caffe_pb2
 from combine_model_param import *
+from layer_lib import *
 import time
 import os
 
@@ -38,41 +39,13 @@ class DistillSoftmax(combineModelParam):
             if add_name.find("teacher") >=0:
                del net_proto.layer[key]
         #add euclidean_loss_layer
-        euclidean_proto = self.create_euclidean_loss_layer(each_net_last_layer_name)
+        euclidean_proto = create_euclidean_loss_layer(each_net_last_layer_name)
         f = open(self.dst_model_path['dst_deploy'], 'w')
         print(net_proto, file = f)
         print(euclidean_proto, file = f)
         #print(softmax_proto, file = f)
         f.close()
 
-    #each layer's name is a list
-    def create_euclidean_loss_layer(self, each_net_last_layer_name):
-            euclidean_loss_layer= caffe_pb2.LayerParameter(
-            name = "euclidean_loss",
-            type = "EuclideanLoss",
-            bottom = each_net_last_layer_name,
-            top = ["euclidean_loss"]
-            )
-
-            net_proto = caffe_pb2.NetParameter()
-            net_proto.layer.extend([euclidean_loss_layer])
-            return net_proto
-
-     #add_net_layer_name is a list
-    def create_softmax_layer(self, add_net_layer_name):
-          add_softamx_layers = []
-          for elem in add_net_layer_name:
-                softmax_layer= caffe_pb2.LayerParameter(
-                name = "{}-softmax".format(elem),
-                type = "Softmax",
-                bottom = elem
-                )
-                add_softamx_layers.append(softmax_layer)
-
-          net_proto = caffe_pb2.NetParameter()
-          for elem in add_softamx_layers:
-              net_proto.layer.extend([elem])
-          return net_proto
 
 if __name__ == '__main__':
 
