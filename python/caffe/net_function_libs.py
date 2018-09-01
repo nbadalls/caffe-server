@@ -233,7 +233,37 @@ def AM_softmaxLoss(net, from_layer, layer_name, num_out, bias_, scale_value):
     kwargs2 = {
         'param':dict(lr_mult = 0, decay_mult = 0),
         'scale_param': dict(
-                filler = dict(type = "constant", value = 30)
+                filler = dict(type = "constant", value = scale_value)
+        )
+    }
+    net[name3] = L.Scale(net[name2], **kwargs2)
+    net['softmax_loss'] = L.SoftmaxWithLoss(net[name3], net['label'])
+
+#sphere Additive-Margin_Loss
+def ArcFace_softmaxLoss(net, from_layer, layer_name, num_out, margin_m_, margin_theta_ ,scale_value):
+    net["norm1"] = L.Normalize(net[from_layer])
+    name = '{}_l2'.format(layer_name)
+    kwargs1 = {
+        'param':dict(lr_mult = 1),
+        'inner_product_param':dict(
+                num_output = num_out,
+                normalize = True,
+                weight_filler =  dict(type = "xavier"),
+                bias_term = False,
+        )
+    }
+    net[name] = L.InnerProduct(net["norm1"], **kwargs1)
+
+    name2 = "{}_margin".format(layer_name)
+    net[name2] = L.LabelSpecificCosineSub(net[name], net['label'], 
+                        label_specific_cosine_sub_param = dict(
+                            margin_m = margin_m_,
+                            margin_theta = margin_theta_ ))
+    name3 = "{}_margin_scale".format(layer_name)
+    kwargs2 = {
+        'param':dict(lr_mult = 0, decay_mult = 0),
+        'scale_param': dict(
+                filler = dict(type = "constant", value = scale_value)
         )
     }
     net[name3] = L.Scale(net[name2], **kwargs2)
