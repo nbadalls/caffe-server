@@ -4389,12 +4389,7 @@ layer {
   top: "pool5"
   pooling_param {
     pool: AVE
-<<<<<<< HEAD
     kernel_size: 7
-=======
-    kernel_h: 5
-    kernel_w: 4
->>>>>>> origin/master
     stride: 1
   }
 }
@@ -4422,17 +4417,6 @@ layer {
     }
   }
 }
-
-layer{
-   name: "fc200_bn"
-   type: "BatchNorm"
-   bottom: "fc200"
-   top: "fc200"
-   batch_norm_param{
-    use_global_stats: true
-    }
-}
-
 layer {
   name: "l2"
   type: "L2Norm"

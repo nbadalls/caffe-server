@@ -10,17 +10,18 @@ sys.path.append('/home/minivision/SoftWare/caffe-server/python')
 import os
 from google.protobuf import text_format
 import caffe_pb2
-
+import layer_lib
 
 #all deploy with same input size
 #del_last_layer_num indice  delete num of last layers
 #record_layer_index record each net's last layer's indice and name
-#example: record_layer_index[1] = "softmax-1" record_layer_index[25] = "softmax-2" 
+#example: record_layer_index[1] = "softmax-1" record_layer_index[25] = "softmax-2"
 def combine_single_deploy(nets_info, del_last_layer_num):
     net_proto = caffe_pb2.NetParameter()
     record_layer_index = {}
     num_nets = len(nets_info)
     #init  net proto
+    layer_lib.create_combine_data_layer()
     if num_nets > 0:
         f = open(nets_info[0]['dstNet'], 'r')
         text_format.Merge(f.read(), net_proto)
@@ -57,6 +58,33 @@ def combine_single_deploy(nets_info, del_last_layer_num):
                  net_proto.layer.extend([elem_layer])
     return net_proto, record_layer_index
 
+
+#use to  combine different models loaded by opencv
+def combine_single_deploy_model_merge(nets_info, del_last_layer_num):
+    net_proto = caffe_pb2.NetParameter()
+    record_layer_index = {}
+    num_nets = len(nets_info)
+    sum_layer_num = 0
+    #init  net proto
+    if num_nets > 0:
+
+        for index in range(0, num_nets):
+            net_proto_single = caffe_pb2.NetParameter()
+            f = open(nets_info[index]['dstNet'], 'r')
+            text_format.Merge(f.read(), net_proto_single)
+            f.close()
+
+            #delete last n layer
+            for i in range(del_last_layer_num):
+                del net_proto_single.layer[-1]
+
+            sum_layer_num+=len(net_proto_single.layer)
+            record_layer_index[sum_layer_num] = net_proto_single.layer[len(net_proto_single.layer)-1].name
+            #combine into net proto
+            for elem_layer in net_proto_single.layer:
+                #net_proto.layer+= elem_layer
+                 net_proto.layer.extend([elem_layer])
+    return net_proto, record_layer_index
 
 def create_single_prefix_deploy(nets):
         for elem_net in nets:

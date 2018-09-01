@@ -52,6 +52,7 @@ class ModelTest():
                 split_part2 = model_prefix[sign_pos:]#x96_b+FaceAdd_MobileFaceNet
                 end = split_part2.find('_')
                 patch_info = '{}{}'.format(model_prefix[begin+1 : sign_pos], split_part2[0:end])#fc_0.35_112 x96
+                loss_type = model_prefix.split('_')[0].split('-')[0]
 
                 #set dst save path
                 output_path = '{}/{}/{}/{}'.format(ConfigPath.out_root_path, self.current_date, self.test_set_type, model_prefix)
@@ -64,9 +65,11 @@ class ModelTest():
 
                 #train net
                 net_name = model_prefix.split('_')[-1]
-                deploy_file = '{}_deploy.prototxt'.format(net_name)
-                src_deploy_path = '{}/{}'.format(ConfigPath.deploy_root_path, deploy_file)
-                dst_deploy_path = '{}/{}'.format(output_deploy_path, deploy_file)
+                # deploy_file = '{}_deploy.prototxt'.format(net_name)
+                #src_deploy_path = '{}/{}'.format(ConfigPath.deploy_root_path, deploy_file)
+                src_deploy_path = '{}/jobs/{}/{}/deploy.prototxt'.format(ConfigPath.local_caffe_path, loss_type, model_prefix)
+                dst_deploy_path = '{}/deploy.prototxt'.format(output_deploy_path)
+                # dst_deploy_path = '{}/{}'.format(output_deploy_path, deploy_file)
 
                 # change deploy's input and save into dst path
                 patch_info_dict = getPatchInfoFunc.splitPatchInfo(patch_info)

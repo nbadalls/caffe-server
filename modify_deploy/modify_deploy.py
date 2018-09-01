@@ -38,11 +38,22 @@ class ModifyDeploy():
 
 		self.write_deploy_file(net_proto, self.dst_deploy_path)
 
+	def add_xavier_to_conv_inner_layer(self):
+
+		net_proto = self.read_deploy_file(self.src_deploy_path)
+		for elem_layer in net_proto.layer:
+			if elem_layer.type == "Convolution":
+				elem_layer.convolution_param.weight_filler.type = 'xavier'
+			if elem_layer.type == "InnerProduct":
+				elem_layer.inner_product_param.weight_filler.type = 'xavier'
+
+		self.write_deploy_file(net_proto, self.dst_deploy_path)		
+
 
 
 if __name__ == '__main__':
 
-	src_deploy_path = "/home/zkx-97/Project/O2N/caffe-master/deploy_lib/mobilenet-v2_deploy.prototxt"
-	dst_deploy_path = "/home/zkx-97/Project/O2N/caffe-master/modify_deploy/mobilenet-v2-dp_deploy.prototxt"
+	src_deploy_path = "./modify_deploy/mod_deploy/resnet-101-d200_deploy.prototxt"
+	dst_deploy_path = "./modify_deploy/mod_deploy/resnet-101-d200-p_deploy.prototxt"
 	mod_deploy = ModifyDeploy(src_deploy_path, dst_deploy_path)
-	mod_deploy.change_convolution_to_depthwiseConvolution()
+	mod_deploy.add_xavier_to_conv_inner_layer()
