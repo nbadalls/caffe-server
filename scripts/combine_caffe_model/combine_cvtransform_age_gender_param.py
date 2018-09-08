@@ -2,6 +2,11 @@
 """
 Created on Wed Jul 11 10:52:53 2018
 
+注意：
+转换模型之后，需要将combine_deploy.prototxt中
+”DepthwiseConvolution” 替换为 “Convolution”
+因为opencv中对DepthwiseConvolution Layer 没有对应的实现
+
 @author: minivision
 """
 from __future__ import print_function

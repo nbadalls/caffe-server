@@ -21,7 +21,6 @@ def combine_single_deploy(nets_info, del_last_layer_num):
     record_layer_index = {}
     num_nets = len(nets_info)
     #init  net proto
-    layer_lib.create_combine_data_layer()
     if num_nets > 0:
         f = open(nets_info[0]['dstNet'], 'r')
         text_format.Merge(f.read(), net_proto)

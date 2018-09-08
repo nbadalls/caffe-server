@@ -145,3 +145,34 @@ def create_scale_layer(input, out_name, scale):
     net = caffe_pb2.NetParameter()
     net.layer.extend([concat_layer])
     return net
+
+def create_inner_product_layer(input, out_name, output_number):
+    inner_product_layer= caffe_pb2.LayerParameter(
+        name = out_name,
+        type = "InnerProduct",
+        bottom = [input],
+        top = [out_name],
+
+        param = [caffe_pb2.ParamSpec(
+            lr_mult = 1.0,
+            decay_mult = 1.0,
+        ), caffe_pb2.ParamSpec(
+            lr_mult = 2.0,
+            decay_mult = 0.0,
+        )],
+
+        inner_product_param = caffe_pb2.InnerProductParameter(
+        num_output = output_number,
+            bias_term = False,
+            weight_filler = caffe_pb2.FillerParameter(
+            type = "xavier"
+            ),
+            bias_filler = caffe_pb2.FillerParameter(
+            type = "constant",
+            value = 0.0
+            )
+        )
+    )
+    net = caffe_pb2.NetParameter()
+    net.layer.extend([inner_product_layer])
+    return net

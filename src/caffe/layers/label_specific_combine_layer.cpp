@@ -1,12 +1,12 @@
 #include <algorithm>
 #include <vector>
 
-#include "caffe/layers/label_specific_cosine_sub_layer.hpp"
+#include "caffe/layers/label_specific_combine_layer.hpp"
 
 namespace caffe {
 
 template <typename Dtype>
-void LabelSpecificCosineSubLayer<Dtype>::LayerSetUp(const vector<Blob<Dtype>*>& bottom,
+void LabelSpecificCombineLayer<Dtype>::LayerSetUp(const vector<Blob<Dtype>*>& bottom,
                                                     const vector<Blob<Dtype>*>& top) {
     const LabelSpecificCosineSubParameter& param = this->layer_param_.label_specific_cosine_sub_param();
     if (param.has_margin_theta())
@@ -15,8 +15,8 @@ void LabelSpecificCosineSubLayer<Dtype>::LayerSetUp(const vector<Blob<Dtype>*>& 
         margin_theta = (Dtype)0.5;
     cos_margin_theta = cos(margin_theta);
     sin_margin_theta = sin(margin_theta);
-    sq_margin_theta = sin(M_PI-margin_theta)*margin_theta;
-    threshold = cos(M_PI-margin_theta);
+//    sq_margin_theta = sin(M_PI-margin_theta)*margin_theta;
+//    threshold = cos(M_PI-margin_theta);
     CHECK(margin_theta < M_PI / 2.0);
 
     if (param.has_margin_m())
@@ -26,7 +26,7 @@ void LabelSpecificCosineSubLayer<Dtype>::LayerSetUp(const vector<Blob<Dtype>*>& 
 }
 
 template <typename Dtype>
-void LabelSpecificCosineSubLayer<Dtype>::Reshape(const vector<Blob<Dtype>*>& bottom,
+void LabelSpecificCombineLayer<Dtype>::Reshape(const vector<Blob<Dtype>*>& bottom,
                                                  const vector<Blob<Dtype>*>& top) {
     if(top[0] != bottom[0]) top[0]->ReshapeLike(*bottom[0]);
     vector<int> shape(1,1);
@@ -34,7 +34,7 @@ void LabelSpecificCosineSubLayer<Dtype>::Reshape(const vector<Blob<Dtype>*>& bot
 }
 
 template <typename Dtype>
-void LabelSpecificCosineSubLayer<Dtype>::Forward_cpu(const vector<Blob<Dtype>*>& bottom,
+void LabelSpecificCombineLayer<Dtype>::Forward_cpu(const vector<Blob<Dtype>*>& bottom,
                                                      const vector<Blob<Dtype>*>& top) {
     const Dtype* bottom_data = bottom[0]->cpu_data();
     const Dtype* label_data = bottom[1]->cpu_data();
@@ -57,25 +57,19 @@ void LabelSpecificCosineSubLayer<Dtype>::Forward_cpu(const vector<Blob<Dtype>*>&
         const int idx = i * dim + gt;
         const Dtype cos_theta = bottom_data[idx];
         Dtype tmp = cos_theta;
-        if (cos_theta > threshold)
-        {
-            const Dtype sq_cos_theta = cos_theta*cos_theta;
-            if ((sq_cos_theta <= (Dtype)1.) && (sq_cos_theta >= (Dtype)-1.)){
-                const Dtype sin_theta = sqrt((Dtype)1. - sq_cos_theta);
-                tmp = cos_theta*cos_margin_theta - sin_theta*sin_margin_theta; //modified by zkx 2018-03-23
-            }
 
-        } else {
-            tmp = cos_theta - sq_margin_theta;
+        const Dtype sq_cos_theta = cos_theta*cos_theta;
+        if ((sq_cos_theta <= (Dtype)1.) && (sq_cos_theta >= (Dtype)-1.)){
+            const Dtype sin_theta = sqrt((Dtype)1. - sq_cos_theta);
+            tmp = cos_theta*cos_margin_theta - sin_theta*sin_margin_theta + margin_m;   //margin_m < 0
         }
-        if (tmp > (-margin_m))
-            tmp += margin_m;
+
         top_data[idx] = tmp;
     }
 }
 
 template <typename Dtype>
-void LabelSpecificCosineSubLayer<Dtype>::Backward_cpu(const vector<Blob<Dtype>*>& top,
+void LabelSpecificCombineLayer<Dtype>::Backward_cpu(const vector<Blob<Dtype>*>& top,
                                                       const vector<bool>& propagate_down,
                                                       const vector<Blob<Dtype>*>& bottom) {
     if (top[0] != bottom[0] && propagate_down[0]) {
@@ -92,13 +86,11 @@ void LabelSpecificCosineSubLayer<Dtype>::Backward_cpu(const vector<Blob<Dtype>*>
             const int gt = static_cast<int>(label_data[i]);
             const int idx = i * dim + gt;
             const Dtype cos_theta = bottom_data[idx];
-            if (cos_theta > threshold)
-            {
-                const Dtype sq_cos_theta = cos_theta*cos_theta;
-                if ((sq_cos_theta <= (Dtype)1.) && (sq_cos_theta >= (Dtype)-1.)){
-                    const Dtype sin_theta = sqrt((Dtype)1. - sq_cos_theta) + (Dtype)1e-6;
-                    bottom_diff[idx] = (cos_margin_theta + sin_margin_theta*(cos_theta/sin_theta))*top_diff[idx]; //modified by zkx 2018-03-23
-                }
+
+            const Dtype sq_cos_theta = cos_theta*cos_theta;
+            if ((sq_cos_theta <= (Dtype)1.) && (sq_cos_theta >= (Dtype)-1.)){
+                const Dtype sin_theta = sqrt((Dtype)1. - sq_cos_theta) + (Dtype)1e-6;
+                bottom_diff[idx] = (cos_margin_theta + sin_margin_theta*(cos_theta/sin_theta))*top_diff[idx];
             }
         }
     }
@@ -106,10 +98,10 @@ void LabelSpecificCosineSubLayer<Dtype>::Backward_cpu(const vector<Blob<Dtype>*>
 
 
 #ifdef CPU_ONLY
-STUB_GPU(LabelSpecificCosineSubLayer);
+STUB_GPU(LabelSpecificCombineLayer);
 #endif
 
-INSTANTIATE_CLASS(LabelSpecificCosineSubLayer);
-REGISTER_LAYER_CLASS(LabelSpecificCosineSub);
+INSTANTIATE_CLASS(LabelSpecificCombineLayer);
+REGISTER_LAYER_CLASS(LabelSpecificCombine);
 
 }  // namespace caffe

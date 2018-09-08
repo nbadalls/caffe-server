@@ -164,7 +164,12 @@ class gethorModelTest():
            if not os.path.exists('{}/{}'.format(output_result_path, roc_image_name)):
                print (filename)
                statistic_info.append(filename)
-               roc_info = roc_curve_maker.roc_maker('{}/{}'.format(output_result_path, filename))
+               try:
+                   roc_info = roc_curve_maker.roc_maker('{}/{}'.format(output_result_path, filename))
+               except ValueError as e:
+                   print("exist Nan in result")
+                   continue
+                   
                statistic_info += roc_info
                statistic_info.append("\n===============================\n")
 
