@@ -1,4 +1,4 @@
-``#include "caffe/softmax_test.hpp"
+#include "caffe/softmax_test.hpp"
 
 
 namespace caffe {
