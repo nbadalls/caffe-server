@@ -32,9 +32,9 @@ class ModifyDeploy():
 	def change_convolution_to_depthwiseConvolution(self):
 
 		net_proto = self.read_deploy_file(self.src_deploy_path)
-		for elem_layer in net_proto.layer:
-			if elem_layer.name.find('dwise') >=0 and elem_layer.type == "Convolution":
-				elem_layer.type == "DepthwiseConvolution"
+		for index, elem_layer in enumerate(net_proto.layer):
+			if elem_layer.name.find('dw') >=0 and elem_layer.type == "Convolution":
+				net_proto.layer[index].type = "DepthwiseConvolution"
 
 		self.write_deploy_file(net_proto, self.dst_deploy_path)
 
@@ -53,7 +53,7 @@ class ModifyDeploy():
 
 if __name__ == '__main__':
 
-	src_deploy_path = "./modify_deploy/mod_deploy/resnet-101-d200_deploy.prototxt"
-	dst_deploy_path = "./modify_deploy/mod_deploy/resnet-101-d200-p_deploy.prototxt"
+	src_deploy_path = "/home/zkx-97/Project/O2N/caffe-master/deploy_lib/MobileNet-d200_deploy.prototxt"
+	dst_deploy_path = "/home/zkx-97/Project/O2N/caffe-master/deploy_lib/MobileNet-d200-dp_deploy.prototxt"
 	mod_deploy = ModifyDeploy(src_deploy_path, dst_deploy_path)
-	mod_deploy.add_xavier_to_conv_inner_layer()
+	mod_deploy.change_convolution_to_depthwiseConvolution()
