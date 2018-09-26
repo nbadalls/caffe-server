@@ -116,6 +116,18 @@ void Extract_Feature::ExtractImageFeature()
             const float * src_pt = output_blob_pt->cpu_data();
             float * dst_pt = (*feature_pt)[i].get()->mutable_cpu_data();
             caffe_copy(output_blob_pt->count(), src_pt, dst_pt);
+
+
+//            //for debug
+//            std::cout << "[ ";
+//            for(int k = 0; k < output_blob_pt->count(); k++)
+//            {
+//                std::cout <<*(dst_pt+k) << " ";
+//            }
+//            std::cout << " ]" << std::endl;
+//            std::cout <<output_blob_pt->count() <<std::endl;
+//            //end debug
+
         }
 
         std::cout << "Extract feature: " << counter << "/" << image_features_.size()-1 << "\r";
@@ -293,6 +305,7 @@ void Extract_Feature::ImageToBolb2(const cv::Mat &image, Blob<float> *image_blob
     {
         for(int w = 0; w < width; w++)
         {
+            //bgr rank
             int index = h * width + w;
             for(int c = 0; c < channel; c++)
             {

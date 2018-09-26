@@ -69,7 +69,19 @@ class gethorModelTest():
             self.curvePrecious(out_path)
 
     def selectModelDeployList(self):
-        folder_list = [elem for elem in os.listdir(self.model_path) if not elem.endswith('.txt') and not elem.endswith('.log') and not elem.endswith('.png') ]
+
+        result_out_path = '{}/Result_{}'.format(self.model_path,self.test_set)
+        if os.path.exists(result_out_path):
+            exist_model_result = [elem.strip('.txt').split('result_v2_')[-1] for elem in os.listdir(result_out_path) if elem.endswith('.txt')]
+        else:
+            exist_model_result = []
+
+        #do not test models that already tested
+        folder_list = [elem for elem in os.listdir(self.model_path) if not elem.endswith('.txt') and not elem.endswith('.txt~')\
+                        and not elem.endswith('.log') and not elem.endswith('.png')  \
+                        and elem.find('Result') <0 and elem.find('Script') <0 and elem.find('statistic') <0 \
+                        and elem not in  exist_model_result]
+
         model_info_pair = {} #model name -- deploy file
         for folder in folder_list:
                 model_list = []
@@ -133,7 +145,7 @@ class gethorModelTest():
                                         output_path = output_result_path,
                                         data_transform = caffe_pb_feature.TransformationParameter(
                                             mean_value = [127.5, 127.5,127.5],
-                                            scale = 128.0
+                                            scale = 0.0078125
                                             )
                                         )
                        else:
@@ -169,7 +181,7 @@ class gethorModelTest():
                except ValueError as e:
                    print("exist Nan in result")
                    continue
-                   
+
                statistic_info += roc_info
                statistic_info.append("\n===============================\n")
 

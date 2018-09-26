@@ -47,13 +47,23 @@ class ModifyDeploy():
 			if elem_layer.type == "InnerProduct":
 				elem_layer.inner_product_param.weight_filler.type = 'xavier'
 
-		self.write_deploy_file(net_proto, self.dst_deploy_path)		
+		self.write_deploy_file(net_proto, self.dst_deploy_path)
 
+	def add_bias_on_convolution(self):
+		net_proto = self.read_deploy_file(self.src_deploy_path)
+		for elem_layer in net_proto.layer:
+			if elem_layer.type == "Convolution" and elem_layer.name.find('dw') >=0:
+				elem_layer.convolution_param.bias_filler.type = 'constant'
+				elem_layer.convolution_param.bias_filler.value = 0.0
+				elem_layer.param.extend(ParamSpec)
+				# elem_layer.param[1].lr_mult = 0.0
+				# elem_layer.param[1].decay_mult = 0.0
 
+		self.write_deploy_file(net_proto, self.dst_deploy_path)
 
 if __name__ == '__main__':
 
-	src_deploy_path = "/home/zkx-97/Project/O2N/caffe-master/deploy_lib/MobileNet-d200_deploy.prototxt"
-	dst_deploy_path = "/home/zkx-97/Project/O2N/caffe-master/deploy_lib/MobileNet-d200-dp_deploy.prototxt"
+	src_deploy_path = "/media/minivision/OliverSSD/FaceRecognition/verification_select_best_models/History2/2018-09-23_ArcFaceMtcnn-m0t0.5s64_fc_0.35_144x122_final-base-delshot+rest+shotclean+CHinab2-GE15_MobileNet-d200_zkx_iter_175000/deploy.prototxt"
+	dst_deploy_path = "/media/minivision/OliverSSD/FaceRecognition/verification_select_best_models/History2/2018-09-23_ArcFaceMtcnn-m0t0.5s64_fc_0.35_144x122_final-base-delshot+rest+shotclean+CHinab2-GE15_MobileNet-d200_zkx_iter_175000/deploy_cg.prototxt"
 	mod_deploy = ModifyDeploy(src_deploy_path, dst_deploy_path)
 	mod_deploy.change_convolution_to_depthwiseConvolution()
